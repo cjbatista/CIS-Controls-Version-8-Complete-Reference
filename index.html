@@ -3,303 +3,510 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CIS Controls v8 — Interactive Reference & Compliance Calculator</title>
+<title>CIS Controls v8</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #0a0e14; --bg2: #111620; --bg3: #181f2c;
-    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.13);
-    --text: #e8edf5; --text2: #8a95a8; --text3: #4a5568;
-    --accent: #3b82f6; --accent2: #60a5fa;
-    --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
-    --c-identify: #818cf8; --c-protect: #34d399; --c-detect: #fbbf24;
-    --c-respond: #f87171; --c-recover: #e879f9;
-    --c-ig1: #60a5fa; --c-ig2: #4ade80; --c-ig3: #fb923c;
-    --radius: 10px;
-  }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.6; min-height: 100vh; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0e14;--bg2:#111620;--bg3:#181f2c;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#e8edf5;--text2:#8a95a8;--text3:#4a5568;--accent:#3b82f6;--accent2:#60a5fa;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.6;min-height:100vh}
+header{position:sticky;top:0;z-index:100;background:rgba(10,14,20,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-family:var(--mono);font-size:13px;color:var(--text2);letter-spacing:.05em;white-space:nowrap}
+.logo span{color:var(--accent2)}
+.nav-tabs{display:flex;gap:2px}
+.nav-tab{padding:6px 14px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-family:var(--sans);font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.nav-tab:hover{background:var(--bg3);color:var(--text)}
+.nav-tab.active{background:var(--bg3);color:#fff}
+.search-wrap{position:relative}
+.search-wrap svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);opacity:.4;pointer-events:none}
+.search-box{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:6px 10px 6px 28px;font-family:var(--sans);font-size:13px;color:var(--text);width:180px;transition:width .2s,border-color .2s}
+.search-box:focus{outline:none;border-color:var(--accent);width:220px}
+.search-box::placeholder{color:var(--text3)}
+.page{display:none}.page.active{display:block}
+.hero{padding:64px 32px 48px;max-width:880px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--accent2);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.eyebrow::before{content:'';display:inline-block;width:20px;height:1px;background:var(--accent2)}
+.hero h1{font-size:clamp(30px,4.5vw,52px);font-weight:300;line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
+.hero h1 strong{font-weight:600;color:#fff}
+.hero p{font-size:16px;color:var(--text2);max-width:540px;line-height:1.7;margin-bottom:32px}
+.stats-row{display:flex;gap:28px;flex-wrap:wrap}
+.stat-num{font-family:var(--mono);font-size:26px;font-weight:500;color:#fff;line-height:1}
+.stat-label{font-size:12px;color:var(--text3);margin-top:2px}
 
-  /* NAV */
-  header { position: sticky; top: 0; z-index: 100; background: rgba(10,14,20,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
-  .logo { font-family: var(--mono); font-size: 13px; color: var(--text2); letter-spacing: 0.05em; }
-  .logo span { color: var(--accent2); }
-  .nav-tabs { display: flex; gap: 4px; }
-  .nav-tab { padding: 6px 16px; border-radius: 6px; border: none; background: transparent; color: var(--text2); font-family: var(--sans); font-size: 13px; cursor: pointer; transition: all .15s; }
-  .nav-tab:hover { background: var(--bg3); color: var(--text); }
-  .nav-tab.active { background: var(--bg3); color: #fff; }
-  .header-right { display: flex; align-items: center; gap: 8px; }
-  .search-wrap { position: relative; }
-  .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0.4; pointer-events: none; }
-  .search-box { background: var(--bg3); border: 1px solid var(--border2); border-radius: 6px; padding: 6px 12px 6px 32px; font-family: var(--sans); font-size: 13px; color: var(--text); width: 200px; transition: width 0.2s, border-color 0.2s; }
-  .search-box:focus { outline: none; border-color: var(--accent); width: 260px; }
-  .search-box::placeholder { color: var(--text3); }
+/* REFERENCE */
+.ref-main{max-width:1080px;margin:0 auto;padding:0 32px 80px;display:grid;grid-template-columns:210px 1fr;gap:28px;align-items:start}
+.sidebar{position:sticky;top:68px}
+.sidebar-section{margin-bottom:24px}
+.sidebar-label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;padding-left:2px}
+.filter-btn{display:flex;align-items:center;gap:8px;width:100%;padding:7px 9px;border-radius:6px;border:none;background:transparent;color:var(--text2);font-family:var(--sans);font-size:13px;cursor:pointer;transition:background .15s,color .15s;text-align:left;margin-bottom:2px}
+.filter-btn:hover{background:var(--bg3);color:var(--text)}
+.filter-btn.active{background:var(--bg3);color:#fff}
+.filter-btn .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.filter-btn .cnt{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text3)}
+.filter-btn.active .cnt{color:var(--text2)}
+.legend-section{max-width:1080px;margin:0 auto;padding:0 32px 36px}
+.legend-grid{display:flex;gap:8px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:5px 11px}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+.group-header{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.group-title{font-family:var(--mono);font-size:13px;font-weight:500}
+.group-desc{font-size:12px;color:var(--text3)}
+.controls-list{display:flex;flex-direction:column;gap:7px}
+.ctrl{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .15s;cursor:pointer}
+.ctrl:hover{border-color:var(--border2)}
+.ctrl.open{border-color:rgba(59,130,246,.3)}
+.ctrl-header{display:flex;align-items:center;gap:12px;padding:13px 15px;user-select:none}
+.ctrl-num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:26px;flex-shrink:0}
+.ctrl-body-row{flex:1;min-width:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ctrl-name{font-size:14px;font-weight:500;color:var(--text);flex:1;min-width:140px}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.ctrl-chevron{color:var(--text3);flex-shrink:0;transition:transform .2s}
+.ctrl.open .ctrl-chevron{transform:rotate(180deg);color:var(--text2)}
+.ctrl-detail{display:none;padding:0 15px 15px 52px;border-top:1px solid var(--border)}
+.ctrl.open .ctrl-detail{display:block}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.detail-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px}
+.detail-box-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.detail-box-text{font-size:13px;color:var(--text2);line-height:1.65}
+.ig-pips{display:flex;gap:5px;margin-top:8px;align-items:center}
+.ig-pip-label{font-family:var(--mono);font-size:10px;color:var(--text3);margin-right:4px}
+.pip{width:8px;height:8px;border-radius:50%}
+.cat-identify{color:#818cf8;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2)}
+.cat-protect{color:#34d399;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2)}
+.cat-detect{color:#fbbf24;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2)}
+.cat-respond{color:#f87171;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2)}
+.cat-recover{color:#e879f9;background:rgba(232,121,249,.1);border:1px solid rgba(232,121,249,.2)}
+.ig-ig1{background:#60a5fa}.ig-ig2{background:#4ade80}.ig-ig3{background:#fb923c}
+.pip-off{background:var(--bg3);border:1px solid var(--border2)}
+.gh-ig1{color:#60a5fa}.gh-ig2{color:#4ade80}.gh-ig3{color:#fb923c}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ctrl{animation:fadeUp .3s ease both}
 
-  /* PAGES */
-  .page { display: none; }
-  .page.active { display: block; }
+/* NESSUS MAPPING */
+.map-wrap{max-width:1080px;margin:0 auto;padding:0 32px 80px}
+.map-intro{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:var(--text2);line-height:1.7}
+.map-intro b{color:var(--text)}
+.map-search-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.map-search{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:8px 14px;font-size:13px;color:var(--text);width:300px;font-family:var(--sans)}
+.map-search:focus{outline:none;border-color:var(--accent)}
+.map-search::placeholder{color:var(--text3)}
+.map-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.mf-btn{padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:12px;font-family:var(--sans);cursor:pointer;transition:all .15s}
+.mf-btn:hover{background:var(--bg3);color:var(--text)}
+.mf-btn.active{background:var(--bg3);color:#fff;border-color:var(--border2)}
+.map-grid{display:flex;flex-direction:column;gap:8px}
+.mc{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .15s}
+.mc:hover{border-color:var(--border2)}
+.mc.open{border-color:rgba(59,130,246,.3)}
+.mc-head{display:grid;grid-template-columns:30px 1fr auto auto auto;align-items:center;gap:12px;padding:13px 16px}
+.mc-idx{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.mc-finding{font-size:13px;font-weight:500;color:var(--text)}
+.mc-cis{font-family:var(--mono);font-size:11px;padding:3px 8px;border-radius:4px;background:rgba(96,165,250,.12);color:#93c5fd;border:1px solid rgba(96,165,250,.25);white-space:nowrap}
+.sev{font-size:10px;padding:3px 8px;border-radius:4px;font-family:var(--mono);white-space:nowrap}
+.sev-critical{background:rgba(226,75,74,.15);color:#fca5a5;border:1px solid rgba(226,75,74,.3)}
+.sev-high{background:rgba(234,88,12,.15);color:#fdba74;border:1px solid rgba(234,88,12,.3)}
+.sev-medium{background:rgba(202,138,4,.15);color:#fde047;border:1px solid rgba(202,138,4,.3)}
+.mc-chev{color:var(--text3);transition:transform .2s;flex-shrink:0}
+.mc.open .mc-chev{transform:rotate(180deg)}
+.mc-body{display:none;border-top:1px solid var(--border);padding:16px 20px}
+.mc.open .mc-body{display:block}
+.mc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.mc-box{background:var(--bg3);border-radius:8px;padding:12px;border:1px solid var(--border)}
+.mc-box-label{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px}
+.mc-box-text{font-size:12px;color:var(--text2);line-height:1.65}
+.ev-stmt{background:rgba(96,165,250,.06);border:1px solid rgba(96,165,250,.2);border-radius:6px;padding:10px 14px;font-size:12px;color:#93c5fd;font-family:var(--mono);line-height:1.6;margin-top:6px;cursor:pointer;transition:border-color .2s}
+.ev-stmt:hover{border-color:rgba(96,165,250,.5)}
+.ev-label{font-size:11px;color:var(--text3);margin-bottom:4px;font-family:var(--mono)}
 
-  /* ── REFERENCE PAGE ── */
-  .hero { padding: 80px 32px 64px; max-width: 900px; margin: 0 auto; }
-  .hero-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--accent2); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-  .hero-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent2); }
-  h1 { font-size: clamp(36px, 5vw, 60px); font-weight: 300; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; }
-  h1 strong { font-weight: 600; color: #fff; }
-  .hero-desc { font-size: 17px; color: var(--text2); max-width: 560px; line-height: 1.7; margin-bottom: 40px; }
-  .stats-row { display: flex; gap: 32px; flex-wrap: wrap; }
-  .stat { display: flex; flex-direction: column; gap: 2px; }
-  .stat-num { font-family: var(--mono); font-size: 28px; font-weight: 500; color: #fff; line-height: 1; }
-  .stat-label { font-size: 12px; color: var(--text3); letter-spacing: 0.04em; }
-  .ref-main { max-width: 1100px; margin: 0 auto; padding: 0 32px 80px; display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start; }
-  .sidebar { position: sticky; top: 72px; }
-  .sidebar-section { margin-bottom: 28px; }
-  .sidebar-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; padding-left: 2px; }
-  .filter-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 10px; border-radius: 6px; border: none; background: transparent; color: var(--text2); font-family: var(--sans); font-size: 13px; cursor: pointer; transition: background .15s, color .15s; text-align: left; margin-bottom: 2px; }
-  .filter-btn:hover { background: var(--bg3); color: var(--text); }
-  .filter-btn.active { background: var(--bg3); color: #fff; }
-  .filter-btn .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .filter-btn .count { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--text3); }
-  .filter-btn.active .count { color: var(--text2); }
-  .legend-section { max-width: 1100px; margin: 0 auto; padding: 0 32px 48px; }
-  .legend-grid { display: flex; gap: 8px; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .group-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-  .group-title { font-family: var(--mono); font-size: 13px; font-weight: 500; }
-  .group-desc { font-size: 12px; color: var(--text3); }
-  .controls-list { display: flex; flex-direction: column; gap: 8px; }
-  .ctrl { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color .15s; cursor: pointer; }
-  .ctrl:hover { border-color: var(--border2); }
-  .ctrl.open { border-color: rgba(59,130,246,0.3); }
-  .ctrl-header { display: flex; align-items: center; gap: 14px; padding: 14px 16px; user-select: none; }
-  .ctrl-num { font-family: var(--mono); font-size: 11px; color: var(--text3); min-width: 28px; flex-shrink: 0; }
-  .ctrl-body-row { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .ctrl-name { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; min-width: 160px; }
-  .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
-  .ctrl-chevron { color: var(--text3); flex-shrink: 0; transition: transform 0.2s; }
-  .ctrl.open .ctrl-chevron { transform: rotate(180deg); color: var(--text2); }
-  .ctrl-detail { display: none; padding: 0 16px 16px 58px; border-top: 1px solid var(--border); }
-  .ctrl.open .ctrl-detail { display: block; }
-  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
-  .detail-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
-  .detail-box-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
-  .detail-box-text { font-size: 13px; color: var(--text2); line-height: 1.65; }
-  .ig-pips { display: flex; gap: 5px; margin-top: 10px; align-items: center; }
-  .ig-pip-label { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-right: 4px; }
-  .pip { width: 8px; height: 8px; border-radius: 50%; }
-  .cat-identify { color: var(--c-identify); background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.2); }
-  .cat-protect  { color: var(--c-protect);  background: rgba(52,211,153,0.1);  border: 1px solid rgba(52,211,153,0.2); }
-  .cat-detect   { color: var(--c-detect);   background: rgba(251,191,36,0.1);  border: 1px solid rgba(251,191,36,0.2); }
-  .cat-respond  { color: var(--c-respond);  background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); }
-  .cat-recover  { color: var(--c-recover);  background: rgba(232,121,249,0.1); border: 1px solid rgba(232,121,249,0.2); }
-  .ig-ig1 { background: var(--c-ig1); } .ig-ig2 { background: var(--c-ig2); } .ig-ig3 { background: var(--c-ig3); }
-  .pip-off { background: var(--bg3); border: 1px solid var(--border2); }
-  .gh-ig1 { color: var(--c-ig1); } .gh-ig2 { color: var(--c-ig2); } .gh-ig3 { color: var(--c-ig3); }
-  .no-results { text-align: center; padding: 60px 20px; color: var(--text3); font-size: 14px; display: none; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-  .ctrl { animation: fadeUp 0.3s ease both; }
+/* CALCULATOR */
+.calc-wrap{max-width:960px;margin:0 auto;padding:0 32px 80px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:14px}
+.top-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+.field-label{font-size:11px;color:var(--text2);margin-bottom:7px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase}
+.client-input{width:100%;padding:9px 13px;border:1px solid var(--border2);border-radius:8px;background:var(--bg3);color:var(--text);font-size:14px;font-family:var(--sans)}
+.client-input:focus{outline:none;border-color:var(--accent)}
+.client-input::placeholder{color:var(--text3)}
+.ig-row{display:flex;gap:8px}
+.ig-pill{flex:1;padding:9px 6px;border:1px solid var(--border2);border-radius:8px;background:var(--bg3);color:var(--text2);font-size:12px;cursor:pointer;text-align:center;transition:all .15s;line-height:1.4;font-family:var(--sans)}
+.ig-pill:hover{border-color:var(--border);color:var(--text)}
+.ig-pill.ai1{background:rgba(96,165,250,.12);color:#93c5fd;border-color:rgba(96,165,250,.4)}
+.ig-pill.ai2{background:rgba(74,222,128,.12);color:#86efac;border-color:rgba(74,222,128,.4)}
+.ig-pill.ai3{background:rgba(251,146,60,.12);color:#fdba74;border-color:rgba(251,146,60,.4)}
+.score-panel{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.metric{background:var(--bg3);border-radius:8px;padding:13px}
+.metric-label{font-size:11px;color:var(--text3);margin-bottom:5px;font-family:var(--mono)}
+.metric-val{font-size:22px;font-weight:500;color:var(--text)}
+.verdict-box{border-radius:8px;padding:13px 17px;margin-bottom:14px;font-size:14px;font-weight:500;display:none}
+.vc{background:rgba(99,153,34,.12);color:#86efac;border:1px solid rgba(99,153,34,.4)}
+.vs{background:rgba(55,138,221,.12);color:#93c5fd;border:1px solid rgba(55,138,221,.3)}
+.vp{background:rgba(186,117,23,.12);color:#fbbf24;border:1px solid rgba(186,117,23,.3)}
+.vn{background:rgba(226,75,74,.12);color:#fca5a5;border:1px solid rgba(226,75,74,.3)}
+.bar-bg{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-bottom:5px}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s;background:#639922}
+.bar-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:18px;font-family:var(--mono)}
+.math-box{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:11px 15px;margin-bottom:18px;font-size:12px;color:var(--text3);line-height:1.8;font-family:var(--mono)}
+.math-box b{color:var(--text2)}
+.ct{width:100%;border-collapse:collapse}
+.ct th{font-size:11px;color:var(--text3);font-weight:400;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);font-family:var(--mono)}
+.ct td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.ct tr:last-child td{border-bottom:none}
+.t-num{font-size:11px;color:var(--text3);font-family:var(--mono);width:30px}
+.t-name{font-size:13px;color:var(--text)}
+.mat-btns{display:flex;gap:3px;margin-bottom:4px}
+.mb{width:30px;height:28px;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);color:var(--text3);font-size:12px;cursor:pointer;transition:all .1s;font-family:var(--mono)}
+.mb:hover{background:var(--bg2);color:var(--text)}
+.mb.s0{background:rgba(226,75,74,.15);color:#fca5a5;border-color:rgba(226,75,74,.4)}
+.mb.s1{background:rgba(234,88,12,.15);color:#fdba74;border-color:rgba(234,88,12,.4)}
+.mb.s2{background:rgba(202,138,4,.15);color:#fde047;border-color:rgba(202,138,4,.4)}
+.mb.s3{background:rgba(55,138,221,.15);color:#93c5fd;border-color:rgba(55,138,221,.4)}
+.mb.s4{background:rgba(74,222,128,.15);color:#86efac;border-color:rgba(74,222,128,.4)}
+.t-ws{font-size:12px;color:var(--text3);text-align:right;font-family:var(--mono);width:58px}
+.na-row td{opacity:.3;pointer-events:none}
+.mbar-bg{height:3px;background:var(--border);border-radius:2px;margin-top:3px;overflow:hidden}
+.mbar-fill{height:100%;border-radius:2px}
+.ev-input{width:100%;padding:5px 8px;border:1px solid var(--border);border-radius:5px;background:var(--bg);color:var(--text2);font-size:11px;font-family:var(--mono);margin-top:5px;resize:none;min-height:30px}
+.ev-input:focus{outline:none;border-color:rgba(96,165,250,.4);color:var(--text)}
+.ev-input::placeholder{color:var(--text3)}
+.ev-hint{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:2px}
+.btn-row{margin-top:18px;display:flex;gap:10px}
+.btn-primary{flex:1;padding:11px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:var(--sans);transition:all .15s}
+.btn-primary:hover{background:var(--bg3);color:var(--text);border-color:var(--border)}
+.btn-reset{padding:11px 18px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text3);font-size:13px;cursor:pointer;font-family:var(--sans);transition:all .15s}
+.btn-reset:hover{color:var(--text2)}
+footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono)}
 
-  /* ── CALCULATOR PAGE ── */
-  .calc-page { max-width: 960px; margin: 0 auto; padding: 48px 32px 80px; }
-  .calc-hero { margin-bottom: 40px; }
-  .calc-hero h2 { font-size: 36px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 10px; }
-  .calc-hero h2 strong { font-weight: 600; color: #fff; }
-  .calc-hero p { color: var(--text2); font-size: 15px; max-width: 560px; }
-  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
-  .top-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-  .field-label { font-size: 12px; color: var(--text2); margin-bottom: 8px; font-family: var(--mono); letter-spacing: 0.05em; }
-  .client-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border2); border-radius: 8px; background: var(--bg3); color: var(--text); font-size: 14px; font-family: var(--sans); }
-  .client-input:focus { outline: none; border-color: var(--accent); }
-  .client-input::placeholder { color: var(--text3); }
-  .ig-row { display: flex; gap: 8px; }
-  .ig-pill { flex: 1; padding: 10px 6px; border: 1px solid var(--border2); border-radius: 8px; background: var(--bg3); color: var(--text2); font-size: 12px; cursor: pointer; text-align: center; transition: all .15s; line-height: 1.4; font-family: var(--sans); }
-  .ig-pill:hover { border-color: var(--border); color: var(--text); }
-  .ig-pill.active-ig1 { background: rgba(96,165,250,0.12); color: #93c5fd; border-color: rgba(96,165,250,0.4); }
-  .ig-pill.active-ig2 { background: rgba(74,222,128,0.12); color: #86efac; border-color: rgba(74,222,128,0.4); }
-  .ig-pill.active-ig3 { background: rgba(251,146,60,0.12); color: #fdba74; border-color: rgba(251,146,60,0.4); }
-  .score-panel { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
-  .metric { background: var(--bg3); border-radius: 8px; padding: 14px; }
-  .metric-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; font-family: var(--mono); }
-  .metric-val { font-size: 24px; font-weight: 500; color: var(--text); }
-  .verdict-box { border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; font-size: 14px; font-weight: 500; display: none; }
-  .v-partial      { background: rgba(186,117,23,0.12); color: #fbbf24; border: 1px solid rgba(186,117,23,0.3); }
-  .v-compliant    { background: rgba(99,153,34,0.12);  color: #86efac; border: 1px solid rgba(99,153,34,0.4); }
-  .v-substantial  { background: rgba(55,138,221,0.12); color: #93c5fd; border: 1px solid rgba(55,138,221,0.3); }
-  .v-noncompliant { background: rgba(226,75,74,0.12);  color: #fca5a5; border: 1px solid rgba(226,75,74,0.3); }
-  .score-bar-wrap { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; margin-bottom: 6px; position: relative; }
-  .score-bar { height: 100%; border-radius: 4px; transition: width 0.4s ease; background: #639922; }
-  .bar-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-bottom: 20px; font-family: var(--mono); }
-  .math-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 12px; color: var(--text3); line-height: 1.8; font-family: var(--mono); }
-  .math-box b { color: var(--text2); }
-  .ctrl-table { width: 100%; border-collapse: collapse; }
-  .ctrl-table th { font-size: 11px; color: var(--text3); font-weight: 400; text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); font-family: var(--mono); }
-  .ctrl-table th:last-child { text-align: right; }
-  .ctrl-table td { padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-  .ctrl-table tr:last-child td { border-bottom: none; }
-  .t-num { font-size: 11px; color: var(--text3); font-family: var(--mono); width: 32px; }
-  .t-name { font-size: 13px; color: var(--text); }
-  .t-cat span { font-size: 10px; padding: 2px 8px; border-radius: 4px; font-family: var(--mono); white-space: nowrap; }
-  .mat-btns { display: flex; gap: 3px; }
-  .m-btn { width: 32px; height: 30px; border-radius: 5px; border: 1px solid var(--border2); background: var(--bg3); color: var(--text3); font-size: 12px; cursor: pointer; transition: all .1s; font-family: var(--mono); }
-  .m-btn:hover { background: var(--bg2); color: var(--text); }
-  .m-btn.s0 { background: rgba(226,75,74,0.15);  color: #fca5a5; border-color: rgba(226,75,74,0.4); }
-  .m-btn.s1 { background: rgba(234,88,12,0.15);  color: #fdba74; border-color: rgba(234,88,12,0.4); }
-  .m-btn.s2 { background: rgba(202,138,4,0.15);  color: #fde047; border-color: rgba(202,138,4,0.4); }
-  .m-btn.s3 { background: rgba(55,138,221,0.15); color: #93c5fd; border-color: rgba(55,138,221,0.4); }
-  .m-btn.s4 { background: rgba(74,222,128,0.15); color: #86efac; border-color: rgba(74,222,128,0.4); }
-  .t-wscore { font-size: 12px; color: var(--text3); text-align: right; font-family: var(--mono); }
-  .na-row td { opacity: 0.3; pointer-events: none; }
-  .mat-bar-bg { height: 4px; background: var(--border); border-radius: 2px; margin-top: 4px; overflow: hidden; width: 80px; }
-  .mat-bar-fill { height: 100%; border-radius: 2px; }
-  .export-row { margin-top: 20px; display: flex; gap: 10px; }
-  .export-btn { flex: 1; padding: 12px; border: 1px solid var(--border2); border-radius: 8px; background: transparent; color: var(--text2); font-size: 13px; cursor: pointer; font-family: var(--sans); transition: all .15s; }
-  .export-btn:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
-  .reset-btn { padding: 12px 20px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text3); font-size: 13px; cursor: pointer; font-family: var(--sans); transition: all .15s; }
-  .reset-btn:hover { color: var(--text2); }
-
-  /* FOOTER */
-  footer { border-top: 1px solid var(--border); padding: 24px 32px; text-align: center; font-size: 12px; color: var(--text3); font-family: var(--mono); }
-
-  @media (max-width: 700px) {
-    .ref-main { grid-template-columns: 1fr; }
-    .sidebar { position: static; }
-    .detail-grid { grid-template-columns: 1fr; }
-    header { padding: 0 16px; }
-    .hero, .calc-page { padding: 40px 16px 60px; }
-    .legend-section { padding: 0 16px 40px; }
-    .ref-main { padding: 0 16px 60px; }
-    .top-row, .score-panel { grid-template-columns: 1fr 1fr; }
-    .search-box { width: 120px; }
-  }
+/* INTAKE */
+.intake-wrap{max-width:720px;margin:0 auto;padding:0 32px 80px}
+.intake-step{display:none}.intake-step.active{display:block}
+.intake-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.intake-option{border:1px solid var(--border2);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s;background:var(--bg2)}
+.intake-option:hover{border-color:var(--border);background:var(--bg3)}
+.intake-option.selected{border-color:var(--accent2);background:rgba(96,165,250,.08)}
+.intake-option-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:3px}
+.intake-option-desc{font-size:12px;color:var(--text3);line-height:1.4}
+.intake-option.selected .intake-option-title{color:#93c5fd}
+.intake-option.selected .intake-option-desc{color:var(--text2)}
+.intake-q{font-size:15px;font-weight:500;color:var(--text);margin-bottom:6px}
+.intake-hint{font-size:13px;color:var(--text3);margin-bottom:20px;line-height:1.5}
+.intake-btn{padding:10px 24px;border-radius:8px;border:1px solid var(--border2);background:transparent;color:var(--text2);font-size:13px;font-family:var(--sans);cursor:pointer;transition:all .15s}
+.intake-btn:hover{background:var(--bg3);color:var(--text)}
+.intake-btn.primary{background:rgba(96,165,250,.12);color:#93c5fd;border-color:rgba(96,165,250,.4)}
+.intake-btn.primary:hover{background:rgba(96,165,250,.2)}
+.intake-progress{display:flex;gap:6px;margin-bottom:32px}
+.intake-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);transition:background .2s}
+.intake-dot.done{background:var(--accent2)}
+.intake-dot.active{background:#fff;width:18px;border-radius:3px}
+.result-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.result-ig-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;margin-bottom:16px}
+.rig1{background:rgba(96,165,250,.12);color:#93c5fd;border:1px solid rgba(96,165,250,.3)}
+.rig2{background:rgba(74,222,128,.12);color:#86efac;border:1px solid rgba(74,222,128,.3)}
+.rig3{background:rgba(251,146,60,.12);color:#fdba74;border:1px solid rgba(251,146,60,.3)}
+.result-reason{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:16px}
+.priority-list{display:flex;flex-direction:column;gap:8px}
+.priority-item{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:12px;padding:10px 14px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)}
+.p-cis{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.p-title{font-size:13px;color:var(--text)}
+.p-why{font-size:11px;color:var(--text3);margin-top:2px}
+.p-badge{font-size:10px;padding:3px 8px;border-radius:4px;font-family:var(--mono);white-space:nowrap}
+.p-critical{background:rgba(226,75,74,.15);color:#fca5a5;border:1px solid rgba(226,75,74,.3)}
+.p-high{background:rgba(234,88,12,.15);color:#fdba74;border:1px solid rgba(234,88,12,.3)}
+.p-medium{background:rgba(202,138,4,.15);color:#fde047;border:1px solid rgba(202,138,4,.3)}
+.step-indicator{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:8px}
+@media(max-width:600px){.intake-grid{grid-template-columns:1fr}.intake-wrap{padding-left:16px;padding-right:16px}}
+@media(max-width:720px){
+  .ref-main{grid-template-columns:1fr}.sidebar{position:static}
+  .detail-grid,.mc-grid{grid-template-columns:1fr}
+  header{padding:0 14px}
+  .hero,.calc-wrap,.map-wrap{padding-left:16px;padding-right:16px}
+  .legend-section,.ref-main{padding-left:16px;padding-right:16px}
+  .top-row,.score-panel{grid-template-columns:1fr 1fr}
+  .mc-head{grid-template-columns:22px 1fr auto}
+  .mc-head .sev{display:none}
+  .search-box{width:110px}
+  .nav-tab{padding:6px 9px;font-size:12px}
+}
 </style>
 </head>
 <body>
-
 <header>
   <div class="logo">CIS<span>/</span>Controls <span style="color:var(--text3)">v8</span></div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('reference',this)">Reference</button>
-    <button class="nav-tab" onclick="showPage('calculator',this)">Compliance Calculator</button>
+    <button class="nav-tab" onclick="showPage('nessus',this)">Nessus Mapping</button>
+    <button class="nav-tab" onclick="showPage('intake',this)">Client Intake</button>
+    <button class="nav-tab" onclick="showPage('calculator',this)">Calculator</button>
   </div>
-  <div class="header-right">
-    <div class="search-wrap" id="search-wrap">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="white" stroke-width="1.3"/><path d="M10 10L13 13" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
-      <input class="search-box" id="search" type="text" placeholder="Search controls…" autocomplete="off">
-    </div>
+  <div class="search-wrap" id="sw">
+    <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="white" stroke-width="1.3"/><path d="M10 10L13 13" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
+    <input class="search-box" id="search" type="text" placeholder="Search controls…" autocomplete="off">
   </div>
 </header>
 
-<!-- ══════════ REFERENCE PAGE ══════════ -->
+<!-- REFERENCE -->
 <div class="page active" id="page-reference">
   <section class="hero">
-    <div class="hero-eyebrow">Center for Internet Security</div>
+    <div class="eyebrow">Center for Internet Security</div>
     <h1><strong>CIS Controls</strong><br>Version 8 — Complete Reference</h1>
-    <p class="hero-desc">18 prioritized cybersecurity controls organized into three implementation groups. Start with IG1 regardless of org size — then layer in IG2 and IG3 as you mature.</p>
+    <p>18 prioritized cybersecurity controls organized into three implementation groups. Start with IG1 regardless of org size — then layer in IG2 and IG3 as you mature.</p>
     <div class="stats-row">
-      <div class="stat"><span class="stat-num">18</span><span class="stat-label">Total controls</span></div>
-      <div class="stat"><span class="stat-num">3</span><span class="stat-label">Implementation groups</span></div>
-      <div class="stat"><span class="stat-num">5</span><span class="stat-label">Categories</span></div>
+      <div><div class="stat-num">18</div><div class="stat-label">Total controls</div></div>
+      <div><div class="stat-num">3</div><div class="stat-label">Implementation groups</div></div>
+      <div><div class="stat-num">5</div><div class="stat-label">Categories</div></div>
     </div>
   </section>
-
   <div class="legend-section">
     <div class="legend-grid">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--c-identify)"></div>Identify</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--c-protect)"></div>Protect</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--c-detect)"></div>Detect</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--c-respond)"></div>Respond</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--c-recover)"></div>Recover</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#818cf8"></div>Identify</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#34d399"></div>Protect</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Detect</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Respond</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e879f9"></div>Recover</div>
       <div class="legend-item" style="margin-left:8px"><div class="legend-dot ig-ig1"></div>IG1 Basic</div>
       <div class="legend-item"><div class="legend-dot ig-ig2"></div>IG2 Foundational</div>
       <div class="legend-item"><div class="legend-dot ig-ig3"></div>IG3 Advanced</div>
     </div>
   </div>
-
   <div class="ref-main">
     <aside class="sidebar">
       <div class="sidebar-section">
         <div class="sidebar-label">Filter by group</div>
-        <button class="filter-btn active" data-ig="all" onclick="setIG('all',this)"><div class="dot" style="background:var(--text3)"></div>All controls<span class="count">18</span></button>
-        <button class="filter-btn" data-ig="1" onclick="setIG('1',this)"><div class="dot ig-ig1"></div>IG1 — Basic<span class="count">14</span></button>
-        <button class="filter-btn" data-ig="2" onclick="setIG('2',this)"><div class="dot ig-ig2"></div>IG2 — Foundational<span class="count">+4</span></button>
-        <button class="filter-btn" data-ig="3" onclick="setIG('3',this)"><div class="dot ig-ig3"></div>IG3 — Advanced<span class="count">All</span></button>
+        <button class="filter-btn active" data-ig="all" onclick="setIG('all',this)"><div class="dot" style="background:var(--text3)"></div>All controls<span class="cnt">18</span></button>
+        <button class="filter-btn" data-ig="1" onclick="setIG('1',this)"><div class="dot ig-ig1"></div>IG1 — Basic<span class="cnt">14</span></button>
+        <button class="filter-btn" data-ig="2" onclick="setIG('2',this)"><div class="dot ig-ig2"></div>IG2 — Foundational<span class="cnt">+4</span></button>
+        <button class="filter-btn" data-ig="3" onclick="setIG('3',this)"><div class="dot ig-ig3"></div>IG3 — Advanced<span class="cnt">All</span></button>
       </div>
       <div class="sidebar-section">
         <div class="sidebar-label">Filter by category</div>
-        <button class="filter-btn" data-cat="Identify" onclick="setCat('Identify',this)"><div class="dot" style="background:var(--c-identify)"></div>Identify<span class="count">4</span></button>
-        <button class="filter-btn" data-cat="Protect" onclick="setCat('Protect',this)"><div class="dot" style="background:var(--c-protect)"></div>Protect<span class="count">10</span></button>
-        <button class="filter-btn" data-cat="Detect" onclick="setCat('Detect',this)"><div class="dot" style="background:var(--c-detect)"></div>Detect<span class="count">2</span></button>
-        <button class="filter-btn" data-cat="Respond" onclick="setCat('Respond',this)"><div class="dot" style="background:var(--c-respond)"></div>Respond<span class="count">1</span></button>
-        <button class="filter-btn" data-cat="Recover" onclick="setCat('Recover',this)"><div class="dot" style="background:var(--c-recover)"></div>Recover<span class="count">1</span></button>
+        <button class="filter-btn" data-cat="Identify" onclick="setCat('Identify',this)"><div class="dot" style="background:#818cf8"></div>Identify<span class="cnt">4</span></button>
+        <button class="filter-btn" data-cat="Protect" onclick="setCat('Protect',this)"><div class="dot" style="background:#34d399"></div>Protect<span class="cnt">10</span></button>
+        <button class="filter-btn" data-cat="Detect" onclick="setCat('Detect',this)"><div class="dot" style="background:#fbbf24"></div>Detect<span class="cnt">2</span></button>
+        <button class="filter-btn" data-cat="Respond" onclick="setCat('Respond',this)"><div class="dot" style="background:#f87171"></div>Respond<span class="cnt">1</span></button>
+        <button class="filter-btn" data-cat="Recover" onclick="setCat('Recover',this)"><div class="dot" style="background:#e879f9"></div>Recover<span class="cnt">1</span></button>
       </div>
     </aside>
-    <div class="content">
-      <div id="ref-list"></div>
-      <div class="no-results" id="no-results">No controls match your search.</div>
-    </div>
+    <div><div id="ref-list"></div><div style="text-align:center;padding:60px 20px;color:var(--text3);font-size:14px;display:none" id="no-results">No controls match your search.</div></div>
   </div>
 </div>
 
-<!-- ══════════ CALCULATOR PAGE ══════════ -->
-<div class="page" id="page-calculator">
-  <div class="calc-page">
-    <div class="calc-hero">
-      <div class="hero-eyebrow">CIS Controls v8</div>
-      <h2><strong>Compliance</strong> Calculator</h2>
-      <p>Score a client against CIS Controls IG1, IG2, or IG3. Rate each control 0–4 to get a weighted compliance score and instant verdict.</p>
+<!-- NESSUS MAPPING -->
+<div class="page" id="page-nessus">
+  <section class="hero" style="padding-bottom:32px">
+    <div class="eyebrow">Nessus to CIS Controls</div>
+    <h1><strong>Finding</strong> Mapping Guide</h1>
+    <p>Translate Nessus scan findings into CIS Control maturity scores. Each entry shows which control is affected, how to score it, and a ready-made evidence statement to paste into the calculator.</p>
+  </section>
+  <div class="map-wrap">
+    <div class="map-intro"><b>How to use:</b> Search for a Nessus finding type or plugin category. Each card maps it to the right CIS control(s), explains the maturity implication, and gives you a pre-written evidence statement — click it to copy, then paste into the calculator's evidence field.</div>
+    <div class="map-search-row"><input class="map-search" id="map-search" type="text" placeholder="Search findings, plugin types, CIS controls…" oninput="renderMap()"></div>
+    <div class="map-filters" id="map-filters">
+      <button class="mf-btn active" data-mf="all" onclick="setMF('all',this)">All findings</button>
+      <button class="mf-btn" data-mf="1" onclick="setMF('1',this)">CIS 1 — Assets</button>
+      <button class="mf-btn" data-mf="2" onclick="setMF('2',this)">CIS 2 — Software</button>
+      <button class="mf-btn" data-mf="4" onclick="setMF('4',this)">CIS 4 — Config</button>
+      <button class="mf-btn" data-mf="5" onclick="setMF('5',this)">CIS 5 — Accounts</button>
+      <button class="mf-btn" data-mf="7" onclick="setMF('7',this)">CIS 7 — Vulns</button>
+      <button class="mf-btn" data-mf="8" onclick="setMF('8',this)">CIS 8 — Logs</button>
+      <button class="mf-btn" data-mf="10" onclick="setMF('10',this)">CIS 10 — Malware</button>
+    </div>
+    <div class="map-grid" id="map-grid"></div>
+  </div>
+</div>
+
+<!-- INTAKE -->
+<div class="page" id="page-intake">
+  <section class="hero" style="padding-bottom:32px">
+    <div class="eyebrow">Before the assessment</div>
+    <h1><strong>Client</strong> Intake</h1>
+    <p>Answer 4 quick questions about your client. The tool will recommend the right Implementation Group and flag the highest-risk controls for their profile — so your interns know exactly where to focus.</p>
+  </section>
+  <div class="intake-wrap">
+
+    <div class="intake-progress" id="intake-progress">
+      <div class="intake-dot active" id="idot-0"></div>
+      <div class="intake-dot" id="idot-1"></div>
+      <div class="intake-dot" id="idot-2"></div>
+      <div class="intake-dot" id="idot-3"></div>
+      <div class="intake-dot" id="idot-4"></div>
     </div>
 
+    <!-- Step 0: Client name -->
+    <div class="intake-step active" id="istep-0">
+      <div class="step-indicator">Step 1 of 4</div>
+      <div class="intake-q">What is the client's name and industry?</div>
+      <div class="intake-hint">This pre-fills the calculator and helps flag industry-specific risk areas.</div>
+      <input class="client-input" id="intake-name" type="text" placeholder="Client name" style="margin-bottom:12px;display:block">
+      <div class="intake-grid">
+        <div class="intake-option" data-group="industry" data-val="healthcare" onclick="selectOption(this)">
+          <div class="intake-option-title">Healthcare / Medical</div>
+          <div class="intake-option-desc">Clinics, hospitals, dental, pharma</div>
+        </div>
+        <div class="intake-option" data-group="industry" data-val="finance" onclick="selectOption(this)">
+          <div class="intake-option-title">Financial services</div>
+          <div class="intake-option-desc">Banks, credit unions, insurance, accounting</div>
+        </div>
+        <div class="intake-option" data-group="industry" data-val="legal" onclick="selectOption(this)">
+          <div class="intake-option-title">Legal / Professional services</div>
+          <div class="intake-option-desc">Law firms, consultancies, HR</div>
+        </div>
+        <div class="intake-option" data-group="industry" data-val="retail" onclick="selectOption(this)">
+          <div class="intake-option-title">Retail / E-commerce</div>
+          <div class="intake-option-desc">Stores, POS systems, online sales</div>
+        </div>
+        <div class="intake-option" data-group="industry" data-val="manufacturing" onclick="selectOption(this)">
+          <div class="intake-option-title">Manufacturing / Industrial</div>
+          <div class="intake-option-desc">OT/ICS environments, supply chain</div>
+        </div>
+        <div class="intake-option" data-group="industry" data-val="nonprofit" onclick="selectOption(this)">
+          <div class="intake-option-title">Non-profit / Education</div>
+          <div class="intake-option-desc">Schools, charities, government adjacent</div>
+        </div>
+        <div class="intake-option" data-group="industry" data-val="tech" onclick="selectOption(this)">
+          <div class="intake-option-title">Technology / SaaS</div>
+          <div class="intake-option-desc">Software companies, MSPs, cloud services</div>
+        </div>
+        <div class="intake-option" data-group="industry" data-val="other" onclick="selectOption(this)">
+          <div class="intake-option-title">Other</div>
+          <div class="intake-option-desc">General business, mixed, or unlisted</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end"><button class="intake-btn primary" onclick="nextStep(1)">Next</button></div>
+    </div>
+
+    <!-- Step 1: Org size -->
+    <div class="intake-step" id="istep-1">
+      <div class="step-indicator">Step 2 of 4</div>
+      <div class="intake-q">How large is the organization?</div>
+      <div class="intake-hint">Headcount helps determine the realistic scope of a security program and which IG is appropriate.</div>
+      <div class="intake-grid">
+        <div class="intake-option" data-group="size" data-val="micro" onclick="selectOption(this)">
+          <div class="intake-option-title">Micro — under 10 employees</div>
+          <div class="intake-option-desc">Solo operators, very small teams</div>
+        </div>
+        <div class="intake-option" data-group="size" data-val="small" onclick="selectOption(this)">
+          <div class="intake-option-title">Small — 10 to 100 employees</div>
+          <div class="intake-option-desc">Small businesses, single-location</div>
+        </div>
+        <div class="intake-option" data-group="size" data-val="mid" onclick="selectOption(this)">
+          <div class="intake-option-title">Mid-size — 100 to 1,000</div>
+          <div class="intake-option-desc">Regional companies, multi-location</div>
+        </div>
+        <div class="intake-option" data-group="size" data-val="large" onclick="selectOption(this)">
+          <div class="intake-option-title">Large — over 1,000 employees</div>
+          <div class="intake-option-desc">Enterprise, multi-site, complex IT</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between"><button class="intake-btn" onclick="nextStep(0)">Back</button><button class="intake-btn primary" onclick="nextStep(2)">Next</button></div>
+    </div>
+
+    <!-- Step 2: IT staff -->
+    <div class="intake-step" id="istep-2">
+      <div class="step-indicator">Step 3 of 4</div>
+      <div class="intake-q">Does the client have dedicated IT staff?</div>
+      <div class="intake-hint">This is the primary IG differentiator. IG1 assumes no dedicated IT resources. IG2 requires at least one person responsible for IT security.</div>
+      <div class="intake-grid" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="intake-option" data-group="it" data-val="none" onclick="selectOption(this)">
+          <div class="intake-option-title">No dedicated IT</div>
+          <div class="intake-option-desc">IT handled by owner or general staff</div>
+        </div>
+        <div class="intake-option" data-group="it" data-val="partial" onclick="selectOption(this)">
+          <div class="intake-option-title">Part-time / outsourced</div>
+          <div class="intake-option-desc">MSP or occasional contractor</div>
+        </div>
+        <div class="intake-option" data-group="it" data-val="dedicated" onclick="selectOption(this)">
+          <div class="intake-option-title">Dedicated IT staff</div>
+          <div class="intake-option-desc">At least one full-time IT person</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between"><button class="intake-btn" onclick="nextStep(1)">Back</button><button class="intake-btn primary" onclick="nextStep(3)">Next</button></div>
+    </div>
+
+    <!-- Step 3: Sensitive data -->
+    <div class="intake-step" id="istep-3">
+      <div class="step-indicator">Step 4 of 4</div>
+      <div class="intake-q">What sensitive data does the client handle?</div>
+      <div class="intake-hint">Select all that apply. This flags the highest-priority controls and any regulatory frameworks that may apply.</div>
+      <div class="intake-grid">
+        <div class="intake-option multi" data-group="data" data-val="phi" onclick="toggleMulti(this)">
+          <div class="intake-option-title">PHI — patient health records</div>
+          <div class="intake-option-desc">HIPAA applies</div>
+        </div>
+        <div class="intake-option multi" data-group="data" data-val="pci" onclick="toggleMulti(this)">
+          <div class="intake-option-title">Payment card data</div>
+          <div class="intake-option-desc">PCI-DSS applies</div>
+        </div>
+        <div class="intake-option multi" data-group="data" data-val="pii" onclick="toggleMulti(this)">
+          <div class="intake-option-title">PII — customer personal data</div>
+          <div class="intake-option-desc">State privacy laws, GDPR may apply</div>
+        </div>
+        <div class="intake-option multi" data-group="data" data-val="financial" onclick="toggleMulti(this)">
+          <div class="intake-option-title">Financial records</div>
+          <div class="intake-option-desc">SOX, GLBA may apply</div>
+        </div>
+        <div class="intake-option multi" data-group="data" data-val="ip" onclick="toggleMulti(this)">
+          <div class="intake-option-title">Intellectual property / trade secrets</div>
+          <div class="intake-option-desc">Proprietary data, source code</div>
+        </div>
+        <div class="intake-option multi" data-group="data" data-val="none" onclick="toggleMulti(this)">
+          <div class="intake-option-title">No particularly sensitive data</div>
+          <div class="intake-option-desc">General business operations only</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between"><button class="intake-btn" onclick="nextStep(2)">Back</button><button class="intake-btn primary" onclick="runIntake()">Generate profile</button></div>
+    </div>
+
+    <!-- Step 4: Results -->
+    <div class="intake-step" id="istep-4">
+      <div class="result-card" id="intake-result"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="intake-btn primary" onclick="sendToCalc()">Open in calculator with this profile</button>
+        <button class="intake-btn" onclick="nextStep(0);resetIntake()">Start over</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="page" id="page-calculator">
+  <section class="hero" style="padding-bottom:32px">
+    <div class="eyebrow">CIS Controls v8</div>
+    <h1><strong>Compliance</strong> Calculator</h1>
+    <p>Score a client against IG1, IG2, or IG3. Rate each control 0–4 and log the Nessus evidence behind each score — every rating is now defensible.</p>
+  </section>
+  <div class="calc-wrap" style="padding-top:0">
     <div class="card">
       <div class="top-row">
-        <div>
-          <div class="field-label">Client name</div>
-          <input class="client-input" id="client-name" type="text" placeholder="e.g. Acme Corp" oninput="recalc()">
-        </div>
-        <div>
-          <div class="field-label">Implementation group</div>
+        <div><div class="field-label">Client name</div><input class="client-input" id="client-name" type="text" placeholder="e.g. Acme Corp" oninput="recalc()"></div>
+        <div><div class="field-label">Implementation group</div>
           <div class="ig-row">
-            <div class="ig-pill active-ig1" id="cpill-1" onclick="setCalcIG(1)">IG1<br><span style="font-size:10px;opacity:.7">Basic</span></div>
-            <div class="ig-pill" id="cpill-2" onclick="setCalcIG(2)">IG2<br><span style="font-size:10px;opacity:.7">Foundational</span></div>
-            <div class="ig-pill" id="cpill-3" onclick="setCalcIG(3)">IG3<br><span style="font-size:10px;opacity:.7">Advanced</span></div>
+            <div class="ig-pill ai1" id="cp1" onclick="setIG2(1)">IG1<br><span style="font-size:10px;opacity:.7">Basic</span></div>
+            <div class="ig-pill" id="cp2" onclick="setIG2(2)">IG2<br><span style="font-size:10px;opacity:.7">Foundational</span></div>
+            <div class="ig-pill" id="cp3" onclick="setIG2(3)">IG3<br><span style="font-size:10px;opacity:.7">Advanced</span></div>
           </div>
         </div>
       </div>
-
       <div class="math-box" id="calc-math"></div>
-
       <div class="score-panel">
         <div class="metric"><div class="metric-label">Overall score</div><div class="metric-val" id="c-score">—</div></div>
         <div class="metric"><div class="metric-label">Controls scored</div><div class="metric-val" id="c-scored">0/<span id="c-total">14</span></div></div>
         <div class="metric"><div class="metric-label">Avg maturity</div><div class="metric-val" id="c-avg">—</div></div>
         <div class="metric"><div class="metric-label">Threshold</div><div class="metric-val" style="color:#4ade80">80%</div></div>
       </div>
-
-      <div class="score-bar-wrap"><div class="score-bar" id="c-bar" style="width:0%"></div></div>
+      <div class="bar-bg"><div class="bar-fill" id="c-bar" style="width:0%"></div></div>
       <div class="bar-labels"><span>0</span><span>Critical &lt;50</span><span>Partial 50–69</span><span>Near 70–79</span><span style="color:#4ade80">Compliant ≥80</span><span>100</span></div>
-
       <div class="verdict-box" id="c-verdict"></div>
     </div>
-
-    <div class="card" style="padding:0;overflow:hidden;">
-      <table class="ctrl-table">
-        <thead>
-          <tr>
-            <th style="padding-left:16px">#</th>
-            <th>Control</th>
-            <th>Cat</th>
-            <th>SGs</th>
-            <th>Maturity — select 0–4</th>
-            <th style="padding-right:16px">Score</th>
-          </tr>
-        </thead>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="ct">
+        <thead><tr>
+          <th style="padding-left:14px">#</th><th>Control</th><th>Cat</th><th>SGs</th><th>Maturity 0–4</th><th>Evidence / Nessus findings</th><th style="padding-right:14px">Score</th>
+        </tr></thead>
         <tbody id="calc-tbody"></tbody>
       </table>
     </div>
-
-    <div class="export-row">
-      <button class="export-btn" onclick="copyResults()">Copy results to clipboard</button>
-      <button class="reset-btn" onclick="resetCalc()">Reset</button>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="copyResults()">Copy full report to clipboard</button>
+      <button class="btn-reset" onclick="resetCalc()">Reset</button>
     </div>
     <div id="copy-confirm" style="font-size:12px;color:#4ade80;margin-top:8px;font-family:var(--mono);display:none">Copied to clipboard.</div>
   </div>
@@ -308,98 +515,88 @@
 <footer>CIS Controls v8 — Center for Internet Security &nbsp;·&nbsp; cisecurity.org</footer>
 
 <script>
-/* ══ DATA ══ */
-const controls = [
-  { n:1,  title:'Inventory & control of enterprise assets',    cat:'Identify', ig:1, sg:[7,4,1], desc:'Actively manage all enterprise assets — endpoints, servers, network devices, cloud instances — to know exactly what exists and needs to be protected.',      why:'You cannot defend what you don\'t know exists. Unknown assets are among the most common attack entry points.' },
-  { n:2,  title:'Inventory & control of software assets',      cat:'Identify', ig:1, sg:[6,4,0], desc:'Actively manage all software on the network so only authorized software can be installed and executed.',                                                     why:'Unauthorized software introduces unpatched vulnerabilities and is a primary malware vector.' },
-  { n:3,  title:'Data protection',                             cat:'Protect',  ig:1, sg:[6,8,0], desc:'Develop processes and controls to identify, classify, securely handle, retain, and dispose of data across its full lifecycle.',                               why:'Data is the primary target of most attacks. Classification rules minimize exposure during a breach.' },
-  { n:4,  title:'Secure configuration of assets & software',   cat:'Protect',  ig:1, sg:[8,7,0], desc:'Establish and maintain secure baseline configurations for all enterprise assets and software.',                                                               why:'Default configurations are frequently insecure. Hardening eliminates misconfigurations that attackers routinely exploit.' },
-  { n:5,  title:'Account management',                          cat:'Protect',  ig:1, sg:[5,2,0], desc:'Assign and manage authorization credentials for user, administrator, and service accounts across their full lifecycle.',                                       why:'Compromised or orphaned accounts are a leading cause of breaches. Lifecycle control limits blast radius.' },
-  { n:6,  title:'Access control management',                   cat:'Protect',  ig:1, sg:[5,3,0], desc:'Create, assign, manage, and revoke access credentials and privileges, enforcing least-privilege at all times.',                                               why:'Least-privilege limits what an attacker can do after compromising any single account.' },
-  { n:7,  title:'Continuous vulnerability management',         cat:'Protect',  ig:1, sg:[4,3,0], desc:'Continuously assess and track vulnerabilities in all enterprise assets, prioritize remediation, and minimize exploitation windows.',                         why:'New vulnerabilities emerge daily. Continuous scanning closes attack windows before adversaries can weaponize them.' },
-  { n:8,  title:'Audit log management',                        cat:'Detect',   ig:1, sg:[5,5,2], desc:'Collect, alert, review, and retain audit logs from all enterprise assets sufficient to detect and recover from attacks.',                                    why:'Logs are essential for detection and forensics. Without them, breaches go unnoticed for months.' },
-  { n:9,  title:'Email & web browser protections',             cat:'Protect',  ig:1, sg:[4,3,0], desc:'Improve protections against threats arriving via email and web — the primary delivery mechanisms for phishing and malicious payloads.',                      why:'Email and web cause the overwhelming majority of initial compromises.' },
-  { n:10, title:'Malware defenses',                            cat:'Protect',  ig:1, sg:[5,2,0], desc:'Prevent or control the installation, spread, and execution of malicious applications and scripts across all enterprise assets.',                             why:'Malware is present in nearly every attack chain. Defense-in-depth limits execution and lateral movement.' },
-  { n:11, title:'Data recovery',                               cat:'Recover',  ig:1, sg:[5,2,0], desc:'Establish data recovery practices sufficient to restore enterprise assets to a trusted, pre-incident state.',                                                 why:'Ransomware makes tested, isolated backups the last line of defense.' },
-  { n:12, title:'Network infrastructure management',           cat:'Protect',  ig:2, sg:[0,6,2], desc:'Establish and manage all network devices to prevent exploitation of insecure services and configurations.',                                                   why:'Poorly managed network infrastructure enables lateral movement after initial breach.' },
-  { n:13, title:'Network monitoring & defense',                cat:'Detect',   ig:2, sg:[0,7,4], desc:'Operate processes and tooling to monitor network traffic, detect anomalies, and actively defend against threats.',                                           why:'Network detection is often the first opportunity to catch attacks before they reach objectives.' },
-  { n:14, title:'Security awareness & skills training',        cat:'Protect',  ig:1, sg:[6,2,1], desc:'Establish a security awareness program that trains the workforce to recognize threats and make better decisions.',                                           why:'Humans are consistently the most targeted surface. Training measurably reduces phishing success.' },
-  { n:15, title:'Service provider management',                 cat:'Identify', ig:2, sg:[0,5,2], desc:'Develop a process to evaluate, onboard, monitor, and offboard third-party service providers with access to sensitive systems.',                              why:'Third-party breaches are a major and growing vector.' },
-  { n:16, title:'Application software security',               cat:'Protect',  ig:2, sg:[0,6,3], desc:'Manage the security lifecycle of software to prevent, detect, and remediate weaknesses before they reach production.',                                       why:'Application vulnerabilities are pervasive. Secure SDLC reduces the attack surface at the source.' },
-  { n:17, title:'Incident response management',                cat:'Respond',  ig:2, sg:[0,8,1], desc:'Establish an incident response program with documented plans, defined roles, regular exercises, and post-incident reviews.',                                 why:'Breaches are inevitable. Practiced IR plans contain incidents faster and at lower total cost.' },
-  { n:18, title:'Penetration testing',                         cat:'Identify', ig:2, sg:[0,2,3], desc:'Test the effectiveness of controls through structured attack simulations by qualified testers on a regular cadence.',                                        why:'Pen testing finds exploitable gaps before real adversaries do.' },
+const controls=[
+  {n:1,title:'Inventory & control of enterprise assets',cat:'Identify',ig:1,sg:[7,4,1],desc:'Actively manage all enterprise assets — endpoints, servers, network devices, cloud instances.',why:'You cannot defend what you don\'t know exists. Unknown assets are common entry points.'},
+  {n:2,title:'Inventory & control of software assets',cat:'Identify',ig:1,sg:[6,4,0],desc:'Actively manage all software so only authorized applications can be installed and executed.',why:'Unauthorized software introduces unpatched vulnerabilities and is a primary malware vector.'},
+  {n:3,title:'Data protection',cat:'Protect',ig:1,sg:[6,8,0],desc:'Identify, classify, securely handle, retain, and dispose of data across its full lifecycle.',why:'Data is the primary target of most attacks. Classification rules minimize exposure.'},
+  {n:4,title:'Secure configuration of assets & software',cat:'Protect',ig:1,sg:[8,7,0],desc:'Establish and maintain secure baseline configurations for all enterprise assets and software.',why:'Default configurations are insecure. Hardening eliminates misconfigurations attackers exploit.'},
+  {n:5,title:'Account management',cat:'Protect',ig:1,sg:[5,2,0],desc:'Assign and manage credentials for all account types across their full lifecycle.',why:'Compromised accounts are a leading breach cause. Lifecycle control limits blast radius.'},
+  {n:6,title:'Access control management',cat:'Protect',ig:1,sg:[5,3,0],desc:'Create, assign, manage, and revoke access privileges enforcing least-privilege.',why:'Least-privilege limits what an attacker can do after compromising any single account.'},
+  {n:7,title:'Continuous vulnerability management',cat:'Protect',ig:1,sg:[4,3,0],desc:'Continuously assess and track vulnerabilities, prioritize remediation.',why:'New vulnerabilities emerge daily. Continuous scanning closes windows before exploitation.'},
+  {n:8,title:'Audit log management',cat:'Detect',ig:1,sg:[5,5,2],desc:'Collect, alert, review, and retain audit logs sufficient to detect and recover from attacks.',why:'Logs are essential for detection and forensics. Without them breaches go unnoticed for months.'},
+  {n:9,title:'Email & web browser protections',cat:'Protect',ig:1,sg:[4,3,0],desc:'Improve protections against threats via email and web — primary delivery for phishing.',why:'Email and web cause the overwhelming majority of initial compromises.'},
+  {n:10,title:'Malware defenses',cat:'Protect',ig:1,sg:[5,2,0],desc:'Prevent or control the installation, spread, and execution of malicious applications.',why:'Malware is present in nearly every attack chain. Defense-in-depth limits movement.'},
+  {n:11,title:'Data recovery',cat:'Recover',ig:1,sg:[5,2,0],desc:'Establish recovery practices sufficient to restore assets to a trusted, pre-incident state.',why:'Ransomware makes tested, isolated backups the last line of defense.'},
+  {n:12,title:'Network infrastructure management',cat:'Protect',ig:2,sg:[0,6,2],desc:'Establish and manage all network devices to prevent exploitation of insecure services.',why:'Poorly managed network infrastructure enables lateral movement after initial breach.'},
+  {n:13,title:'Network monitoring & defense',cat:'Detect',ig:2,sg:[0,7,4],desc:'Monitor network traffic, detect anomalies, and actively defend against threats.',why:'Network detection is often the first opportunity to catch attacks.'},
+  {n:14,title:'Security awareness & skills training',cat:'Protect',ig:1,sg:[6,2,1],desc:'Train the workforce to recognize threats and make better security decisions.',why:'Humans are consistently the most targeted surface. Training reduces phishing success.'},
+  {n:15,title:'Service provider management',cat:'Identify',ig:2,sg:[0,5,2],desc:'Evaluate, onboard, monitor, and offboard third-party providers with access to sensitive systems.',why:'Third-party breaches are a major and growing vector.'},
+  {n:16,title:'Application software security',cat:'Protect',ig:2,sg:[0,6,3],desc:'Manage the security lifecycle of software to prevent weaknesses before production.',why:'Application vulnerabilities are pervasive. Secure SDLC reduces the attack surface.'},
+  {n:17,title:'Incident response management',cat:'Respond',ig:2,sg:[0,8,1],desc:'Establish an IR program with documented plans, defined roles, and regular exercises.',why:'Breaches are inevitable. Practiced IR plans contain incidents faster.'},
+  {n:18,title:'Penetration testing',cat:'Identify',ig:2,sg:[0,2,3],desc:'Test the effectiveness of controls through structured attack simulations.',why:'Pen testing finds exploitable gaps before real adversaries do.'},
 ];
 
-const catClass = { Identify:'cat-identify', Protect:'cat-protect', Detect:'cat-detect', Respond:'cat-respond', Recover:'cat-recover' };
-const igColors = ['','ig-ig1','ig-ig2','ig-ig3'];
+const mappings=[
+  {id:1,finding:'Unauthenticated/unknown hosts discovered',plugin:'Host Discovery',cis:[1],sev:'high',what:'Nessus found devices on the network not in the authorized asset inventory.',mat:'Scores CIS 1 at maturity 1 (ad-hoc). A complete verified inventory would prevent unknown devices. Move to maturity 2 by documenting all found assets and reconciling weekly.',ev:'Nessus discovery scan identified [N] unmanaged/unknown hosts on network segments [X]. No formal asset inventory process in place to reconcile against an authorized list.'},
+  {id:2,finding:'Missing OS patches / critical CVEs on endpoints',plugin:'Patch Management',cis:[7],sev:'critical',what:'Nessus found systems missing critical or high-severity OS patches, often weeks or months overdue.',mat:'Maturity 1 if patches are months old with no tracking. Maturity 2 if scanning happens but remediation is inconsistent. Maturity 3 requires patches applied within 30 days of release.',ev:'Nessus identified [N] endpoints with critical CVEs unpatched for >[X] days (e.g. CVE-XXXX on [asset]). No documented patch SLA or remediation tracking process observed.'},
+  {id:3,finding:'Default or weak credentials on services',plugin:'Default Accounts / Brute Force',cis:[4,5],sev:'critical',what:'Nessus authenticated or detected default/weak credentials on network services, devices, or applications.',mat:'Informs CIS 4 (config hardening) AND CIS 5 (account management), both at maturity 0–1. Default credentials mean no hardening baseline exists.',ev:'Nessus detected default credentials on [N] devices/services (e.g. admin/admin on [asset]). No evidence of a credential change policy or hardening checklist at device provisioning.'},
+  {id:4,finding:'Unsupported / end-of-life operating systems',plugin:'Unsupported OS Detection',cis:[2,4,7],sev:'critical',what:'Nessus identified systems running OS versions no longer receiving security patches.',mat:'Informs CIS 2 (EOL not tracked), CIS 4 (no upgrade baseline), CIS 7 (unresolvable vulns). All at maturity 1.',ev:'Nessus identified [N] assets running EOL OS ([version]) receiving no further security patches. No documented upgrade roadmap or compensating controls in place.'},
+  {id:5,finding:'SMBv1 / legacy protocols enabled',plugin:'SMB Signing / EternalBlue checks',cis:[4],sev:'high',what:'Nessus found insecure legacy protocols enabled — SMBv1, TLS 1.0, SSLv3, Telnet, FTP.',mat:'Scores CIS 4 at maturity 1. A maturity 3 environment has a hardening standard that explicitly disables legacy protocols on all assets.',ev:'Nessus flagged SMBv1 enabled on [N] hosts / TLS 1.0 active on [service]. No hardening baseline documenting legacy protocol disablement exists.'},
+  {id:6,finding:'Accounts with no password expiry / blank passwords',plugin:'Local Users / Password Policy',cis:[5,6],sev:'high',what:'Nessus enumerated local accounts with passwords set to never expire or blank passwords.',mat:'Informs CIS 5 and CIS 6, both at maturity 1–2. Maturity 2 if policy exists but is not technically enforced.',ev:'Nessus identified [N] local accounts with no password expiry / blank passwords on [assets]. No password policy or technical Group Policy enforcement observed.'},
+  {id:7,finding:'Unnecessary services / open ports',plugin:'Port Scanners / Service Detection',cis:[4],sev:'medium',what:'Nessus found services running and ports open with no documented business justification.',mat:'Scores CIS 4 at maturity 1–2. Maturity 3 requires a documented approved-services list and a process to disable unauthorized services.',ev:'Nessus found [N] unnecessary open ports/services (e.g. Telnet 23, FTP 21) on [assets] with no documented business justification. No service hardening standard in place.'},
+  {id:8,finding:'No antivirus / AV definitions out of date',plugin:'Antivirus Not Installed / AV Update',cis:[10],sev:'critical',what:'Nessus found endpoints with no AV/EDR or signature definitions more than 7 days out of date.',mat:'Scores CIS 10 at maturity 0 (none) or maturity 1 (installed but unmanaged). Maturity 3 requires centrally managed AV with an enforced update SLA.',ev:'Nessus detected [N] endpoints with no AV installed / AV definitions >[X] days old. No central management console or update policy enforced across the endpoint fleet.'},
+  {id:9,finding:'SSL/TLS certificate issues (expired, self-signed)',plugin:'SSL Certificate Trust / Expiry',cis:[4],sev:'medium',what:'Nessus found expired, self-signed, or misconfigured SSL/TLS certificates on services.',mat:'Scores CIS 4 at maturity 1–2. Indicates no certificate lifecycle management. Maturity 3 requires a cert inventory and renewal process with alerting.',ev:'Nessus flagged [N] expired or self-signed certificates on [services]. No certificate inventory or automated renewal process documented.'},
+  {id:10,finding:'Audit logging not enabled / insufficient logging',plugin:'Audit Trail / Event Log Checks',cis:[8],sev:'high',what:'Nessus or manual checks found Windows Event Logging disabled, syslog not configured, or critical event types not captured.',mat:'Scores CIS 8 at maturity 0–1. Maturity 3 requires centralized logging (SIEM) with defined retention and alerting on key events.',ev:'Nessus audit checks found Event Log disabled on [N] hosts / no syslog forwarding configured. No centralized log collection or retention policy in place.'},
+  {id:11,finding:'Unauthorized software / unlicensed applications',plugin:'Software Enumeration',cis:[2],sev:'medium',what:'Nessus software enumeration found applications not in the authorized software list.',mat:'Scores CIS 2 at maturity 1–2. Maturity 2 if an inventory exists but is not enforced. Maturity 3+ requires allowlisting or automated enforcement.',ev:'Nessus software scan identified [N] unauthorized applications on [assets] (e.g. [app names]). No software allowlist or enforcement mechanism documented.'},
+  {id:12,finding:'Privilege escalation vulnerabilities',plugin:'Local Privilege Escalation',cis:[5,6,7],sev:'critical',what:'Nessus found vulnerabilities enabling local privilege escalation — unquoted service paths, DLL hijacking, sudo misconfigs.',mat:'Informs CIS 5, 6, and 7 — all at maturity 1. Indicates no privilege hardening or vuln remediation process.',ev:'Nessus identified [N] local privilege escalation vulnerabilities on [assets] (e.g. unquoted service paths). No least-privilege enforcement or escalation control documented.'},
+  {id:13,finding:'Remote code execution / critical web vulnerabilities',plugin:'Web Application / RCE Checks',cis:[7,16],sev:'critical',what:'Nessus found exploitable RCE vulnerabilities — unpatched Apache/IIS, SQL injection, deserialization flaws.',mat:'Informs CIS 7 at maturity 0–1 and CIS 16 at maturity 0–1 for internally developed apps.',ev:'Nessus identified critical RCE vulnerability [CVE/description] on [asset]. No patch applied. No application security testing process documented for this application.'},
+  {id:14,finding:'Firewall misconfiguration / overly permissive rules',plugin:'Firewall Rule Analysis',cis:[4,12],sev:'high',what:'Nessus or config review found overly permissive inbound/outbound rules or management interfaces exposed to the internet.',mat:'Informs CIS 4 (config) and CIS 12 (network mgmt), both at maturity 1. Maturity 3 requires a firewall rule review process and documented change control.',ev:'Nessus/config review found [N] overly permissive firewall rules (e.g. any-to-any on port 445 / management interface exposed on WAN). No firewall change control or review process documented.'},
+  {id:15,finding:'No backup or backup failures detected',plugin:'Backup Software / Storage Checks',cis:[11],sev:'high',what:'No backup agent detected on critical systems, backup jobs failing, or last successful backup is weeks old.',mat:'Scores CIS 11 at maturity 0–1. Maturity 3 requires tested, automated backups with defined RTO/RPO and documented restore tests.',ev:'No backup agent detected on [N] critical systems / last successful backup on [asset] was [X] days ago. No documented backup policy, schedule, or restore test results available.'},
+  {id:16,finding:'Cleartext protocols — Telnet, FTP, HTTP management',plugin:'Cleartext Protocol Detection',cis:[4,12],sev:'high',what:'Nessus detected management or data transfer using cleartext protocols transmitting credentials in the open.',mat:'Informs CIS 4 and CIS 12 at maturity 1. Maturity 3 requires all management traffic to use encrypted protocols (SSH, SFTP, HTTPS).',ev:'Nessus detected cleartext protocols in use: [Telnet/FTP/HTTP] on [assets/services]. No documented requirement to use encrypted alternatives for management or data transfer.'},
+];
 
-/* ══ PAGE SWITCHING ══ */
-function showPage(id, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+const catCC={Identify:'cat-identify',Protect:'cat-protect',Detect:'cat-detect',Respond:'cat-respond',Recover:'cat-recover'};
+const igC=['','ig-ig1','ig-ig2','ig-ig3'];
+
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   btn.classList.add('active');
-  document.getElementById('search-wrap').style.display = id === 'reference' ? 'block' : 'none';
+  document.getElementById('sw').style.display=id==='reference'?'block':'none';
 }
 
-/* ══ REFERENCE PAGE ══ */
-let activeIG = 'all', activeCat = null, searchTerm = '';
-
-function setIG(ig, btn) {
-  activeIG = ig; activeCat = null;
-  document.querySelectorAll('[data-ig]').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderRef();
-}
-function setCat(cat, btn) {
-  activeCat = activeCat === cat ? null : cat;
-  document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
-  if (activeCat) btn.classList.add('active');
-  renderRef();
-}
-document.getElementById('search').addEventListener('input', e => { searchTerm = e.target.value.trim(); renderRef(); });
-
-function renderRef() {
-  const list = document.getElementById('ref-list');
-  const noRes = document.getElementById('no-results');
-  list.innerHTML = '';
-  const filtered = controls.filter(c => {
-    if (activeIG === '1' && c.ig > 1) return false;
-    if (activeIG === '2' && c.ig > 2) return false;
-    if (activeCat && c.cat !== activeCat) return false;
-    if (searchTerm) { const q = searchTerm.toLowerCase(); return c.title.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q); }
+/* REFERENCE */
+let aIG='all',aCat=null,sTerm='';
+function setIG(ig,btn){aIG=ig;aCat=null;document.querySelectorAll('[data-ig]').forEach(b=>b.classList.remove('active'));document.querySelectorAll('[data-cat]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderRef();}
+function setCat(cat,btn){aCat=aCat===cat?null:cat;document.querySelectorAll('[data-cat]').forEach(b=>b.classList.remove('active'));if(aCat)btn.classList.add('active');renderRef();}
+document.getElementById('search').addEventListener('input',e=>{sTerm=e.target.value.trim();renderRef();});
+function renderRef(){
+  const list=document.getElementById('ref-list'),nr=document.getElementById('no-results');
+  list.innerHTML='';
+  const f=controls.filter(c=>{
+    if(aIG==='1'&&c.ig>1)return false;
+    if(aIG==='2'&&c.ig>2)return false;
+    if(aCat&&c.cat!==aCat)return false;
+    if(sTerm){const q=sTerm.toLowerCase();return c.title.toLowerCase().includes(q)||c.desc.toLowerCase().includes(q)||c.cat.toLowerCase().includes(q);}
     return true;
   });
-  if (!filtered.length) { noRes.style.display = 'block'; return; }
-  noRes.style.display = 'none';
-  const groups = activeIG === 'all' ? [
-    { ig:1, label:'IG1 — Basic', desc:'Required for all organizations', color:'gh-ig1', items:filtered.filter(c=>c.ig===1) },
-    { ig:2, label:'IG2 — Foundational', desc:'Adds 4 controls for orgs with dedicated IT staff', color:'gh-ig2', items:filtered.filter(c=>c.ig===2) },
-    { ig:3, label:'IG3 — Advanced', desc:'All 18 controls — for mature, high-risk organizations', color:'gh-ig3', items:[] },
-  ] : [{ ig:0, label:'', desc:'', color:'', items:filtered }];
-  groups.forEach(g => {
-    if (g.label) {
-      const gh = document.createElement('div');
-      gh.className = 'group-header';
-      gh.style.marginTop = g.ig > 1 ? '40px' : '0';
-      gh.innerHTML = `<span class="group-title ${g.color}">${g.label}</span><span class="group-desc">${g.desc}</span>`;
-      list.appendChild(gh);
-    }
-    if (g.items.length === 0 && g.ig === 3) {
-      const note = document.createElement('div');
-      note.style.cssText = 'padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--text2);line-height:1.6';
-      note.textContent = 'IG3 organizations implement all 18 controls listed above. This tier targets large enterprises and critical infrastructure facing sophisticated adversaries.';
-      list.appendChild(note); return;
-    }
-    const cl = document.createElement('div'); cl.className = 'controls-list';
-    g.items.forEach((c, i) => {
-      const el = document.createElement('div');
-      el.className = 'ctrl'; el.style.animationDelay = `${i*30}ms`;
-      const pips = [1,2,3].map(n=>`<div class="pip ${c.ig<=n?igColors[n]:'pip-off'}"></div>`).join('');
-      el.innerHTML = `<div class="ctrl-header" onclick="this.parentElement.classList.toggle('open')">
+  if(!f.length){nr.style.display='block';return;}nr.style.display='none';
+  const groups=aIG==='all'?[
+    {ig:1,label:'IG1 — Basic',desc:'Required for all organizations',col:'gh-ig1',items:f.filter(c=>c.ig===1)},
+    {ig:2,label:'IG2 — Foundational',desc:'Adds 4 controls for orgs with dedicated IT staff',col:'gh-ig2',items:f.filter(c=>c.ig===2)},
+    {ig:3,label:'IG3 — Advanced',desc:'All 18 controls',col:'gh-ig3',items:[]},
+  ]:[{ig:0,label:'',desc:'',col:'',items:f}];
+  groups.forEach(g=>{
+    if(g.label){const gh=document.createElement('div');gh.className='group-header';gh.style.marginTop=g.ig>1?'36px':'0';gh.innerHTML=`<span class="group-title ${g.col}">${g.label}</span><span class="group-desc">${g.desc}</span>`;list.appendChild(gh);}
+    if(!g.items.length&&g.ig===3){const n=document.createElement('div');n.style.cssText='padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--text2);line-height:1.6';n.textContent='IG3 organizations implement all 18 controls above — targeting large enterprises and critical infrastructure.';list.appendChild(n);return;}
+    const cl=document.createElement('div');cl.className='controls-list';
+    g.items.forEach((c,i)=>{
+      const el=document.createElement('div');el.className='ctrl';el.style.animationDelay=`${i*25}ms`;
+      const pips=[1,2,3].map(n=>`<div class="pip ${c.ig<=n?igC[n]:'pip-off'}"></div>`).join('');
+      el.innerHTML=`<div class="ctrl-header" onclick="this.parentElement.classList.toggle('open')">
         <span class="ctrl-num">${String(c.n).padStart(2,'0')}</span>
-        <div class="ctrl-body-row"><span class="ctrl-name">${c.title}</span><span class="tag ${catClass[c.cat]}">${c.cat}</span></div>
+        <div class="ctrl-body-row"><span class="ctrl-name">${c.title}</span><span class="tag ${catCC[c.cat]}">${c.cat}</span></div>
         <svg class="ctrl-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="ctrl-detail">
@@ -416,109 +613,242 @@ function renderRef() {
 }
 renderRef();
 
-/* ══ CALCULATOR PAGE ══ */
-const cScores = new Array(18).fill(-1);
-let calcIG = 1;
-
-function sgForIG(c, ig) { let t=0; for(let i=0;i<ig;i++) t+=c.sg[i]; return t; }
-function applicable(c) { return sgForIG(c, calcIG) > 0; }
-
-function setCalcIG(ig) {
-  calcIG = ig;
-  ['1','2','3'].forEach(i => {
-    const p = document.getElementById('cpill-'+i);
-    p.className = 'ig-pill' + (i==ig ? ` active-ig${ig}` : '');
+/* NESSUS MAPPING */
+let aMF='all';
+function setMF(f,btn){aMF=f;document.querySelectorAll('[data-mf]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMap();}
+document.getElementById('map-search').addEventListener('input',renderMap);
+function renderMap(){
+  const grid=document.getElementById('map-grid');grid.innerHTML='';
+  const q=(document.getElementById('map-search').value||'').toLowerCase();
+  const items=mappings.filter(m=>{
+    if(aMF!=='all'&&!m.cis.includes(parseInt(aMF)))return false;
+    if(q)return m.finding.toLowerCase().includes(q)||m.plugin.toLowerCase().includes(q)||m.what.toLowerCase().includes(q)||m.cis.some(n=>('cis '+n).includes(q));
+    return true;
   });
-  renderCalc(); recalc();
+  if(!items.length){grid.innerHTML='<div style="padding:40px;text-align:center;color:var(--text3);font-size:14px">No findings match your search.</div>';return;}
+  items.forEach((m,i)=>{
+    const cl=m.cis.map(n=>`CIS ${n}`).join(', ');
+    const card=document.createElement('div');card.className='mc';
+    card.innerHTML=`<div class="mc-head" onclick="this.parentElement.classList.toggle('open')">
+      <span class="mc-idx">${String(i+1).padStart(2,'0')}</span>
+      <span class="mc-finding">${m.finding}</span>
+      <span class="mc-cis">${cl}</span>
+      <span class="sev sev-${m.sev}">${m.sev}</span>
+      <svg class="mc-chev" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="mc-body">
+      <div style="font-size:12px;color:var(--text3);font-family:var(--mono);margin-bottom:10px">Plugin / scan type: ${m.plugin}</div>
+      <div class="mc-grid">
+        <div class="mc-box"><div class="mc-box-label">What Nessus is flagging</div><div class="mc-box-text">${m.what}</div></div>
+        <div class="mc-box"><div class="mc-box-label">Maturity implication</div><div class="mc-box-text">${m.mat}</div></div>
+        <div class="mc-box"><div class="mc-box-label">Maps to CIS</div><div class="mc-box-text" style="margin-bottom:10px">${cl}</div>
+          <button onclick="goCalc()" style="font-size:11px;padding:5px 10px;border:1px solid var(--border2);border-radius:5px;background:transparent;color:var(--text2);cursor:pointer;font-family:var(--sans)">Open calculator</button>
+        </div>
+      </div>
+      <div class="ev-label">Ready-to-paste evidence statement — click to copy</div>
+      <div class="ev-stmt" onclick="cpEv(this,'${m.id}')">${m.ev}</div>
+    </div>`;
+    grid.appendChild(card);
+  });
 }
+function cpEv(el,id){
+  const m=mappings.find(x=>x.id===parseInt(id));
+  navigator.clipboard.writeText(m.ev).then(()=>{el.style.borderColor='rgba(74,222,128,.6)';setTimeout(()=>el.style.borderColor='',1200);});
+}
+function goCalc(){showPage('calculator',document.querySelectorAll('.nav-tab')[3]);}
+renderMap();
 
-function renderCalc() {
-  const tbody = document.getElementById('calc-tbody');
-  tbody.innerHTML = '';
-  const totalSG = controls.reduce((s,c) => s + sgForIG(c,calcIG), 0);
-  controls.forEach((c,idx) => {
-    const app = applicable(c);
-    const sg = sgForIG(c, calcIG);
-    const tr = document.createElement('tr');
-    if (!app) tr.className = 'na-row';
-    const mats = app ? [0,1,2,3,4].map(m => {
-      const sel = cScores[idx]===m ? ` s${m}` : '';
-      return `<button class="m-btn${sel}" onclick="setScore(${idx},${m})" title="${['Not implemented','Ad-hoc','Developing','Defined','Managed'][m]}">${m}</button>`;
-    }).join('') : `<span style="font-size:11px;color:var(--text3)">N/A</span>`;
-    const ws = app && cScores[idx]>=0 ? ((cScores[idx]/4)*(sg/totalSG)*100).toFixed(1)+'%' : '—';
-    const barW = app && cScores[idx]>=0 ? (cScores[idx]/4*100)+'%' : '0%';
-    const barC = ['#E24B4A','#f97316','#eab308','#378ADD','#639922'][cScores[idx]] || 'transparent';
-    tr.innerHTML = `
-      <td class="t-num" style="padding-left:16px">${String(c.n).padStart(2,'0')}</td>
+/* CALCULATOR */
+const cS=new Array(18).fill(-1),cEv=new Array(18).fill('');
+let cIG=1;
+function sg(c,ig){let t=0;for(let i=0;i<ig;i++)t+=c.sg[i];return t;}
+function app(c){return sg(c,cIG)>0;}
+function setIG2(ig){
+  cIG=ig;
+  [1,2,3].forEach(i=>{const p=document.getElementById('cp'+i);p.className='ig-pill'+(i===ig?` ai${ig}`:'');});
+  renderCalc();recalc();
+}
+function renderCalc(){
+  const tb=document.getElementById('calc-tbody');tb.innerHTML='';
+  const tSG=controls.reduce((s,c)=>s+sg(c,cIG),0);
+  controls.forEach((c,idx)=>{
+    const a=app(c);const s=sg(c,cIG);
+    const tr=document.createElement('tr');if(!a)tr.className='na-row';
+    const mats=a?[0,1,2,3,4].map(m=>{const sel=cS[idx]===m?` s${m}`:'';return`<button class="mb${sel}" onclick="setScore(${idx},${m})" title="${['Not implemented','Ad-hoc','Developing','Defined','Managed'][m]}">${m}</button>`;}).join(''):'<span style="font-size:11px;color:var(--text3)">N/A</span>';
+    const ws=a&&cS[idx]>=0?((cS[idx]/4)*(s/tSG)*100).toFixed(1)+'%':'—';
+    const bw=a&&cS[idx]>=0?(cS[idx]/4*100)+'%':'0%';
+    const bc=['#E24B4A','#f97316','#eab308','#378ADD','#639922'][cS[idx]]||'transparent';
+    tr.innerHTML=`
+      <td class="t-num" style="padding-left:14px">${String(c.n).padStart(2,'0')}</td>
       <td class="t-name">${c.title}</td>
-      <td class="t-cat"><span class="${catClass[c.cat]}">${c.cat}</span></td>
-      <td style="font-size:11px;color:var(--text3);font-family:var(--mono);text-align:center">${app?sg:'—'}</td>
-      <td><div class="mat-btns">${mats}</div>${app&&cScores[idx]>=0?`<div class="mat-bar-bg"><div class="mat-bar-fill" style="width:${barW};background:${barC}"></div></div>`:''}</td>
-      <td class="t-wscore" style="padding-right:16px">${ws}</td>`;
-    tbody.appendChild(tr);
+      <td><span class="tag ${catCC[c.cat]}" style="font-size:10px">${c.cat}</span></td>
+      <td style="font-size:11px;color:var(--text3);font-family:var(--mono);text-align:center">${a?s:'—'}</td>
+      <td style="min-width:155px"><div class="mat-btns">${mats}</div>${a&&cS[idx]>=0?`<div class="mbar-bg"><div class="mbar-fill" style="width:${bw};background:${bc}"></div></div>`:''}</td>
+      <td style="min-width:190px">${a?`<textarea class="ev-input" rows="1" placeholder="Paste Nessus evidence here…" oninput="saveEv(${idx},this.value)">${cEv[idx]||''}</textarea><div class="ev-hint">e.g. Plugin 21745 — 12 hosts, patches missing &gt;30d</div>`:'<span style="font-size:11px;color:var(--text3)">N/A</span>'}</td>
+      <td class="t-ws" style="padding-right:14px">${ws}</td>`;
+    tb.appendChild(tr);
   });
-  document.getElementById('c-total').textContent = controls.filter(c=>applicable(c)).length;
-  const totalSG2 = controls.reduce((s,c)=>s+sgForIG(c,calcIG),0);
-  document.getElementById('calc-math').innerHTML = `<b>Formula:</b> Score = Σ (maturity ÷ 4) × (safeguard_weight) × 100 &nbsp;|&nbsp; <b>IG${calcIG} safeguards:</b> ${totalSG2} total &nbsp;|&nbsp; <b>Threshold: ≥ 80%</b>`;
+  document.getElementById('c-total').textContent=controls.filter(c=>app(c)).length;
+  document.getElementById('calc-math').innerHTML=`<b>Formula:</b> Score = Σ (maturity ÷ 4) × (safeguard_weight) × 100 &nbsp;|&nbsp; <b>IG${cIG}:</b> ${controls.reduce((s,c)=>s+sg(c,cIG),0)} safeguards &nbsp;|&nbsp; <b>Threshold: ≥ 80%</b>`;
 }
-
-function setScore(idx, val) {
-  cScores[idx] = cScores[idx]===val ? -1 : val;
-  renderCalc(); recalc();
+function saveEv(idx,v){cEv[idx]=v;}
+function setScore(idx,v){cS[idx]=cS[idx]===v?-1:v;renderCalc();recalc();}
+function recalc(){
+  const tSG=controls.reduce((s,c)=>s+sg(c,cIG),0);
+  const a=controls.filter(c=>app(c));
+  const sc=a.filter(c=>cS[controls.indexOf(c)]>=0);
+  let wS=0,mS=0;
+  a.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0){wS+=(cS[i]/4)*(sg(c,cIG)/tSG)*100;mS+=cS[i];}});
+  document.getElementById('c-scored').innerHTML=`${sc.length}/<span id="c-total">${a.length}</span>`;
+  document.getElementById('c-avg').textContent=sc.length>0?(mS/sc.length).toFixed(1)+'/4':'—';
+  if(!sc.length){document.getElementById('c-score').textContent='—';document.getElementById('c-bar').style.width='0%';document.getElementById('c-verdict').style.display='none';return;}
+  const pct=parseFloat((sc.length===a.length?wS:wS*a.length/sc.length).toFixed(1));
+  const inc=sc.length<a.length?` (projected from ${sc.length}/${a.length})`:'';
+  document.getElementById('c-score').textContent=pct.toFixed(1)+'%';
+  document.getElementById('c-bar').style.width=Math.min(pct,100)+'%';
+  document.getElementById('c-bar').style.background=pct>=80?'#639922':pct>=70?'#378ADD':pct>=50?'#BA7517':'#E24B4A';
+  const name=document.getElementById('client-name').value.trim()||'This client';
+  let cls,txt;
+  if(pct>=80){cls='vc';txt=`✓ ${name} is COMPLIANT — ${pct}% meets the IG${cIG} threshold.${inc}`;}
+  else if(pct>=70){cls='vs';txt=`~ ${name} is SUBSTANTIALLY compliant at ${pct}% — just below 80%.${inc}`;}
+  else if(pct>=50){cls='vp';txt=`! ${name} is PARTIALLY compliant at ${pct}%. Significant gaps exist.${inc}`;}
+  else{cls='vn';txt=`✗ ${name} is NON-COMPLIANT at ${pct}%. Critical gaps require immediate remediation.${inc}`;}
+  const v=document.getElementById('c-verdict');v.className='verdict-box '+cls;v.textContent=txt;v.style.display='block';
 }
-
-function recalc() {
-  const totalSG = controls.reduce((s,c)=>s+sgForIG(c,calcIG),0);
-  const app = controls.filter(c=>applicable(c));
-  const scored = app.filter(c=>cScores[controls.indexOf(c)]>=0);
-  let wSum=0, mSum=0;
-  app.forEach(c => {
-    const idx=controls.indexOf(c);
-    if(cScores[idx]>=0) { wSum+=(cScores[idx]/4)*(sgForIG(c,calcIG)/totalSG)*100; mSum+=cScores[idx]; }
+function resetCalc(){cS.fill(-1);cEv.fill('');document.getElementById('client-name').value='';renderCalc();recalc();}
+function copyResults(){
+  const tSG=controls.reduce((s,c)=>s+sg(c,cIG),0);
+  const a=controls.filter(c=>app(c));
+  const name=document.getElementById('client-name').value.trim()||'Client';
+  const mL=['Not implemented','Ad-hoc','Developing','Defined','Managed'];
+  let lines=[`CIS Controls v8 — IG${cIG} Compliance Assessment: ${name}\n${'='.repeat(60)}\n`];
+  a.forEach(c=>{
+    const i=controls.indexOf(c);const s=cS[i];
+    lines.push(`CIS ${c.n}: ${c.title}`);
+    lines.push(`  Maturity: ${s>=0?s:'—'}/4 (${s>=0?Math.round(s/4*100)+'%':'—'}) — ${s>=0?mL[s]:'Not scored'}`);
+    if(cEv[i])lines.push(`  Evidence: ${cEv[i]}`);
+    lines.push('');
   });
-  document.getElementById('c-scored').innerHTML = `${scored.length}/<span id="c-total">${app.length}</span>`;
-  document.getElementById('c-avg').textContent = scored.length>0 ? (mSum/scored.length).toFixed(1)+'/4' : '—';
-  if (!scored.length) { document.getElementById('c-score').textContent='—'; document.getElementById('c-bar').style.width='0%'; document.getElementById('c-verdict').style.display='none'; return; }
-  const projected = scored.length===app.length ? wSum : wSum*app.length/scored.length;
-  const pct = parseFloat(projected.toFixed(1));
-  const incomplete = scored.length<app.length ? ` (projected from ${scored.length}/${app.length} scored)` : '';
-  document.getElementById('c-score').textContent = pct.toFixed(1)+'%';
-  document.getElementById('c-bar').style.width = Math.min(pct,100)+'%';
-  document.getElementById('c-bar').style.background = pct>=80?'#639922':pct>=70?'#378ADD':pct>=50?'#BA7517':'#E24B4A';
-  const name = document.getElementById('client-name').value.trim()||'This client';
-  let cls, txt;
-  if(pct>=80) { cls='v-compliant'; txt=`✓ ${name} is COMPLIANT — ${pct.toFixed(1)}% meets the IG${calcIG} threshold.${incomplete}`; }
-  else if(pct>=70) { cls='v-substantial'; txt=`~ ${name} is SUBSTANTIALLY compliant at ${pct.toFixed(1)}% — just below the 80% threshold.${incomplete}`; }
-  else if(pct>=50) { cls='v-partial'; txt=`! ${name} is PARTIALLY compliant at ${pct.toFixed(1)}%. Significant gaps exist.${incomplete}`; }
-  else { cls='v-noncompliant'; txt=`✗ ${name} is NON-COMPLIANT at ${pct.toFixed(1)}%. Critical gaps require immediate remediation.${incomplete}`; }
-  const v=document.getElementById('c-verdict');
-  v.className='verdict-box '+cls; v.textContent=txt; v.style.display='block';
-}
-
-function resetCalc() {
-  cScores.fill(-1);
-  document.getElementById('client-name').value='';
-  renderCalc(); recalc();
-}
-
-function copyResults() {
-  const totalSG = controls.reduce((s,c)=>s+sgForIG(c,calcIG),0);
-  const app = controls.filter(c=>applicable(c));
-  const name = document.getElementById('client-name').value.trim()||'Client';
-  const matLabels = ['Not implemented','Ad-hoc','Developing','Defined','Managed'];
-  let lines = [`CIS Controls v8 — IG${calcIG} Compliance Assessment: ${name}\n`];
-  app.forEach(c => {
-    const idx=controls.indexOf(c); const s=cScores[idx];
-    lines.push(`CIS ${c.n}: ${c.title} — Maturity ${s>=0?s:'—'}/4 (${s>=0?Math.round(s/4*100)+'%':'—'}) — ${s>=0?matLabels[s]:'Not scored'}`);
-  });
-  let wSum=0; app.forEach(c=>{const idx=controls.indexOf(c);if(cScores[idx]>=0)wSum+=(cScores[idx]/4)*(sgForIG(c,calcIG)/totalSG)*100;});
-  const scored=app.filter(c=>cScores[controls.indexOf(c)]>=0);
-  const proj = scored.length>0?(wSum*app.length/scored.length).toFixed(1):'—';
-  lines.push(`\nOverall score: ${proj}% | Scored: ${scored.length}/${app.length} | Threshold: 80%`);
+  let wS=0;a.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0)wS+=(cS[i]/4)*(sg(c,cIG)/tSG)*100;});
+  const sc=a.filter(c=>cS[controls.indexOf(c)]>=0);
+  const proj=sc.length>0?(wS*a.length/sc.length).toFixed(1):'—';
+  lines.push(`${'='.repeat(60)}\nOverall: ${proj}% | Scored: ${sc.length}/${a.length} | Threshold: 80%`);
   navigator.clipboard.writeText(lines.join('\n')).then(()=>{
-    const c=document.getElementById('copy-confirm'); c.style.display='block';
-    setTimeout(()=>c.style.display='none',2500);
+    const c=document.getElementById('copy-confirm');c.style.display='block';setTimeout(()=>c.style.display='none',2500);
   });
+}
+/* INTAKE */
+const intakeState={industry:null,size:null,it:null,data:[]};
+let intakeCurStep=0;
+
+function selectOption(el){
+  const group=el.dataset.group;
+  document.querySelectorAll(`[data-group="${group}"]`).forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  intakeState[group]=el.dataset.val;
+}
+function toggleMulti(el){
+  const val=el.dataset.val;
+  el.classList.toggle('selected');
+  if(val==='none'){
+    if(el.classList.contains('selected')){
+      document.querySelectorAll('[data-group="data"]').forEach(o=>{if(o!==el)o.classList.remove('selected');});
+      intakeState.data=['none'];
+    } else {intakeState.data=[];}
+    return;
+  }
+  if(el.classList.contains('selected')){
+    document.querySelectorAll('[data-group="data"][data-val="none"]').forEach(o=>o.classList.remove('selected'));
+    intakeState.data=intakeState.data.filter(v=>v!=='none');
+    if(!intakeState.data.includes(val))intakeState.data.push(val);
+  } else {intakeState.data=intakeState.data.filter(v=>v!==val);}
+}
+function nextStep(n){
+  document.getElementById('istep-'+intakeCurStep).classList.remove('active');
+  intakeCurStep=n;
+  document.getElementById('istep-'+n).classList.add('active');
+  [0,1,2,3,4].forEach(i=>{
+    const d=document.getElementById('idot-'+i);
+    d.className='intake-dot'+(i<n?' done':i===n?' active':'');
+  });
+}
+function resetIntake(){
+  intakeState.industry=null;intakeState.size=null;intakeState.it=null;intakeState.data=[];
+  document.querySelectorAll('.intake-option').forEach(o=>o.classList.remove('selected'));
+  document.getElementById('intake-name').value='';
+  intakeCurStep=0;
+}
+
+const industryRisks={
+  healthcare:{label:'Healthcare',controls:[{n:3,why:'PHI/HIPAA — data classification and handling is your primary obligation'},{n:5,why:'Credential misuse is the leading cause of healthcare breaches'},{n:8,why:'HIPAA requires audit logging of all PHI access'},{n:11,why:'Ransomware targets healthcare — backup integrity is critical'}],regs:['HIPAA']},
+  finance:{label:'Financial services',controls:[{n:5,why:'Account takeover is the #1 attack vector in financial services'},{n:6,why:'Least-privilege is a core SOX and GLBA requirement'},{n:8,why:'Financial regulators require detailed audit trails'},{n:13,why:'Network monitoring is required under most financial frameworks'}],regs:['SOX','GLBA','PCI-DSS']},
+  legal:{label:'Legal / Professional services',controls:[{n:3,why:'Client confidentiality makes data protection the top priority'},{n:5,why:'Compromised attorney credentials are high-value targets'},{n:9,why:'Spear-phishing targeting legal staff is extremely common'},{n:11,why:'Client files must be recoverable — tested backups are essential'}],regs:['State bar requirements','Client confidentiality obligations']},
+  retail:{label:'Retail / E-commerce',controls:[{n:4,why:'POS and e-commerce systems require hardened configurations'},{n:6,why:'PCI-DSS mandates least-privilege access to cardholder data'},{n:7,why:'Retail systems are frequently targeted via known CVEs'},{n:9,why:'Phishing targeting retail staff for credential theft is widespread'}],regs:['PCI-DSS']},
+  manufacturing:{label:'Manufacturing / Industrial',controls:[{n:1,why:'OT/ICS assets are often undocumented and unmanaged'},{n:4,why:'ICS/SCADA default configs are notoriously insecure'},{n:7,why:'OT patches are often delayed — active vuln tracking is critical'},{n:12,why:'IT/OT network segmentation is the primary attack barrier'}],regs:['NIST SP 800-82','IEC 62443']},
+  nonprofit:{label:'Non-profit / Education',controls:[{n:5,why:'Volunteer and student accounts create high orphaned-account risk'},{n:9,why:'Phishing success rates are high in under-trained organizations'},{n:10,why:'Limited IT resources mean malware often goes undetected'},{n:14,why:'Security awareness has the highest ROI for limited-resource orgs'}],regs:['FERPA (if education)','State data breach laws']},
+  tech:{label:'Technology / SaaS',controls:[{n:2,why:'Software supply chain attacks target tech companies specifically'},{n:6,why:'Developer over-privilege is a common and exploited gap'},{n:16,why:'Application security is the primary attack surface for tech orgs'},{n:8,why:'Detailed logging is essential for detecting supply chain compromise'}],regs:['SOC 2','ISO 27001 (common customer requirement)']},
+  other:{label:'General business',controls:[{n:5,why:'Account management is the most commonly failing IG1 control'},{n:7,why:'Unpatched systems are the most exploited vulnerability class'},{n:9,why:'Email is the primary initial access vector across all industries'},{n:10,why:'Malware defenses are foundational for any organization'}],regs:['State data breach notification laws']},
+};
+
+function recommendIG(){
+  const{size,it}=intakeState;
+  if(it==='dedicated'||(size==='large')||(size==='mid'&&it!=='none'))return 2;
+  if(size==='large')return 3;
+  return 1;
+}
+
+function runIntake(){
+  const name=document.getElementById('intake-name').value.trim()||'Client';
+  const ig=recommendIG();
+  const ind=intakeState.industry||'other';
+  const industry=industryRisks[ind];
+  const sizeMap={micro:'under 10 employees',small:'10–100 employees',mid:'100–1,000 employees',large:'over 1,000 employees'};
+  const itMap={none:'no dedicated IT staff',partial:'outsourced/part-time IT',dedicated:'dedicated IT staff'};
+  const dataLabels={phi:'PHI',pci:'payment card data',pii:'PII',financial:'financial records',ip:'intellectual property',none:'no sensitive data'};
+  const dataStr=intakeState.data.map(d=>dataLabels[d]||d).join(', ')||'not specified';
+
+  const igColors2={1:'rig1',2:'rig2',3:'rig3'};
+  const igDesc={
+    1:'IG1 — Basic. This org has limited IT resources and needs foundational cyber hygiene. Focus entirely on the 14 IG1 controls before considering anything beyond.',
+    2:'IG2 — Foundational. This org has dedicated IT resources and handles sensitive data. All 14 IG1 controls plus the 4 IG2 additions should be in scope.',
+    3:'IG3 — Advanced. Large or high-risk organization. All 18 controls apply with full maturity expectations.',
+  };
+
+  let priorityHTML=industry.controls.map(p=>{
+    const c=controls.find(x=>x.n===p.n);
+    const risk=p.n<=5?'critical':'high';
+    return`<div class="priority-item">
+      <span class="p-cis">CIS ${p.n}</span>
+      <div><div class="p-title">${c.title}</div><div class="p-why">${p.why}</div></div>
+      <span class="p-badge p-${risk}">${risk}</span>
+    </div>`;
+  }).join('');
+
+  let regsHTML=industry.regs.length?`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase">Potentially applicable frameworks</div><div style="display:flex;gap:6px;flex-wrap:wrap">${industry.regs.map(r=>`<span style="font-size:12px;padding:3px 10px;border-radius:4px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2)">${r}</span>`).join('')}</div></div>`:'';
+
+  document.getElementById('intake-result').innerHTML=`
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+      <div>
+        <div style="font-size:12px;color:var(--text3);font-family:var(--mono);margin-bottom:6px">${name} &nbsp;·&nbsp; ${industry.label} &nbsp;·&nbsp; ${sizeMap[intakeState.size]||'unknown size'} &nbsp;·&nbsp; ${itMap[intakeState.it]||'IT unknown'}</div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:12px">Sensitive data: ${dataStr}</div>
+        <span class="result-ig-badge ${igColors2[ig]}">Recommended: IG${ig}</span>
+      </div>
+    </div>
+    <div class="result-reason">${igDesc[ig]}</div>
+    <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:10px">Priority controls for ${industry.label}</div>
+    <div class="priority-list">${priorityHTML}</div>
+    ${regsHTML}`;
+
+  nextStep(4);
+  window._intakeResult={name,ig};
+}
+
+function sendToCalc(){
+  if(!window._intakeResult)return;
+  const{name,ig}=window._intakeResult;
+  document.getElementById('client-name').value=name;
+  setIG2(ig);
+  showPage('calculator',document.querySelectorAll('.nav-tab')[3]);
 }
 
 renderCalc();

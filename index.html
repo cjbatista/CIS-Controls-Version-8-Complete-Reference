@@ -213,6 +213,26 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
 .p-medium{background:rgba(202,138,4,.15);color:#fde047;border:1px solid rgba(202,138,4,.3)}
 .step-indicator{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:8px}
 @media(max-width:600px){.intake-grid{grid-template-columns:1fr}.intake-wrap{padding-left:16px;padding-right:16px}}
+
+/* VISUALS */
+.vis-wrap{max-width:1080px;margin:0 auto;padding:0 32px 80px}
+.vis-empty{text-align:center;padding:80px 20px;color:var(--text3);font-size:14px;line-height:1.8}
+.vis-empty b{color:var(--text2);display:block;font-size:16px;margin-bottom:8px}
+.vis-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.vis-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px}
+.vis-card-full{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.vis-card-title{font-size:12px;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px}
+.vis-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.vis-stat{background:var(--bg3);border-radius:8px;padding:12px}
+.vis-stat-label{font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:4px}
+.vis-stat-val{font-size:22px;font-weight:500}
+.vis-client-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.vis-client-name{font-size:20px;font-weight:500;color:#fff}
+.vis-client-meta{font-size:12px;color:var(--text3);font-family:var(--mono);margin-top:3px}
+.vis-ig-badge{font-size:12px;padding:4px 12px;border-radius:6px;font-family:var(--mono)}
+.go-calc-btn{padding:8px 16px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);font-size:12px;font-family:var(--sans);cursor:pointer;transition:all .15s}
+.go-calc-btn:hover{background:var(--bg3);color:var(--text)}
+@media(max-width:700px){.vis-grid{grid-template-columns:1fr}.vis-stat-row{grid-template-columns:1fr 1fr}.vis-wrap{padding-left:16px;padding-right:16px}}
 @media(max-width:720px){
   .ref-main{grid-template-columns:1fr}.sidebar{position:static}
   .detail-grid,.mc-grid{grid-template-columns:1fr}
@@ -235,6 +255,7 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
     <button class="nav-tab" onclick="showPage('nessus',this)">Nessus Mapping</button>
     <button class="nav-tab" onclick="showPage('intake',this)">Client Intake</button>
     <button class="nav-tab" onclick="showPage('calculator',this)">Calculator</button>
+    <button class="nav-tab" onclick="showPage('visuals',this)">Visuals</button>
   </div>
   <div class="search-wrap" id="sw">
     <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="white" stroke-width="1.3"/><path d="M10 10L13 13" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -509,6 +530,63 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
       <button class="btn-reset" onclick="resetCalc()">Reset</button>
     </div>
     <div id="copy-confirm" style="font-size:12px;color:#4ade80;margin-top:8px;font-family:var(--mono);display:none">Copied to clipboard.</div>
+  </div>
+</div>
+
+<!-- VISUALS -->
+<div class="page" id="page-visuals">
+  <section class="hero" style="padding-bottom:32px">
+    <div class="eyebrow">Assessment visualized</div>
+    <h1><strong>Client</strong> Score Report</h1>
+    <p>Visual breakdown of the compliance calculator results — radar by category, maturity by control, and gap to target. Score the client in the Calculator tab first, then come back here.</p>
+  </section>
+  <div class="vis-wrap">
+    <div id="vis-empty" class="vis-empty">
+      <b>No scores yet</b>
+      Go to the Calculator tab, score at least one control, then return here to see the visuals.
+      <br><br>
+      <button class="go-calc-btn" onclick="showPage('calculator',document.querySelectorAll('.nav-tab')[3])">Open calculator</button>
+    </div>
+    <div id="vis-content" style="display:none">
+      <div class="vis-client-row">
+        <div>
+          <div class="vis-client-name" id="vis-client-name">Client</div>
+          <div class="vis-client-meta" id="vis-client-meta"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="vis-ig-badge" id="vis-ig-badge"></span>
+          <button class="go-calc-btn" onclick="showPage('calculator',document.querySelectorAll('.nav-tab')[3])">Edit scores</button>
+        </div>
+      </div>
+
+      <div class="vis-stat-row">
+        <div class="vis-stat"><div class="vis-stat-label">Overall score</div><div class="vis-stat-val" id="vs-score">—</div></div>
+        <div class="vis-stat"><div class="vis-stat-label">Gap to 80%</div><div class="vis-stat-val" id="vs-gap">—</div></div>
+        <div class="vis-stat"><div class="vis-stat-label">Controls scored</div><div class="vis-stat-val" id="vs-scored">—</div></div>
+        <div class="vis-stat"><div class="vis-stat-label">Avg maturity</div><div class="vis-stat-val" id="vs-avg">—</div></div>
+      </div>
+
+      <div class="vis-grid">
+        <div class="vis-card">
+          <div class="vis-card-title">Score by category — radar</div>
+          <div style="position:relative;height:280px"><canvas id="radar-chart"></canvas></div>
+        </div>
+        <div class="vis-card">
+          <div class="vis-card-title">Category breakdown</div>
+          <div style="position:relative;height:280px"><canvas id="cat-bar-chart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="vis-card-full">
+        <div class="vis-card-title">Maturity per control — current vs target (4)</div>
+        <div style="position:relative" id="ctrl-bar-wrap"><canvas id="ctrl-bar-chart"></canvas></div>
+      </div>
+
+      <div class="vis-card-full">
+        <div class="vis-card-title">Gap analysis — points needed to reach maturity 3</div>
+        <div style="position:relative" id="gap-bar-wrap"><canvas id="gap-bar-chart"></canvas></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -852,6 +930,236 @@ function sendToCalc(){
 }
 
 renderCalc();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+/* ══ VISUALS ══ */
+let radarInst=null,catBarInst=null,ctrlBarInst=null,gapBarInst=null;
+
+const catColors={
+  Identify:{border:'#818cf8',bg:'rgba(129,140,248,0.15)'},
+  Protect: {border:'#34d399',bg:'rgba(52,211,153,0.15)'},
+  Detect:  {border:'#fbbf24',bg:'rgba(251,191,36,0.15)'},
+  Respond: {border:'#f87171',bg:'rgba(248,113,113,0.15)'},
+  Recover: {border:'#e879f9',bg:'rgba(232,121,249,0.15)'},
+};
+
+const matColors=['#E24B4A','#f97316','#eab308','#378ADD','#639922'];
+
+function scoreColor(pct){
+  if(pct>=80)return'#639922';
+  if(pct>=70)return'#378ADD';
+  if(pct>=50)return'#BA7517';
+  return'#E24B4A';
+}
+
+function destroyCharts(){
+  [radarInst,catBarInst,ctrlBarInst,gapBarInst].forEach(c=>{if(c)c.destroy();});
+  radarInst=catBarInst=ctrlBarInst=gapBarInst=null;
+}
+
+function buildVisuals(){
+  destroyCharts();
+
+  const tSG=controls.reduce((s,c)=>s+sg(c,cIG),0);
+  const app=controls.filter(c=>app2(c));
+  const scored=app.filter(c=>cS[controls.indexOf(c)]>=0);
+
+  if(!scored.length){
+    document.getElementById('vis-empty').style.display='block';
+    document.getElementById('vis-content').style.display='none';
+    return;
+  }
+  document.getElementById('vis-empty').style.display='none';
+  document.getElementById('vis-content').style.display='block';
+
+  // header
+  const name=document.getElementById('client-name').value.trim()||'Client';
+  document.getElementById('vis-client-name').textContent=name;
+  document.getElementById('vis-client-meta').textContent=`IG${cIG} Assessment  ·  ${scored.length}/${app.length} controls scored`;
+  const igBC={1:'rgba(96,165,250,.15)',2:'rgba(74,222,128,.15)',3:'rgba(251,146,60,.15)'};
+  const igTC={1:'#93c5fd',2:'#86efac',3:'#fdba74'};
+  const igBd={1:'rgba(96,165,250,.4)',2:'rgba(74,222,128,.4)',3:'rgba(251,146,60,.4)'};
+  const igBadge=document.getElementById('vis-ig-badge');
+  igBadge.textContent=`IG${cIG}`;
+  igBadge.style.cssText=`background:${igBC[cIG]};color:${igTC[cIG]};border:1px solid ${igBd[cIG]};font-size:12px;padding:4px 12px;border-radius:6px;font-family:var(--mono)`;
+
+  // overall score
+  let wSum=0,mSum=0;
+  app.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0){wSum+=(cS[i]/4)*(sg(c,cIG)/tSG)*100;mSum+=cS[i];}});
+  const pct=parseFloat((scored.length===app.length?wSum:wSum*app.length/scored.length).toFixed(1));
+  const gap=Math.max(0,(80-pct)).toFixed(1);
+  const avgMat=(mSum/scored.length).toFixed(1);
+  document.getElementById('vs-score').textContent=pct+'%';
+  document.getElementById('vs-score').style.color=scoreColor(pct);
+  document.getElementById('vs-gap').textContent=pct>=80?'0% ✓':'-'+gap+'%';
+  document.getElementById('vs-gap').style.color=pct>=80?'#639922':'#E24B4A';
+  document.getElementById('vs-scored').textContent=scored.length+'/'+app.length;
+  document.getElementById('vs-avg').textContent=avgMat+'/4';
+
+  // category scores
+  const cats=['Identify','Protect','Detect','Respond','Recover'];
+  const catScores={};
+  cats.forEach(cat=>{
+    const catControls=app.filter(c=>c.cat===cat);
+    const catScored=catControls.filter(c=>cS[controls.indexOf(c)]>=0);
+    if(!catScored.length){catScores[cat]=null;return;}
+    let sum=0;
+    catScored.forEach(c=>{sum+=cS[controls.indexOf(c)]/4*100;});
+    catScores[cat]=parseFloat((sum/catControls.length).toFixed(1));
+  });
+
+  // ── RADAR CHART ──
+  const radarCtx=document.getElementById('radar-chart').getContext('2d');
+  const radarData=cats.map(c=>catScores[c]??0);
+  radarInst=new Chart(radarCtx,{
+    type:'radar',
+    data:{
+      labels:cats,
+      datasets:[{
+        label:'Score %',
+        data:radarData,
+        backgroundColor:'rgba(96,165,250,0.12)',
+        borderColor:'#60a5fa',
+        borderWidth:2,
+        pointBackgroundColor:cats.map(c=>catColors[c].border),
+        pointRadius:4,
+        pointHoverRadius:6,
+      },{
+        label:'Target (80%)',
+        data:cats.map(()=>80),
+        backgroundColor:'rgba(255,255,255,0)',
+        borderColor:'rgba(255,255,255,0.12)',
+        borderWidth:1,
+        borderDash:[4,4],
+        pointRadius:0,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{r:{
+        min:0,max:100,
+        ticks:{stepSize:25,color:'#4a5568',font:{size:10},backdropColor:'transparent'},
+        grid:{color:'rgba(255,255,255,0.06)'},
+        angleLines:{color:'rgba(255,255,255,0.06)'},
+        pointLabels:{color:cats.map(c=>catColors[c].border),font:{size:12}},
+      }}
+    }
+  });
+
+  // ── CATEGORY BAR ──
+  const catCtx=document.getElementById('cat-bar-chart').getContext('2d');
+  const catVals=cats.map(c=>catScores[c]??0);
+  catBarInst=new Chart(catCtx,{
+    type:'bar',
+    data:{
+      labels:cats,
+      datasets:[{
+        label:'Score %',
+        data:catVals,
+        backgroundColor:cats.map(c=>catColors[c].bg),
+        borderColor:cats.map(c=>catColors[c].border),
+        borderWidth:1.5,
+        borderRadius:5,
+      },{
+        label:'Target',
+        data:cats.map(()=>80),
+        backgroundColor:'transparent',
+        borderColor:'rgba(255,255,255,0.2)',
+        borderWidth:1,
+        borderDash:[4,4],
+        type:'line',
+        pointRadius:0,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y.toFixed(1)}%`}}},
+      scales:{
+        x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8a95a8',font:{size:11}}},
+        y:{min:0,max:100,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8a95a8',font:{size:11},callback:v=>v+'%'}},
+      }
+    }
+  });
+
+  // ── CONTROL MATURITY BAR ──
+  const ctrlLabels=app.map(c=>'CIS '+c.n);
+  const ctrlVals=app.map(c=>cS[controls.indexOf(c)]>=0?cS[controls.indexOf(c)]:0);
+  const ctrlColors=app.map(c=>{const s=cS[controls.indexOf(c)];return s>=0?matColors[s]:'rgba(255,255,255,0.06)';});
+  const ctrlH=Math.max(280,app.length*36+60);
+  document.getElementById('ctrl-bar-wrap').style.height=ctrlH+'px';
+  const ctrlCtx=document.getElementById('ctrl-bar-chart').getContext('2d');
+  ctrlBarInst=new Chart(ctrlCtx,{
+    type:'bar',
+    data:{
+      labels:app.map(c=>`CIS ${c.n} — ${c.title.length>30?c.title.slice(0,30)+'…':c.title}`),
+      datasets:[{
+        label:'Maturity',
+        data:ctrlVals,
+        backgroundColor:ctrlColors,
+        borderColor:ctrlColors.map(c=>c.replace('0.06','0.3')),
+        borderWidth:1,
+        borderRadius:4,
+      },{
+        label:'Target (3)',
+        data:app.map(()=>3),
+        backgroundColor:'transparent',
+        borderColor:'rgba(255,255,255,0.15)',
+        borderWidth:1,
+        borderDash:[4,4],
+        type:'line',
+        pointRadius:0,
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const s=cS[controls.indexOf(app[ctx.dataIndex])];return s>=0?` Maturity ${s}/4 — ${['Not implemented','Ad-hoc','Developing','Defined','Managed'][s]}`:' Not scored';},}}},
+      scales:{
+        x:{min:0,max:4,ticks:{stepSize:1,color:'#8a95a8',font:{size:11},callback:v=>['0','1','2','3','4'][v]||v},grid:{color:'rgba(255,255,255,0.04)'}},
+        y:{grid:{display:false},ticks:{color:'#8a95a8',font:{size:11},autoSkip:false}},
+      }
+    }
+  });
+
+  // ── GAP BAR ──
+  const gapTarget=3;
+  const gapControls=app.filter(c=>cS[controls.indexOf(c)]>=0&&cS[controls.indexOf(c)]<gapTarget);
+  if(gapControls.length){
+    const gapH=Math.max(200,gapControls.length*38+60);
+    document.getElementById('gap-bar-wrap').style.height=gapH+'px';
+    document.getElementById('gap-bar-chart').closest('.vis-card-full').style.display='block';
+    const gapCtx=document.getElementById('gap-bar-chart').getContext('2d');
+    const gapVals=gapControls.map(c=>gapTarget-cS[controls.indexOf(c)]);
+    const gapBg=gapControls.map(c=>{const g=gapTarget-cS[controls.indexOf(c)];return g>=3?'rgba(226,75,74,0.3)':g===2?'rgba(234,88,12,0.3)':'rgba(202,138,4,0.3)';});
+    const gapBd=gapControls.map(c=>{const g=gapTarget-cS[controls.indexOf(c)];return g>=3?'#E24B4A':g===2?'#f97316':'#eab308';});
+    gapBarInst=new Chart(gapCtx,{
+      type:'bar',
+      data:{
+        labels:gapControls.map(c=>`CIS ${c.n} — ${c.title.length>30?c.title.slice(0,30)+'…':c.title}`),
+        datasets:[{label:'Gap to maturity 3',data:gapVals,backgroundColor:gapBg,borderColor:gapBd,borderWidth:1.5,borderRadius:4}]
+      },
+      options:{
+        indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x} maturity level${ctx.parsed.x>1?'s':''} to reach target`}}},
+        scales:{
+          x:{min:0,max:3,ticks:{stepSize:1,color:'#8a95a8',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},
+          y:{grid:{display:false},ticks:{color:'#8a95a8',font:{size:11},autoSkip:false}},
+        }
+      }
+    });
+  } else {
+    document.getElementById('gap-bar-chart').closest('.vis-card-full').style.display='none';
+  }
+}
+
+// Patch showPage to rebuild visuals when switching to visuals tab
+const _origShowPage=showPage;
+showPage=function(id,btn){
+  _origShowPage(id,btn);
+  if(id==='visuals')buildVisuals();
+};
+function app2(c){return sg(c,cIG)>0;}
 </script>
 </body>
 </html>

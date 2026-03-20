@@ -3,588 +3,381 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CIS Controls v8 — Interactive Reference</title>
+<title>CIS Controls v8 — Interactive Reference & Compliance Calculator</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
-    --bg: #0a0e14;
-    --bg2: #111620;
-    --bg3: #181f2c;
-    --border: rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.13);
-    --text: #e8edf5;
-    --text2: #8a95a8;
-    --text3: #4a5568;
-    --accent: #3b82f6;
-    --accent2: #60a5fa;
-    --mono: 'IBM Plex Mono', monospace;
-    --sans: 'IBM Plex Sans', sans-serif;
-    --c-identify: #818cf8;
-    --c-protect: #34d399;
-    --c-detect: #fbbf24;
-    --c-respond: #f87171;
-    --c-recover: #e879f9;
-    --c-ig1: #60a5fa;
-    --c-ig2: #4ade80;
-    --c-ig3: #fb923c;
+    --bg: #0a0e14; --bg2: #111620; --bg3: #181f2c;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.13);
+    --text: #e8edf5; --text2: #8a95a8; --text3: #4a5568;
+    --accent: #3b82f6; --accent2: #60a5fa;
+    --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
+    --c-identify: #818cf8; --c-protect: #34d399; --c-detect: #fbbf24;
+    --c-respond: #f87171; --c-recover: #e879f9;
+    --c-ig1: #60a5fa; --c-ig2: #4ade80; --c-ig3: #fb923c;
+    --radius: 10px;
   }
-
   html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 15px; line-height: 1.6; min-height: 100vh; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-  }
-
-  /* ── HEADER ── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,14,20,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 32px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .logo {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text2);
-    letter-spacing: 0.05em;
-  }
+  /* NAV */
+  header { position: sticky; top: 0; z-index: 100; background: rgba(10,14,20,0.94); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: var(--mono); font-size: 13px; color: var(--text2); letter-spacing: 0.05em; }
   .logo span { color: var(--accent2); }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .search-box {
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    padding: 6px 12px 6px 32px;
-    font-family: var(--sans);
-    font-size: 13px;
-    color: var(--text);
-    width: 200px;
-    transition: width 0.2s, border-color 0.2s;
-    position: relative;
-  }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab { padding: 6px 16px; border-radius: 6px; border: none; background: transparent; color: var(--text2); font-family: var(--sans); font-size: 13px; cursor: pointer; transition: all .15s; }
+  .nav-tab:hover { background: var(--bg3); color: var(--text); }
+  .nav-tab.active { background: var(--bg3); color: #fff; }
+  .header-right { display: flex; align-items: center; gap: 8px; }
   .search-wrap { position: relative; }
   .search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0.4; pointer-events: none; }
+  .search-box { background: var(--bg3); border: 1px solid var(--border2); border-radius: 6px; padding: 6px 12px 6px 32px; font-family: var(--sans); font-size: 13px; color: var(--text); width: 200px; transition: width 0.2s, border-color 0.2s; }
   .search-box:focus { outline: none; border-color: var(--accent); width: 260px; }
   .search-box::placeholder { color: var(--text3); }
 
-  /* ── HERO ── */
-  .hero {
-    padding: 80px 32px 64px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
 
-  .hero-eyebrow {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--accent2);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 24px;
-    height: 1px;
-    background: var(--accent2);
-  }
-
-  h1 {
-    font-size: clamp(36px, 5vw, 60px);
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--text);
-    margin-bottom: 24px;
-  }
+  /* ── REFERENCE PAGE ── */
+  .hero { padding: 80px 32px 64px; max-width: 900px; margin: 0 auto; }
+  .hero-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; color: var(--accent2); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .hero-eyebrow::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent2); }
+  h1 { font-size: clamp(36px, 5vw, 60px); font-weight: 300; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; }
   h1 strong { font-weight: 600; color: #fff; }
-
-  .hero-desc {
-    font-size: 17px;
-    color: var(--text2);
-    max-width: 560px;
-    line-height: 1.7;
-    margin-bottom: 40px;
-  }
-
-  .stats-row {
-    display: flex;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .stat-num {
-    font-family: var(--mono);
-    font-size: 28px;
-    font-weight: 500;
-    color: #fff;
-    line-height: 1;
-  }
-  .stat-label {
-    font-size: 12px;
-    color: var(--text3);
-    letter-spacing: 0.04em;
-  }
-
-  /* ── MAIN LAYOUT ── */
-  .main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 32px 80px;
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 32px;
-    align-items: start;
-  }
-
-  /* ── SIDEBAR ── */
-  .sidebar {
-    position: sticky;
-    top: 72px;
-  }
-
+  .hero-desc { font-size: 17px; color: var(--text2); max-width: 560px; line-height: 1.7; margin-bottom: 40px; }
+  .stats-row { display: flex; gap: 32px; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 2px; }
+  .stat-num { font-family: var(--mono); font-size: 28px; font-weight: 500; color: #fff; line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--text3); letter-spacing: 0.04em; }
+  .ref-main { max-width: 1100px; margin: 0 auto; padding: 0 32px 80px; display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start; }
+  .sidebar { position: sticky; top: 72px; }
   .sidebar-section { margin-bottom: 28px; }
-
-  .sidebar-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 10px;
-    padding-left: 2px;
-  }
-
-  .filter-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: none;
-    background: transparent;
-    color: var(--text2);
-    font-family: var(--sans);
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    text-align: left;
-    margin-bottom: 2px;
-  }
+  .sidebar-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; padding-left: 2px; }
+  .filter-btn { display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 10px; border-radius: 6px; border: none; background: transparent; color: var(--text2); font-family: var(--sans); font-size: 13px; cursor: pointer; transition: background .15s, color .15s; text-align: left; margin-bottom: 2px; }
   .filter-btn:hover { background: var(--bg3); color: var(--text); }
   .filter-btn.active { background: var(--bg3); color: #fff; }
-  .filter-btn .dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .filter-btn .count {
-    margin-left: auto;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text3);
-  }
+  .filter-btn .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .filter-btn .count { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--text3); }
   .filter-btn.active .count { color: var(--text2); }
-
-  /* ── CONTROLS GRID ── */
-  .content { min-width: 0; }
-
-  .group-header {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-  }
-  .group-title {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 500;
-  }
-  .group-desc {
-    font-size: 12px;
-    color: var(--text3);
-  }
-
+  .legend-section { max-width: 1100px; margin: 0 auto; padding: 0 32px 48px; }
+  .legend-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 6px 12px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .group-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .group-title { font-family: var(--mono); font-size: 13px; font-weight: 500; }
+  .group-desc { font-size: 12px; color: var(--text3); }
   .controls-list { display: flex; flex-direction: column; gap: 8px; }
-
-  .ctrl {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    transition: border-color 0.15s;
-    cursor: pointer;
-  }
+  .ctrl { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; transition: border-color .15s; cursor: pointer; }
   .ctrl:hover { border-color: var(--border2); }
   .ctrl.open { border-color: rgba(59,130,246,0.3); }
-
-  .ctrl-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    user-select: none;
-  }
-
-  .ctrl-num {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text3);
-    min-width: 28px;
-    flex-shrink: 0;
-  }
-
-  .ctrl-body-row {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .ctrl-name {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    flex: 1;
-    min-width: 160px;
-  }
-
-  .tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    padding: 3px 8px;
-    border-radius: 4px;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .ctrl-chevron {
-    color: var(--text3);
-    flex-shrink: 0;
-    transition: transform 0.2s;
-  }
+  .ctrl-header { display: flex; align-items: center; gap: 14px; padding: 14px 16px; user-select: none; }
+  .ctrl-num { font-family: var(--mono); font-size: 11px; color: var(--text3); min-width: 28px; flex-shrink: 0; }
+  .ctrl-body-row { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .ctrl-name { font-size: 14px; font-weight: 500; color: var(--text); flex: 1; min-width: 160px; }
+  .tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+  .ctrl-chevron { color: var(--text3); flex-shrink: 0; transition: transform 0.2s; }
   .ctrl.open .ctrl-chevron { transform: rotate(180deg); color: var(--text2); }
-
-  .ctrl-detail {
-    display: none;
-    padding: 0 16px 16px 58px;
-    border-top: 1px solid var(--border);
-  }
+  .ctrl-detail { display: none; padding: 0 16px 16px 58px; border-top: 1px solid var(--border); }
   .ctrl.open .ctrl-detail { display: block; }
-
-  .detail-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 14px;
-  }
-
-  .detail-box {
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-  }
-
-  .detail-box-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 8px;
-  }
-
-  .detail-box-text {
-    font-size: 13px;
-    color: var(--text2);
-    line-height: 1.65;
-  }
-
-  .ig-pips {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-    align-items: center;
-  }
-  .ig-pip-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text3);
-    margin-right: 4px;
-  }
-  .pip {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-  }
-
-  /* Category colors */
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .detail-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+  .detail-box-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+  .detail-box-text { font-size: 13px; color: var(--text2); line-height: 1.65; }
+  .ig-pips { display: flex; gap: 5px; margin-top: 10px; align-items: center; }
+  .ig-pip-label { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-right: 4px; }
+  .pip { width: 8px; height: 8px; border-radius: 50%; }
   .cat-identify { color: var(--c-identify); background: rgba(129,140,248,0.1); border: 1px solid rgba(129,140,248,0.2); }
   .cat-protect  { color: var(--c-protect);  background: rgba(52,211,153,0.1);  border: 1px solid rgba(52,211,153,0.2); }
   .cat-detect   { color: var(--c-detect);   background: rgba(251,191,36,0.1);  border: 1px solid rgba(251,191,36,0.2); }
   .cat-respond  { color: var(--c-respond);  background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); }
   .cat-recover  { color: var(--c-recover);  background: rgba(232,121,249,0.1); border: 1px solid rgba(232,121,249,0.2); }
-
-  .ig-ig1 { background: var(--c-ig1); }
-  .ig-ig2 { background: var(--c-ig2); }
-  .ig-ig3 { background: var(--c-ig3); }
+  .ig-ig1 { background: var(--c-ig1); } .ig-ig2 { background: var(--c-ig2); } .ig-ig3 { background: var(--c-ig3); }
   .pip-off { background: var(--bg3); border: 1px solid var(--border2); }
+  .gh-ig1 { color: var(--c-ig1); } .gh-ig2 { color: var(--c-ig2); } .gh-ig3 { color: var(--c-ig3); }
+  .no-results { text-align: center; padding: 60px 20px; color: var(--text3); font-size: 14px; display: none; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .ctrl { animation: fadeUp 0.3s ease both; }
 
-  /* IG group colors for header */
-  .gh-ig1 { color: var(--c-ig1); }
-  .gh-ig2 { color: var(--c-ig2); }
-  .gh-ig3 { color: var(--c-ig3); }
+  /* ── CALCULATOR PAGE ── */
+  .calc-page { max-width: 960px; margin: 0 auto; padding: 48px 32px 80px; }
+  .calc-hero { margin-bottom: 40px; }
+  .calc-hero h2 { font-size: 36px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .calc-hero h2 strong { font-weight: 600; color: #fff; }
+  .calc-hero p { color: var(--text2); font-size: 15px; max-width: 560px; }
+  .card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+  .top-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .field-label { font-size: 12px; color: var(--text2); margin-bottom: 8px; font-family: var(--mono); letter-spacing: 0.05em; }
+  .client-input { width: 100%; padding: 10px 14px; border: 1px solid var(--border2); border-radius: 8px; background: var(--bg3); color: var(--text); font-size: 14px; font-family: var(--sans); }
+  .client-input:focus { outline: none; border-color: var(--accent); }
+  .client-input::placeholder { color: var(--text3); }
+  .ig-row { display: flex; gap: 8px; }
+  .ig-pill { flex: 1; padding: 10px 6px; border: 1px solid var(--border2); border-radius: 8px; background: var(--bg3); color: var(--text2); font-size: 12px; cursor: pointer; text-align: center; transition: all .15s; line-height: 1.4; font-family: var(--sans); }
+  .ig-pill:hover { border-color: var(--border); color: var(--text); }
+  .ig-pill.active-ig1 { background: rgba(96,165,250,0.12); color: #93c5fd; border-color: rgba(96,165,250,0.4); }
+  .ig-pill.active-ig2 { background: rgba(74,222,128,0.12); color: #86efac; border-color: rgba(74,222,128,0.4); }
+  .ig-pill.active-ig3 { background: rgba(251,146,60,0.12); color: #fdba74; border-color: rgba(251,146,60,0.4); }
+  .score-panel { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 16px; }
+  .metric { background: var(--bg3); border-radius: 8px; padding: 14px; }
+  .metric-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; font-family: var(--mono); }
+  .metric-val { font-size: 24px; font-weight: 500; color: var(--text); }
+  .verdict-box { border-radius: 8px; padding: 14px 18px; margin-bottom: 16px; font-size: 14px; font-weight: 500; display: none; }
+  .v-partial      { background: rgba(186,117,23,0.12); color: #fbbf24; border: 1px solid rgba(186,117,23,0.3); }
+  .v-compliant    { background: rgba(99,153,34,0.12);  color: #86efac; border: 1px solid rgba(99,153,34,0.4); }
+  .v-substantial  { background: rgba(55,138,221,0.12); color: #93c5fd; border: 1px solid rgba(55,138,221,0.3); }
+  .v-noncompliant { background: rgba(226,75,74,0.12);  color: #fca5a5; border: 1px solid rgba(226,75,74,0.3); }
+  .score-bar-wrap { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; margin-bottom: 6px; position: relative; }
+  .score-bar { height: 100%; border-radius: 4px; transition: width 0.4s ease; background: #639922; }
+  .bar-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-bottom: 20px; font-family: var(--mono); }
+  .math-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 12px; color: var(--text3); line-height: 1.8; font-family: var(--mono); }
+  .math-box b { color: var(--text2); }
+  .ctrl-table { width: 100%; border-collapse: collapse; }
+  .ctrl-table th { font-size: 11px; color: var(--text3); font-weight: 400; text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); font-family: var(--mono); }
+  .ctrl-table th:last-child { text-align: right; }
+  .ctrl-table td { padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .ctrl-table tr:last-child td { border-bottom: none; }
+  .t-num { font-size: 11px; color: var(--text3); font-family: var(--mono); width: 32px; }
+  .t-name { font-size: 13px; color: var(--text); }
+  .t-cat span { font-size: 10px; padding: 2px 8px; border-radius: 4px; font-family: var(--mono); white-space: nowrap; }
+  .mat-btns { display: flex; gap: 3px; }
+  .m-btn { width: 32px; height: 30px; border-radius: 5px; border: 1px solid var(--border2); background: var(--bg3); color: var(--text3); font-size: 12px; cursor: pointer; transition: all .1s; font-family: var(--mono); }
+  .m-btn:hover { background: var(--bg2); color: var(--text); }
+  .m-btn.s0 { background: rgba(226,75,74,0.15);  color: #fca5a5; border-color: rgba(226,75,74,0.4); }
+  .m-btn.s1 { background: rgba(234,88,12,0.15);  color: #fdba74; border-color: rgba(234,88,12,0.4); }
+  .m-btn.s2 { background: rgba(202,138,4,0.15);  color: #fde047; border-color: rgba(202,138,4,0.4); }
+  .m-btn.s3 { background: rgba(55,138,221,0.15); color: #93c5fd; border-color: rgba(55,138,221,0.4); }
+  .m-btn.s4 { background: rgba(74,222,128,0.15); color: #86efac; border-color: rgba(74,222,128,0.4); }
+  .t-wscore { font-size: 12px; color: var(--text3); text-align: right; font-family: var(--mono); }
+  .na-row td { opacity: 0.3; pointer-events: none; }
+  .mat-bar-bg { height: 4px; background: var(--border); border-radius: 2px; margin-top: 4px; overflow: hidden; width: 80px; }
+  .mat-bar-fill { height: 100%; border-radius: 2px; }
+  .export-row { margin-top: 20px; display: flex; gap: 10px; }
+  .export-btn { flex: 1; padding: 12px; border: 1px solid var(--border2); border-radius: 8px; background: transparent; color: var(--text2); font-size: 13px; cursor: pointer; font-family: var(--sans); transition: all .15s; }
+  .export-btn:hover { background: var(--bg3); color: var(--text); border-color: var(--border); }
+  .reset-btn { padding: 12px 20px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text3); font-size: 13px; cursor: pointer; font-family: var(--sans); transition: all .15s; }
+  .reset-btn:hover { color: var(--text2); }
 
-  /* ── LEGEND ── */
-  .legend-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 32px 48px;
-  }
-  .legend-grid {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--text2);
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 6px 12px;
-  }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 24px 32px; text-align: center; font-size: 12px; color: var(--text3); font-family: var(--mono); }
 
-  /* ── NO RESULTS ── */
-  .no-results {
-    text-align: center;
-    padding: 60px 20px;
-    color: var(--text3);
-    font-size: 14px;
-    display: none;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 24px 32px;
-    text-align: center;
-    font-size: 12px;
-    color: var(--text3);
-    font-family: var(--mono);
-  }
-
-  /* ── RESPONSIVE ── */
   @media (max-width: 700px) {
-    .main { grid-template-columns: 1fr; }
+    .ref-main { grid-template-columns: 1fr; }
     .sidebar { position: static; }
     .detail-grid { grid-template-columns: 1fr; }
     header { padding: 0 16px; }
-    .hero { padding: 48px 16px 40px; }
+    .hero, .calc-page { padding: 40px 16px 60px; }
     .legend-section { padding: 0 16px 40px; }
-    .main { padding: 0 16px 60px; }
-    .search-box { width: 140px; }
-    .search-box:focus { width: 180px; }
+    .ref-main { padding: 0 16px 60px; }
+    .top-row, .score-panel { grid-template-columns: 1fr 1fr; }
+    .search-box { width: 120px; }
   }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  .ctrl { animation: fadeUp 0.3s ease both; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">CIS<span>/</span>Controls <span style="color:var(--text3)">v8</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('reference',this)">Reference</button>
+    <button class="nav-tab" onclick="showPage('calculator',this)">Compliance Calculator</button>
+  </div>
   <div class="header-right">
-    <div class="search-wrap">
+    <div class="search-wrap" id="search-wrap">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="white" stroke-width="1.3"/><path d="M10 10L13 13" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>
       <input class="search-box" id="search" type="text" placeholder="Search controls…" autocomplete="off">
     </div>
   </div>
 </header>
 
-<section class="hero">
-  <div class="hero-eyebrow">Center for Internet Security</div>
-  <h1><strong>CIS Controls</strong><br>Version 8 — Complete Reference</h1>
-  <p class="hero-desc">18 prioritized cybersecurity controls organized into three implementation groups. Start with IG1 regardless of org size — then layer in IG2 and IG3 as you mature.</p>
-  <div class="stats-row">
-    <div class="stat"><span class="stat-num">18</span><span class="stat-label">Total controls</span></div>
-    <div class="stat"><span class="stat-num">3</span><span class="stat-label">Implementation groups</span></div>
-    <div class="stat"><span class="stat-num">5</span><span class="stat-label">Categories</span></div>
-  </div>
-</section>
+<!-- ══════════ REFERENCE PAGE ══════════ -->
+<div class="page active" id="page-reference">
+  <section class="hero">
+    <div class="hero-eyebrow">Center for Internet Security</div>
+    <h1><strong>CIS Controls</strong><br>Version 8 — Complete Reference</h1>
+    <p class="hero-desc">18 prioritized cybersecurity controls organized into three implementation groups. Start with IG1 regardless of org size — then layer in IG2 and IG3 as you mature.</p>
+    <div class="stats-row">
+      <div class="stat"><span class="stat-num">18</span><span class="stat-label">Total controls</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-label">Implementation groups</span></div>
+      <div class="stat"><span class="stat-num">5</span><span class="stat-label">Categories</span></div>
+    </div>
+  </section>
 
-<div class="legend-section">
-  <div class="legend-grid">
-    <div class="legend-item"><div class="legend-dot" style="background:var(--c-identify)"></div>Identify</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--c-protect)"></div>Protect</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--c-detect)"></div>Detect</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--c-respond)"></div>Respond</div>
-    <div class="legend-item"><div class="legend-dot" style="background:var(--c-recover)"></div>Recover</div>
-    <div class="legend-item" style="margin-left:8px"><div class="legend-dot ig-ig1"></div>IG1 Basic</div>
-    <div class="legend-item"><div class="legend-dot ig-ig2"></div>IG2 Foundational</div>
-    <div class="legend-item"><div class="legend-dot ig-ig3"></div>IG3 Advanced</div>
+  <div class="legend-section">
+    <div class="legend-grid">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-identify)"></div>Identify</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-protect)"></div>Protect</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-detect)"></div>Detect</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-respond)"></div>Respond</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--c-recover)"></div>Recover</div>
+      <div class="legend-item" style="margin-left:8px"><div class="legend-dot ig-ig1"></div>IG1 Basic</div>
+      <div class="legend-item"><div class="legend-dot ig-ig2"></div>IG2 Foundational</div>
+      <div class="legend-item"><div class="legend-dot ig-ig3"></div>IG3 Advanced</div>
+    </div>
+  </div>
+
+  <div class="ref-main">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Filter by group</div>
+        <button class="filter-btn active" data-ig="all" onclick="setIG('all',this)"><div class="dot" style="background:var(--text3)"></div>All controls<span class="count">18</span></button>
+        <button class="filter-btn" data-ig="1" onclick="setIG('1',this)"><div class="dot ig-ig1"></div>IG1 — Basic<span class="count">14</span></button>
+        <button class="filter-btn" data-ig="2" onclick="setIG('2',this)"><div class="dot ig-ig2"></div>IG2 — Foundational<span class="count">+4</span></button>
+        <button class="filter-btn" data-ig="3" onclick="setIG('3',this)"><div class="dot ig-ig3"></div>IG3 — Advanced<span class="count">All</span></button>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Filter by category</div>
+        <button class="filter-btn" data-cat="Identify" onclick="setCat('Identify',this)"><div class="dot" style="background:var(--c-identify)"></div>Identify<span class="count">4</span></button>
+        <button class="filter-btn" data-cat="Protect" onclick="setCat('Protect',this)"><div class="dot" style="background:var(--c-protect)"></div>Protect<span class="count">10</span></button>
+        <button class="filter-btn" data-cat="Detect" onclick="setCat('Detect',this)"><div class="dot" style="background:var(--c-detect)"></div>Detect<span class="count">2</span></button>
+        <button class="filter-btn" data-cat="Respond" onclick="setCat('Respond',this)"><div class="dot" style="background:var(--c-respond)"></div>Respond<span class="count">1</span></button>
+        <button class="filter-btn" data-cat="Recover" onclick="setCat('Recover',this)"><div class="dot" style="background:var(--c-recover)"></div>Recover<span class="count">1</span></button>
+      </div>
+    </aside>
+    <div class="content">
+      <div id="ref-list"></div>
+      <div class="no-results" id="no-results">No controls match your search.</div>
+    </div>
   </div>
 </div>
 
-<div class="main">
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Filter by group</div>
-      <button class="filter-btn active" data-ig="all" onclick="setIG('all',this)">
-        <div class="dot" style="background:var(--text3)"></div>
-        All controls
-        <span class="count">18</span>
-      </button>
-      <button class="filter-btn" data-ig="1" onclick="setIG('1',this)">
-        <div class="dot ig-ig1"></div>
-        IG1 — Basic
-        <span class="count">14</span>
-      </button>
-      <button class="filter-btn" data-ig="2" onclick="setIG('2',this)">
-        <div class="dot ig-ig2"></div>
-        IG2 — Foundational
-        <span class="count">+4</span>
-      </button>
-      <button class="filter-btn" data-ig="3" onclick="setIG('3',this)">
-        <div class="dot ig-ig3"></div>
-        IG3 — Advanced
-        <span class="count">All</span>
-      </button>
+<!-- ══════════ CALCULATOR PAGE ══════════ -->
+<div class="page" id="page-calculator">
+  <div class="calc-page">
+    <div class="calc-hero">
+      <div class="hero-eyebrow">CIS Controls v8</div>
+      <h2><strong>Compliance</strong> Calculator</h2>
+      <p>Score a client against CIS Controls IG1, IG2, or IG3. Rate each control 0–4 to get a weighted compliance score and instant verdict.</p>
     </div>
 
-    <div class="sidebar-section">
-      <div class="sidebar-label">Filter by category</div>
-      <button class="filter-btn" data-cat="Identify" onclick="setCat('Identify',this)">
-        <div class="dot" style="background:var(--c-identify)"></div>Identify
-        <span class="count">4</span>
-      </button>
-      <button class="filter-btn" data-cat="Protect" onclick="setCat('Protect',this)">
-        <div class="dot" style="background:var(--c-protect)"></div>Protect
-        <span class="count">10</span>
-      </button>
-      <button class="filter-btn" data-cat="Detect" onclick="setCat('Detect',this)">
-        <div class="dot" style="background:var(--c-detect)"></div>Detect
-        <span class="count">2</span>
-      </button>
-      <button class="filter-btn" data-cat="Respond" onclick="setCat('Respond',this)">
-        <div class="dot" style="background:var(--c-respond)"></div>Respond
-        <span class="count">1</span>
-      </button>
-      <button class="filter-btn" data-cat="Recover" onclick="setCat('Recover',this)">
-        <div class="dot" style="background:var(--c-recover)"></div>Recover
-        <span class="count">1</span>
-      </button>
-    </div>
-  </aside>
+    <div class="card">
+      <div class="top-row">
+        <div>
+          <div class="field-label">Client name</div>
+          <input class="client-input" id="client-name" type="text" placeholder="e.g. Acme Corp" oninput="recalc()">
+        </div>
+        <div>
+          <div class="field-label">Implementation group</div>
+          <div class="ig-row">
+            <div class="ig-pill active-ig1" id="cpill-1" onclick="setCalcIG(1)">IG1<br><span style="font-size:10px;opacity:.7">Basic</span></div>
+            <div class="ig-pill" id="cpill-2" onclick="setCalcIG(2)">IG2<br><span style="font-size:10px;opacity:.7">Foundational</span></div>
+            <div class="ig-pill" id="cpill-3" onclick="setCalcIG(3)">IG3<br><span style="font-size:10px;opacity:.7">Advanced</span></div>
+          </div>
+        </div>
+      </div>
 
-  <div class="content">
-    <div id="list"></div>
-    <div class="no-results" id="no-results">No controls match your search.</div>
+      <div class="math-box" id="calc-math"></div>
+
+      <div class="score-panel">
+        <div class="metric"><div class="metric-label">Overall score</div><div class="metric-val" id="c-score">—</div></div>
+        <div class="metric"><div class="metric-label">Controls scored</div><div class="metric-val" id="c-scored">0/<span id="c-total">14</span></div></div>
+        <div class="metric"><div class="metric-label">Avg maturity</div><div class="metric-val" id="c-avg">—</div></div>
+        <div class="metric"><div class="metric-label">Threshold</div><div class="metric-val" style="color:#4ade80">80%</div></div>
+      </div>
+
+      <div class="score-bar-wrap"><div class="score-bar" id="c-bar" style="width:0%"></div></div>
+      <div class="bar-labels"><span>0</span><span>Critical &lt;50</span><span>Partial 50–69</span><span>Near 70–79</span><span style="color:#4ade80">Compliant ≥80</span><span>100</span></div>
+
+      <div class="verdict-box" id="c-verdict"></div>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;">
+      <table class="ctrl-table">
+        <thead>
+          <tr>
+            <th style="padding-left:16px">#</th>
+            <th>Control</th>
+            <th>Cat</th>
+            <th>SGs</th>
+            <th>Maturity — select 0–4</th>
+            <th style="padding-right:16px">Score</th>
+          </tr>
+        </thead>
+        <tbody id="calc-tbody"></tbody>
+      </table>
+    </div>
+
+    <div class="export-row">
+      <button class="export-btn" onclick="copyResults()">Copy results to clipboard</button>
+      <button class="reset-btn" onclick="resetCalc()">Reset</button>
+    </div>
+    <div id="copy-confirm" style="font-size:12px;color:#4ade80;margin-top:8px;font-family:var(--mono);display:none">Copied to clipboard.</div>
   </div>
 </div>
 
 <footer>CIS Controls v8 — Center for Internet Security &nbsp;·&nbsp; cisecurity.org</footer>
 
 <script>
+/* ══ DATA ══ */
 const controls = [
-  { n:1,  title:'Inventory & Control of Enterprise Assets',     cat:'Identify', ig:1, desc:'Actively manage all enterprise assets — endpoints, servers, network devices, IoT, cloud instances — to know exactly what exists on your network and needs to be protected.',                          why:'You cannot defend what you don\'t know exists. Unknown assets are among the most common attack entry points in breach investigations.' },
-  { n:2,  title:'Inventory & Control of Software Assets',       cat:'Identify', ig:1, desc:'Actively manage all software on the network so only authorized software can be installed and executed. Track versions, licenses, and unauthorized installations.',                                    why:'Unauthorized or untracked software introduces unpatched vulnerabilities and is a primary vector for malware introduction.' },
-  { n:3,  title:'Data Protection',                              cat:'Protect',  ig:1, desc:'Develop processes and technical controls to identify, classify, securely handle, retain, and dispose of data across its full lifecycle.',                                                             why:'Data is the primary target of most attacks. Classification and handling rules minimize exposure and limit the impact of a breach.' },
-  { n:4,  title:'Secure Configuration of Enterprise Assets & Software', cat:'Protect', ig:1, desc:'Establish and maintain secure baseline configurations for all enterprise assets and software — end-user devices, servers, network devices, and cloud environments.',                           why:'Default configurations are frequently insecure. Hardening eliminates common misconfigurations that attackers routinely exploit at scale.' },
-  { n:5,  title:'Account Management',                           cat:'Protect',  ig:1, desc:'Use processes and tools to assign and manage authorization credentials for user, administrator, and service accounts across their full lifecycle — from creation to deprovisioning.',                  why:'Compromised or orphaned accounts are a leading cause of breaches. Tight lifecycle control limits an attacker\'s ability to escalate privileges.' },
-  { n:6,  title:'Access Control Management',                    cat:'Protect',  ig:1, desc:'Create, assign, manage, and revoke access credentials and privileges for all account types, enforcing least-privilege and need-to-know principles at all times.',                                      why:'Least-privilege access limits what an attacker can do after compromising any single account, reducing lateral movement opportunities.' },
-  { n:7,  title:'Continuous Vulnerability Management',          cat:'Protect',  ig:1, desc:'Continuously assess and track vulnerabilities in all enterprise assets. Prioritize remediation using risk scoring and minimize the window of opportunity for exploitation.',                          why:'New vulnerabilities emerge daily. Continuous scanning and rapid patching close attack windows before adversaries can weaponize them.' },
-  { n:8,  title:'Audit Log Management',                         cat:'Detect',   ig:1, desc:'Collect, alert, review, and retain audit logs from all enterprise assets. Ensure logs capture events sufficient to detect, understand, and recover from attacks.',                                    why:'Logs are essential for detection, incident response, and forensics. Without centralized logging, breaches go unnoticed for months.' },
-  { n:9,  title:'Email & Web Browser Protections',              cat:'Protect',  ig:1, desc:'Improve protections and detections of threats arriving via email and web browsing — the primary delivery mechanisms for phishing, social engineering, and malicious payloads.',                      why:'Email and web are responsible for the overwhelming majority of initial compromises. Filtering and sandboxing dramatically reduce risk.' },
-  { n:10, title:'Malware Defenses',                             cat:'Protect',  ig:1, desc:'Prevent or control the installation, spread, and execution of malicious applications, code, and scripts across all enterprise assets using layered anti-malware controls.',                           why:'Malware is present in nearly every attack chain. Defense-in-depth across endpoints limits execution and limits lateral propagation.' },
-  { n:11, title:'Data Recovery',                                cat:'Recover',  ig:1, desc:'Establish and maintain data recovery practices sufficient to restore enterprise assets to a pre-incident, trusted state. Test backups regularly against defined RTO/RPO objectives.',                  why:'Ransomware and destructive attacks make tested, isolated backups the last line of defense and the only reliable path to recovery.' },
-  { n:12, title:'Network Infrastructure Management',            cat:'Protect',  ig:2, desc:'Establish, implement, and actively manage all network devices — routers, switches, firewalls, wireless access points — preventing exploitation of insecure services and configurations.',             why:'Poorly managed network infrastructure enables lateral movement. Once attackers breach the perimeter, misconfigured devices become stepping stones.' },
-  { n:13, title:'Network Monitoring & Defense',                 cat:'Detect',   ig:2, desc:'Operate processes and tooling to establish comprehensive network traffic monitoring, anomaly detection, and active defense against threats across the enterprise network.',                          why:'Network-level detection is often the earliest opportunity to identify attacks in progress before they reach their objectives.' },
-  { n:14, title:'Security Awareness & Skills Training',         cat:'Protect',  ig:1, desc:'Establish and maintain a security awareness program that trains the entire workforce to recognize threats, understand their role in security, and make better decisions under pressure.',             why:'Humans are consistently the most targeted attack surface. Regular, scenario-based training measurably reduces phishing success and insider risk.' },
-  { n:15, title:'Service Provider Management',                  cat:'Identify', ig:2, desc:'Develop a process to evaluate, onboard, monitor, and offboard third-party service providers that hold sensitive data or have access to critical enterprise systems.',                                 why:'Third-party breaches are a major and growing vector. Supplier security management extends your controls beyond your own perimeter.' },
-  { n:16, title:'Application Software Security',                cat:'Protect',  ig:2, desc:'Manage the security lifecycle of in-house developed, hosted, or acquired software. Integrate security testing into the SDLC and remediate weaknesses before they reach production.',                  why:'Application vulnerabilities are pervasive and highly exploitable. Secure SDLC practices reduce the attack surface at the point of creation.' },
-  { n:17, title:'Incident Response Management',                 cat:'Respond',  ig:2, desc:'Establish and maintain an incident response program with documented plans, defined roles and communication channels, regular training exercises, and structured post-incident reviews.',               why:'Breaches are inevitable. Organizations with practiced IR plans contain incidents significantly faster and at substantially lower total cost.' },
-  { n:18, title:'Penetration Testing',                          cat:'Identify', ig:2, desc:'Test the effectiveness of your security controls through structured attack simulations — both internal and external — performed by qualified testers on a regular, risk-based cadence.',              why:'Penetration testing finds exploitable gaps before real adversaries do, validating that every other control in this list is working as intended.' },
+  { n:1,  title:'Inventory & control of enterprise assets',    cat:'Identify', ig:1, sg:[7,4,1], desc:'Actively manage all enterprise assets — endpoints, servers, network devices, cloud instances — to know exactly what exists and needs to be protected.',      why:'You cannot defend what you don\'t know exists. Unknown assets are among the most common attack entry points.' },
+  { n:2,  title:'Inventory & control of software assets',      cat:'Identify', ig:1, sg:[6,4,0], desc:'Actively manage all software on the network so only authorized software can be installed and executed.',                                                     why:'Unauthorized software introduces unpatched vulnerabilities and is a primary malware vector.' },
+  { n:3,  title:'Data protection',                             cat:'Protect',  ig:1, sg:[6,8,0], desc:'Develop processes and controls to identify, classify, securely handle, retain, and dispose of data across its full lifecycle.',                               why:'Data is the primary target of most attacks. Classification rules minimize exposure during a breach.' },
+  { n:4,  title:'Secure configuration of assets & software',   cat:'Protect',  ig:1, sg:[8,7,0], desc:'Establish and maintain secure baseline configurations for all enterprise assets and software.',                                                               why:'Default configurations are frequently insecure. Hardening eliminates misconfigurations that attackers routinely exploit.' },
+  { n:5,  title:'Account management',                          cat:'Protect',  ig:1, sg:[5,2,0], desc:'Assign and manage authorization credentials for user, administrator, and service accounts across their full lifecycle.',                                       why:'Compromised or orphaned accounts are a leading cause of breaches. Lifecycle control limits blast radius.' },
+  { n:6,  title:'Access control management',                   cat:'Protect',  ig:1, sg:[5,3,0], desc:'Create, assign, manage, and revoke access credentials and privileges, enforcing least-privilege at all times.',                                               why:'Least-privilege limits what an attacker can do after compromising any single account.' },
+  { n:7,  title:'Continuous vulnerability management',         cat:'Protect',  ig:1, sg:[4,3,0], desc:'Continuously assess and track vulnerabilities in all enterprise assets, prioritize remediation, and minimize exploitation windows.',                         why:'New vulnerabilities emerge daily. Continuous scanning closes attack windows before adversaries can weaponize them.' },
+  { n:8,  title:'Audit log management',                        cat:'Detect',   ig:1, sg:[5,5,2], desc:'Collect, alert, review, and retain audit logs from all enterprise assets sufficient to detect and recover from attacks.',                                    why:'Logs are essential for detection and forensics. Without them, breaches go unnoticed for months.' },
+  { n:9,  title:'Email & web browser protections',             cat:'Protect',  ig:1, sg:[4,3,0], desc:'Improve protections against threats arriving via email and web — the primary delivery mechanisms for phishing and malicious payloads.',                      why:'Email and web cause the overwhelming majority of initial compromises.' },
+  { n:10, title:'Malware defenses',                            cat:'Protect',  ig:1, sg:[5,2,0], desc:'Prevent or control the installation, spread, and execution of malicious applications and scripts across all enterprise assets.',                             why:'Malware is present in nearly every attack chain. Defense-in-depth limits execution and lateral movement.' },
+  { n:11, title:'Data recovery',                               cat:'Recover',  ig:1, sg:[5,2,0], desc:'Establish data recovery practices sufficient to restore enterprise assets to a trusted, pre-incident state.',                                                 why:'Ransomware makes tested, isolated backups the last line of defense.' },
+  { n:12, title:'Network infrastructure management',           cat:'Protect',  ig:2, sg:[0,6,2], desc:'Establish and manage all network devices to prevent exploitation of insecure services and configurations.',                                                   why:'Poorly managed network infrastructure enables lateral movement after initial breach.' },
+  { n:13, title:'Network monitoring & defense',                cat:'Detect',   ig:2, sg:[0,7,4], desc:'Operate processes and tooling to monitor network traffic, detect anomalies, and actively defend against threats.',                                           why:'Network detection is often the first opportunity to catch attacks before they reach objectives.' },
+  { n:14, title:'Security awareness & skills training',        cat:'Protect',  ig:1, sg:[6,2,1], desc:'Establish a security awareness program that trains the workforce to recognize threats and make better decisions.',                                           why:'Humans are consistently the most targeted surface. Training measurably reduces phishing success.' },
+  { n:15, title:'Service provider management',                 cat:'Identify', ig:2, sg:[0,5,2], desc:'Develop a process to evaluate, onboard, monitor, and offboard third-party service providers with access to sensitive systems.',                              why:'Third-party breaches are a major and growing vector.' },
+  { n:16, title:'Application software security',               cat:'Protect',  ig:2, sg:[0,6,3], desc:'Manage the security lifecycle of software to prevent, detect, and remediate weaknesses before they reach production.',                                       why:'Application vulnerabilities are pervasive. Secure SDLC reduces the attack surface at the source.' },
+  { n:17, title:'Incident response management',                cat:'Respond',  ig:2, sg:[0,8,1], desc:'Establish an incident response program with documented plans, defined roles, regular exercises, and post-incident reviews.',                                 why:'Breaches are inevitable. Practiced IR plans contain incidents faster and at lower total cost.' },
+  { n:18, title:'Penetration testing',                         cat:'Identify', ig:2, sg:[0,2,3], desc:'Test the effectiveness of controls through structured attack simulations by qualified testers on a regular cadence.',                                        why:'Pen testing finds exploitable gaps before real adversaries do.' },
 ];
 
 const catClass = { Identify:'cat-identify', Protect:'cat-protect', Detect:'cat-detect', Respond:'cat-respond', Recover:'cat-recover' };
 const igColors = ['','ig-ig1','ig-ig2','ig-ig3'];
+
+/* ══ PAGE SWITCHING ══ */
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  btn.classList.add('active');
+  document.getElementById('search-wrap').style.display = id === 'reference' ? 'block' : 'none';
+}
+
+/* ══ REFERENCE PAGE ══ */
 let activeIG = 'all', activeCat = null, searchTerm = '';
 
-function render() {
-  const list = document.getElementById('list');
+function setIG(ig, btn) {
+  activeIG = ig; activeCat = null;
+  document.querySelectorAll('[data-ig]').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRef();
+}
+function setCat(cat, btn) {
+  activeCat = activeCat === cat ? null : cat;
+  document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
+  if (activeCat) btn.classList.add('active');
+  renderRef();
+}
+document.getElementById('search').addEventListener('input', e => { searchTerm = e.target.value.trim(); renderRef(); });
+
+function renderRef() {
+  const list = document.getElementById('ref-list');
   const noRes = document.getElementById('no-results');
   list.innerHTML = '';
-
   const filtered = controls.filter(c => {
     if (activeIG === '1' && c.ig > 1) return false;
     if (activeIG === '2' && c.ig > 2) return false;
     if (activeCat && c.cat !== activeCat) return false;
-    if (searchTerm) {
-      const q = searchTerm.toLowerCase();
-      return c.title.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q) || c.why.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q);
-    }
+    if (searchTerm) { const q = searchTerm.toLowerCase(); return c.title.toLowerCase().includes(q) || c.desc.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q); }
     return true;
   });
-
   if (!filtered.length) { noRes.style.display = 'block'; return; }
   noRes.style.display = 'none';
-
-  // Group by IG when showing all
   const groups = activeIG === 'all' ? [
-    { ig: 1, label: 'IG1 — Basic', desc: 'Required for all organizations', color: 'gh-ig1', items: filtered.filter(c=>c.ig===1) },
-    { ig: 2, label: 'IG2 — Foundational', desc: 'Adds 4 controls for orgs with dedicated IT staff', color: 'gh-ig2', items: filtered.filter(c=>c.ig===2) },
-  ] : [{ ig: parseInt(activeIG)||0, label: '', desc: '', color: '', items: filtered }];
-
-  // Add IG3 note when all
-  if (activeIG === 'all') {
-    groups.push({ ig: 3, label: 'IG3 — Advanced', desc: 'All 18 controls — for mature, high-risk organizations', color: 'gh-ig3', items: [] });
-  }
-
+    { ig:1, label:'IG1 — Basic', desc:'Required for all organizations', color:'gh-ig1', items:filtered.filter(c=>c.ig===1) },
+    { ig:2, label:'IG2 — Foundational', desc:'Adds 4 controls for orgs with dedicated IT staff', color:'gh-ig2', items:filtered.filter(c=>c.ig===2) },
+    { ig:3, label:'IG3 — Advanced', desc:'All 18 controls — for mature, high-risk organizations', color:'gh-ig3', items:[] },
+  ] : [{ ig:0, label:'', desc:'', color:'', items:filtered }];
   groups.forEach(g => {
     if (g.label) {
       const gh = document.createElement('div');
@@ -596,78 +389,139 @@ function render() {
     if (g.items.length === 0 && g.ig === 3) {
       const note = document.createElement('div');
       note.style.cssText = 'padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--text2);line-height:1.6';
-      note.textContent = 'IG3 organizations implement all 18 controls listed above (IG1 + IG2), with full maturity across every safeguard. This tier targets large enterprises and critical infrastructure facing sophisticated, targeted adversaries.';
-      list.appendChild(note);
-      return;
+      note.textContent = 'IG3 organizations implement all 18 controls listed above. This tier targets large enterprises and critical infrastructure facing sophisticated adversaries.';
+      list.appendChild(note); return;
     }
-    const cl = document.createElement('div');
-    cl.className = 'controls-list';
+    const cl = document.createElement('div'); cl.className = 'controls-list';
     g.items.forEach((c, i) => {
       const el = document.createElement('div');
-      el.className = 'ctrl';
-      el.style.animationDelay = `${i * 30}ms`;
-      const pips = [1,2,3].map(n => `<div class="pip ${c.ig <= n ? igColors[n] : 'pip-off'}"></div>`).join('');
-      el.innerHTML = `
-        <div class="ctrl-header" onclick="toggle(this.parentElement)">
-          <span class="ctrl-num">${String(c.n).padStart(2,'0')}</span>
-          <div class="ctrl-body-row">
-            <span class="ctrl-name">${c.title}</span>
-            <span class="tag ${catClass[c.cat]}">${c.cat}</span>
-          </div>
-          <svg class="ctrl-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      el.className = 'ctrl'; el.style.animationDelay = `${i*30}ms`;
+      const pips = [1,2,3].map(n=>`<div class="pip ${c.ig<=n?igColors[n]:'pip-off'}"></div>`).join('');
+      el.innerHTML = `<div class="ctrl-header" onclick="this.parentElement.classList.toggle('open')">
+        <span class="ctrl-num">${String(c.n).padStart(2,'0')}</span>
+        <div class="ctrl-body-row"><span class="ctrl-name">${c.title}</span><span class="tag ${catClass[c.cat]}">${c.cat}</span></div>
+        <svg class="ctrl-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="ctrl-detail">
+        <div class="ig-pips"><span class="ig-pip-label">Required from</span>${pips}<span style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-left:4px">${['','IG1+','IG2+','IG3'][c.ig]}</span></div>
+        <div class="detail-grid">
+          <div class="detail-box"><div class="detail-box-label">What it covers</div><div class="detail-box-text">${c.desc}</div></div>
+          <div class="detail-box"><div class="detail-box-label">Why it matters</div><div class="detail-box-text">${c.why}</div></div>
         </div>
-        <div class="ctrl-detail">
-          <div class="ig-pips">
-            <span class="ig-pip-label">Required from</span>
-            ${pips}
-            <span style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-left:4px">${['','IG1+','IG2+','IG3'][c.ig]}</span>
-          </div>
-          <div class="detail-grid">
-            <div class="detail-box">
-              <div class="detail-box-label">What it covers</div>
-              <div class="detail-box-text">${c.desc}</div>
-            </div>
-            <div class="detail-box">
-              <div class="detail-box-label">Why it matters</div>
-              <div class="detail-box-text">${c.why}</div>
-            </div>
-          </div>
-        </div>`;
+      </div>`;
       cl.appendChild(el);
     });
     list.appendChild(cl);
   });
 }
+renderRef();
 
-function toggle(el) {
-  el.classList.toggle('open');
+/* ══ CALCULATOR PAGE ══ */
+const cScores = new Array(18).fill(-1);
+let calcIG = 1;
+
+function sgForIG(c, ig) { let t=0; for(let i=0;i<ig;i++) t+=c.sg[i]; return t; }
+function applicable(c) { return sgForIG(c, calcIG) > 0; }
+
+function setCalcIG(ig) {
+  calcIG = ig;
+  ['1','2','3'].forEach(i => {
+    const p = document.getElementById('cpill-'+i);
+    p.className = 'ig-pill' + (i==ig ? ` active-ig${ig}` : '');
+  });
+  renderCalc(); recalc();
 }
 
-function setIG(ig, btn) {
-  activeIG = ig;
-  document.querySelectorAll('[data-ig]').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  render();
+function renderCalc() {
+  const tbody = document.getElementById('calc-tbody');
+  tbody.innerHTML = '';
+  const totalSG = controls.reduce((s,c) => s + sgForIG(c,calcIG), 0);
+  controls.forEach((c,idx) => {
+    const app = applicable(c);
+    const sg = sgForIG(c, calcIG);
+    const tr = document.createElement('tr');
+    if (!app) tr.className = 'na-row';
+    const mats = app ? [0,1,2,3,4].map(m => {
+      const sel = cScores[idx]===m ? ` s${m}` : '';
+      return `<button class="m-btn${sel}" onclick="setScore(${idx},${m})" title="${['Not implemented','Ad-hoc','Developing','Defined','Managed'][m]}">${m}</button>`;
+    }).join('') : `<span style="font-size:11px;color:var(--text3)">N/A</span>`;
+    const ws = app && cScores[idx]>=0 ? ((cScores[idx]/4)*(sg/totalSG)*100).toFixed(1)+'%' : '—';
+    const barW = app && cScores[idx]>=0 ? (cScores[idx]/4*100)+'%' : '0%';
+    const barC = ['#E24B4A','#f97316','#eab308','#378ADD','#639922'][cScores[idx]] || 'transparent';
+    tr.innerHTML = `
+      <td class="t-num" style="padding-left:16px">${String(c.n).padStart(2,'0')}</td>
+      <td class="t-name">${c.title}</td>
+      <td class="t-cat"><span class="${catClass[c.cat]}">${c.cat}</span></td>
+      <td style="font-size:11px;color:var(--text3);font-family:var(--mono);text-align:center">${app?sg:'—'}</td>
+      <td><div class="mat-btns">${mats}</div>${app&&cScores[idx]>=0?`<div class="mat-bar-bg"><div class="mat-bar-fill" style="width:${barW};background:${barC}"></div></div>`:''}</td>
+      <td class="t-wscore" style="padding-right:16px">${ws}</td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('c-total').textContent = controls.filter(c=>applicable(c)).length;
+  const totalSG2 = controls.reduce((s,c)=>s+sgForIG(c,calcIG),0);
+  document.getElementById('calc-math').innerHTML = `<b>Formula:</b> Score = Σ (maturity ÷ 4) × (safeguard_weight) × 100 &nbsp;|&nbsp; <b>IG${calcIG} safeguards:</b> ${totalSG2} total &nbsp;|&nbsp; <b>Threshold: ≥ 80%</b>`;
 }
 
-function setCat(cat, btn) {
-  if (activeCat === cat) {
-    activeCat = null;
-    document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
-  } else {
-    activeCat = cat;
-    document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-  render();
+function setScore(idx, val) {
+  cScores[idx] = cScores[idx]===val ? -1 : val;
+  renderCalc(); recalc();
 }
 
-document.getElementById('search').addEventListener('input', e => {
-  searchTerm = e.target.value.trim();
-  render();
-});
+function recalc() {
+  const totalSG = controls.reduce((s,c)=>s+sgForIG(c,calcIG),0);
+  const app = controls.filter(c=>applicable(c));
+  const scored = app.filter(c=>cScores[controls.indexOf(c)]>=0);
+  let wSum=0, mSum=0;
+  app.forEach(c => {
+    const idx=controls.indexOf(c);
+    if(cScores[idx]>=0) { wSum+=(cScores[idx]/4)*(sgForIG(c,calcIG)/totalSG)*100; mSum+=cScores[idx]; }
+  });
+  document.getElementById('c-scored').innerHTML = `${scored.length}/<span id="c-total">${app.length}</span>`;
+  document.getElementById('c-avg').textContent = scored.length>0 ? (mSum/scored.length).toFixed(1)+'/4' : '—';
+  if (!scored.length) { document.getElementById('c-score').textContent='—'; document.getElementById('c-bar').style.width='0%'; document.getElementById('c-verdict').style.display='none'; return; }
+  const projected = scored.length===app.length ? wSum : wSum*app.length/scored.length;
+  const pct = parseFloat(projected.toFixed(1));
+  const incomplete = scored.length<app.length ? ` (projected from ${scored.length}/${app.length} scored)` : '';
+  document.getElementById('c-score').textContent = pct.toFixed(1)+'%';
+  document.getElementById('c-bar').style.width = Math.min(pct,100)+'%';
+  document.getElementById('c-bar').style.background = pct>=80?'#639922':pct>=70?'#378ADD':pct>=50?'#BA7517':'#E24B4A';
+  const name = document.getElementById('client-name').value.trim()||'This client';
+  let cls, txt;
+  if(pct>=80) { cls='v-compliant'; txt=`✓ ${name} is COMPLIANT — ${pct.toFixed(1)}% meets the IG${calcIG} threshold.${incomplete}`; }
+  else if(pct>=70) { cls='v-substantial'; txt=`~ ${name} is SUBSTANTIALLY compliant at ${pct.toFixed(1)}% — just below the 80% threshold.${incomplete}`; }
+  else if(pct>=50) { cls='v-partial'; txt=`! ${name} is PARTIALLY compliant at ${pct.toFixed(1)}%. Significant gaps exist.${incomplete}`; }
+  else { cls='v-noncompliant'; txt=`✗ ${name} is NON-COMPLIANT at ${pct.toFixed(1)}%. Critical gaps require immediate remediation.${incomplete}`; }
+  const v=document.getElementById('c-verdict');
+  v.className='verdict-box '+cls; v.textContent=txt; v.style.display='block';
+}
 
-render();
+function resetCalc() {
+  cScores.fill(-1);
+  document.getElementById('client-name').value='';
+  renderCalc(); recalc();
+}
+
+function copyResults() {
+  const totalSG = controls.reduce((s,c)=>s+sgForIG(c,calcIG),0);
+  const app = controls.filter(c=>applicable(c));
+  const name = document.getElementById('client-name').value.trim()||'Client';
+  const matLabels = ['Not implemented','Ad-hoc','Developing','Defined','Managed'];
+  let lines = [`CIS Controls v8 — IG${calcIG} Compliance Assessment: ${name}\n`];
+  app.forEach(c => {
+    const idx=controls.indexOf(c); const s=cScores[idx];
+    lines.push(`CIS ${c.n}: ${c.title} — Maturity ${s>=0?s:'—'}/4 (${s>=0?Math.round(s/4*100)+'%':'—'}) — ${s>=0?matLabels[s]:'Not scored'}`);
+  });
+  let wSum=0; app.forEach(c=>{const idx=controls.indexOf(c);if(cScores[idx]>=0)wSum+=(cScores[idx]/4)*(sgForIG(c,calcIG)/totalSG)*100;});
+  const scored=app.filter(c=>cScores[controls.indexOf(c)]>=0);
+  const proj = scored.length>0?(wSum*app.length/scored.length).toFixed(1):'—';
+  lines.push(`\nOverall score: ${proj}% | Scored: ${scored.length}/${app.length} | Threshold: 80%`);
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>{
+    const c=document.getElementById('copy-confirm'); c.style.display='block';
+    setTimeout(()=>c.style.display='none',2500);
+  });
+}
+
+renderCalc();
 </script>
 </body>
 </html>

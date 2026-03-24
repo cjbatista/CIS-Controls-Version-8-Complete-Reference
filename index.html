@@ -575,6 +575,13 @@ const rubrics={
       'Does it cover all asset types — endpoints, servers, network devices, and cloud?',
       'Is there an automated discovery process in use (scan, DHCP, CMDB)?',
       'Are unauthorized or unknown devices automatically flagged?'
+    ],
+    hints:[
+      'Look for: a spreadsheet, CMDB export, network diagram, or any document titled "asset register" or "asset inventory."',
+      'Look for: a review date or version history on the inventory document, or a policy stating review frequency.',
+      'Look for: columns or sections in the inventory covering servers, laptops, mobile, network gear, and cloud instances.',
+      'Look for: mention of network scanning tools (Nessus, Lansweeper, Qualys), DHCP logs, or CMDB integration docs.',
+      'Look for: an alerting policy, NAC (network access control) documentation, or SIEM rules referencing unknown devices.'
     ]
   },
   2:{
@@ -591,6 +598,13 @@ const rubrics={
       'Does it cover all device types and operating systems in scope?',
       'Is there a process to identify and remove unauthorized software?',
       'Is software allowlisting or automated enforcement in use?'
+    ],
+    hints:[
+      'Look for: a document titled "approved software list," "software register," or an IT policy that lists sanctioned applications.',
+      'Look for: a version date or change log on the software list, or a policy stating how often it is reviewed.',
+      'Look for: separate sections or tabs in the list covering Windows, Mac, mobile, and server software.',
+      'Look for: a procedure for software removal, a helpdesk process, or MDM/endpoint management policy referencing unauthorized apps.',
+      'Look for: mention of AppLocker, Carbon Black, Airlock, or any application whitelisting or endpoint management tool.'
     ]
   },
   3:{
@@ -607,6 +621,13 @@ const rubrics={
       'Is encryption enforced for data in transit (TLS/SFTP)?',
       'Is there a documented data handling and retention policy?',
       'Are DLP tools used to prevent unauthorized data transfer?'
+    ],
+    hints:[
+      'Look for: a data classification policy, information security policy with a classification scheme (e.g. Public / Internal / Confidential / Restricted), or a data map.',
+      'Look for: mentions of BitLocker, FileVault, encryption at rest in cloud storage settings, or a policy requiring disk encryption on laptops.',
+      'Look for: a policy requiring TLS/HTTPS or SFTP, or network diagrams showing encrypted channels for data transfer.',
+      'Look for: a data retention schedule, records management policy, or privacy policy that specifies how long data is kept and how it is disposed of.',
+      'Look for: mention of DLP tools (Microsoft Purview, Forcepoint, Symantec DLP) or email/endpoint policies preventing large file transfers to personal accounts.'
     ]
   },
   4:{
@@ -623,6 +644,13 @@ const rubrics={
       'Are existing assets periodically checked against the baseline?',
       'Is there a process to approve and document deviations from the baseline?',
       'Are configuration management tools used to detect or enforce compliance?'
+    ],
+    hints:[
+      'Look for: a document titled "hardening standard," "secure baseline," or "build standard." Also check for references to CIS Benchmarks or DISA STIGs.',
+      'Look for: a device provisioning or onboarding procedure that references applying a baseline or image before deployment.',
+      'Look for: a policy stating periodic config review, or evidence of compliance scans (Nessus audit, CIS-CAT reports).',
+      'Look for: a change management policy or exception/deviation request form that includes security sign-off.',
+      'Look for: mention of tools like Ansible, Chef, Puppet, Microsoft SCCM/Intune, or CIS-CAT used to enforce configuration standards.'
     ]
   },
   5:{
@@ -639,6 +667,13 @@ const rubrics={
       'Are default credentials changed on all systems before deployment?',
       'Are shared or generic accounts prohibited or documented with justification?',
       'Is MFA enforced for privileged or remote access accounts?'
+    ],
+    hints:[
+      'Look for: an HR onboarding/offboarding checklist, IT access request form, or identity management policy.',
+      'Look for: a policy requiring quarterly access reviews, or evidence of access review records (spreadsheet, ticket history, IAM platform reports).',
+      'Look for: a hardening standard or build procedure stating default passwords must be changed, or a password policy referencing vendor defaults.',
+      'Look for: an account management policy stating shared accounts are prohibited, or a list of approved service accounts with documented justification.',
+      'Look for: an MFA policy, VPN configuration docs, or Entra ID / Okta settings screenshots showing MFA enforcement.'
     ]
   },
   6:{
@@ -655,6 +690,13 @@ const rubrics={
       'Is access reviewed and recertified on a defined schedule?',
       'Is a privileged access management (PAM) solution in use?',
       'Is just-in-time or time-limited privilege elevation enforced?'
+    ],
+    hints:[
+      'Look for: an access control policy, information security policy, or acceptable use policy that states least-privilege principles.',
+      'Look for: an account management policy stating admin accounts must be separate from daily-use accounts, or AD/directory evidence of separate admin accounts.',
+      'Look for: a policy requiring periodic access reviews (quarterly or annual), or access recertification records from an IAM tool.',
+      'Look for: mention of PAM tools such as CyberArk, BeyondTrust, Delinea, or Thycotic in any IT architecture or vendor documentation.',
+      'Look for: JIT access policies in Azure PIM, CyberArk, or similar, or a procedure requiring approval before privilege elevation is granted.'
     ]
   },
   7:{
@@ -671,6 +713,13 @@ const rubrics={
       'Are scan findings tracked in a ticketing or remediation tracking system?',
       'Are critical/high findings verified as remediated before closing?',
       'Are scans continuous or risk-prioritized using threat intelligence data?'
+    ],
+    hints:[
+      'Look for: a vulnerability management policy or procedure stating scan frequency, or historical Nessus/Qualys/Rapid7 scan reports with dates.',
+      'Look for: a patch management policy with defined SLAs by severity (e.g. critical = 15 days, high = 30 days), or an SLA table in the vulnerability management policy.',
+      'Look for: references to a ticketing system (Jira, ServiceNow, Remedy) for tracking vuln findings, or a vuln tracking spreadsheet with open/closed status.',
+      'Look for: a remediation verification step in the vuln management procedure, or re-scan reports showing previously flagged findings are now closed.',
+      'Look for: mention of continuous scanning tools, threat intel feeds (CISA KEV, vendor feeds), or risk scoring that prioritizes beyond CVSS alone.'
     ]
   },
   8:{
@@ -687,6 +736,13 @@ const rubrics={
       'Is there a documented log retention policy (e.g. 90+ days)?',
       'Are alerts configured for key security events (failed logins, privilege changes)?',
       'Are logs reviewed or correlated regularly by security staff?'
+    ],
+    hints:[
+      'Look for: a logging policy, system configuration docs showing audit logging enabled, or screenshots of Windows Event Log / syslog settings.',
+      'Look for: mention of a SIEM (Splunk, Microsoft Sentinel, Elastic), a central syslog server, or a log management policy referencing centralization.',
+      'Look for: a log retention policy or data retention schedule specifying how long logs are kept (CIS recommends minimum 90 days hot, 1 year total).',
+      'Look for: SIEM alert rules documentation, a list of monitored events, or an incident response policy referencing automated alerting.',
+      'Look for: a log review procedure, SOC runbooks, or evidence of regular log review (meeting notes, tickets opened from log alerts).'
     ]
   },
   9:{
@@ -703,6 +759,13 @@ const rubrics={
       'Is URL/web filtering used to block known malicious sites?',
       'Are suspicious attachments sandboxed or blocked before delivery?',
       'Are phishing simulations conducted to test and train staff?'
+    ],
+    hints:[
+      'Look for: mention of an email gateway (Proofpoint, Mimecast, Microsoft Defender for O365, Google Workspace spam filtering) in any IT architecture or vendor list.',
+      'Look for: DNS records documentation, an email security policy referencing SPF/DKIM/DMARC, or a report from MXToolbox / DMARC analyzer.',
+      'Look for: a web filtering policy, mention of tools like Cisco Umbrella, Zscaler, Forcepoint, or DNS filtering (Quad9, NextDNS) in any IT docs.',
+      'Look for: email gateway settings showing attachment sandboxing, a policy blocking executable attachments, or vendor docs for tools like Proofpoint TAP.',
+      'Look for: phishing simulation records (KnowBe4, Proofpoint Security Awareness, Cofense), click rate reports, or a security training policy referencing simulations.'
     ]
   },
   10:{
@@ -719,6 +782,13 @@ const rubrics={
       'Are signatures or behavioral models updated automatically?',
       'Are AV/EDR alerts reviewed and actioned on a regular basis?',
       'Is behavioral or AI-based detection in use (beyond signature-only AV)?'
+    ],
+    hints:[
+      'Look for: an endpoint security policy, an asset list showing AV/EDR deployment status, or a software inventory confirming coverage.',
+      'Look for: mention of a management console (CrowdStrike Falcon, Microsoft Defender portal, Symantec SEPM) in IT documentation or vendor contracts.',
+      'Look for: a policy requiring automatic definition updates, or MDM/management console settings showing update enforcement.',
+      'Look for: an alert triage procedure, SOC runbooks for AV/EDR alerts, or ticket records showing alerts were investigated and resolved.',
+      'Look for: mention of behavior-based or AI-driven tools such as CrowdStrike Falcon, SentinelOne, Microsoft Defender for Endpoint, or Carbon Black.'
     ]
   },
   11:{
@@ -735,6 +805,13 @@ const rubrics={
       'Is backup integrity tested through restore exercises at least quarterly?',
       'Are backup restore procedures documented and staff trained on them?',
       'Are backups immutable or isolated to protect against ransomware encryption?'
+    ],
+    hints:[
+      'Look for: a backup policy listing which systems are backed up and at what frequency, or backup job reports showing successful runs.',
+      'Look for: a backup policy specifying offsite or cloud storage, or vendor contracts for backup services (Veeam Cloud, Azure Backup, Carbonite).',
+      'Look for: restore test records, a backup testing procedure with a quarterly or annual schedule, or DR exercise reports.',
+      'Look for: a documented restore procedure, a DR/BCP document with recovery steps, or training records confirming staff have been walked through recovery.',
+      'Look for: mention of immutable storage (AWS S3 Object Lock, Veeam immutable backups), air-gapped backups, or WORM storage in backup policy or vendor docs.'
     ]
   },
   12:{
@@ -751,6 +828,13 @@ const rubrics={
       'Is there a formal change control process for firewall modifications?',
       'Is the network segmented (e.g. servers, users, guests, OT separated)?',
       'Are network device configs backed up and managed centrally?'
+    ],
+    hints:[
+      'Look for: network diagrams showing a perimeter firewall, or any reference to firewall appliances (Palo Alto, Fortinet, Cisco ASA) in IT asset lists.',
+      'Look for: a firewall rule set document with owner, date, and justification columns, or a network security policy requiring rule documentation.',
+      'Look for: a change management policy that covers network changes, or a change request form/ticket requiring security review for firewall modifications.',
+      'Look for: network diagrams showing VLANs or subnets separating servers, users, guests, and any OT/ICS systems.',
+      'Look for: mention of network config backup tools (Oxidized, RANCID, SolarWinds NCM) or a procedure for backing up switch/router/firewall configs.'
     ]
   },
   13:{
@@ -767,6 +851,13 @@ const rubrics={
       'Are network security alerts reviewed at least daily?',
       'Is there a defined escalation process for network security events?',
       'Is a network detection and response (NDR) or SIEM platform in use?'
+    ],
+    hints:[
+      'Look for: a network monitoring policy, mention of IDS/IPS tools (Snort, Suricata, Palo Alto Threat Prevention) or NDR platforms in IT documentation.',
+      'Look for: network architecture diagrams showing IDS/IPS placement, vendor contracts, or IT asset lists referencing intrusion detection appliances.',
+      'Look for: a log review or SOC procedure requiring daily review of network alerts, or ticket records showing alerts are investigated promptly.',
+      'Look for: an incident response plan with escalation paths for network events, or a runbook specifying who receives network security alerts and what action to take.',
+      'Look for: mention of platforms like Darktrace, ExtraHop, Vectra, Cisco Stealthwatch, or a SIEM (Splunk, Sentinel) used for network traffic analysis.'
     ]
   },
   14:{
@@ -783,6 +874,13 @@ const rubrics={
       'Is training conducted at least annually?',
       'Are phishing simulation exercises conducted to test staff?',
       'Is training role-specific (different content for IT, finance, executives)?'
+    ],
+    hints:[
+      'Look for: a security awareness policy, an employee handbook section on security training, or training platform records (KnowBe4, Proofpoint, Curricula).',
+      'Look for: training completion reports, HR records of mandatory training, or a policy stating training is required for all staff with enforcement consequences.',
+      'Look for: a training policy specifying annual (or more frequent) cadence, or training records showing completion dates within the past 12 months.',
+      'Look for: phishing simulation campaign reports, click-rate trend data, or a policy referencing simulated phishing as part of the awareness program.',
+      'Look for: a training curriculum with different modules by role (e.g. executive phishing training, developer secure coding, finance wire fraud awareness).'
     ]
   },
   15:{
@@ -799,6 +897,13 @@ const rubrics={
       'Do vendor contracts include security and data handling requirements?',
       'Are vendor access permissions reviewed at least annually?',
       'Is there a defined process for offboarding vendors and revoking their access?'
+    ],
+    hints:[
+      'Look for: a vendor register or third-party inventory listing suppliers with access to systems or data, including their access level.',
+      'Look for: a vendor risk assessment form, third-party risk management policy, or evidence of security questionnaires sent to vendors before onboarding.',
+      'Look for: sample vendor contracts or MSA/DPA templates with security, data handling, breach notification, and right-to-audit clauses.',
+      'Look for: an access review policy covering third parties, or records of annual vendor access reviews (spreadsheet, IAM reports, ticket history).',
+      'Look for: a vendor offboarding checklist, a procedure for revoking credentials and access upon contract end, or evidence this was followed for past vendors.'
     ]
   },
   16:{
@@ -815,6 +920,13 @@ const rubrics={
       'Are third-party libraries scanned for known vulnerabilities?',
       'Is security testing integrated into the CI/CD or release pipeline?',
       'Are code reviews required before deployment to production?'
+    ],
+    hints:[
+      'Look for: a secure SDLC policy, development standards referencing OWASP, or a requirements template that includes security acceptance criteria.',
+      'Look for: mention of SAST tools (SonarQube, Checkmarx, Veracode) or DAST tools (OWASP ZAP, Burp Suite) in dev documentation or CI/CD pipeline config.',
+      'Look for: use of SCA (software composition analysis) tools like Snyk, Black Duck, or Dependabot to scan open-source dependencies for known CVEs.',
+      'Look for: a CI/CD pipeline diagram or config (e.g. GitHub Actions, Jenkins) with security scan steps, or a release gate policy requiring passing security checks.',
+      'Look for: a code review policy requiring peer review or security review as part of the pull request / merge process before production deployment.'
     ]
   },
   17:{
@@ -831,6 +943,13 @@ const rubrics={
       'Has the IR plan been tested (tabletop or simulation) within the past 12 months?',
       'Is there a communication plan covering internal teams and external notification?',
       'Is there a post-incident review process to capture and act on lessons learned?'
+    ],
+    hints:[
+      'Look for: a document titled "Incident Response Plan," "IR Policy," or "Security Incident Management Procedure."',
+      'Look for: an RACI chart or roles section in the IR plan naming specific job titles responsible for detection, containment, eradication, and recovery.',
+      'Look for: tabletop exercise records, a schedule of IR tests, or after-action reports from the past 12 months showing the plan was exercised.',
+      'Look for: a communications plan section in the IR document covering who to notify internally (executives, legal) and externally (regulators, clients, law enforcement).',
+      'Look for: a lessons-learned or post-incident review template, meeting notes from prior incident reviews, or a procedure requiring a post-mortem after any significant event.'
     ]
   },
   18:{
@@ -847,6 +966,13 @@ const rubrics={
       'Are findings tracked in a formal remediation plan?',
       'Is remediation verified and re-tested after fixes are applied?',
       'Are both internal and external assets included in the test scope?'
+    ],
+    hints:[
+      'Look for: a pen test report dated within the last 12 months, or a contract/SOW with a penetration testing firm.',
+      'Look for: the pen test firm\'s credentials in the report (OSCP, CREST, CHECK certified tester) or evidence of a competitive vendor selection process.',
+      'Look for: a finding remediation tracker (spreadsheet or ticket board) linked to the pen test report with status and owner columns.',
+      'Look for: a re-test or validation report from the pen test firm confirming findings were fixed, or re-scan results showing resolved vulnerabilities.',
+      'Look for: the scope section of the pen test report listing both external-facing systems (web apps, VPN, email) and internal network/systems in scope.'
     ]
   }
 };
@@ -1010,18 +1136,22 @@ function buildDetailPanel(c,idx){
   // Questions
   const qRows=r.questions.map((q,qi)=>{
     const ans=qAns[idx][qi];
-    return `<div class="gq-item">
-      <span class="gq-text">${q}</span>
-      <div class="gq-btns">
-        <button class="gq-btn yes${ans===true?' active':''}" onclick="setAns(${idx},${qi},true)">Yes</button>
-        <button class="gq-btn no${ans===false?' active':''}" onclick="setAns(${idx},${qi},false)">No</button>
+    const hint=r.hints[qi]||'';
+    return `<div class="gq-item" style="flex-direction:column;align-items:flex-start;gap:6px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;width:100%">
+        <span class="gq-text">${q}</span>
+        <div class="gq-btns" style="flex-shrink:0">
+          <button class="gq-btn yes${ans===true?' active':''}" onclick="setAns(${idx},${qi},true)">Yes</button>
+          <button class="gq-btn no${ans===false?' active':''}" onclick="setAns(${idx},${qi},false)">No</button>
+        </div>
       </div>
+      <div style="font-size:11px;color:var(--text3);line-height:1.5;padding:5px 8px;background:var(--bg);border-radius:5px;border:1px solid var(--border);width:100%">${hint}</div>
     </div>`;
   }).join('');
   const answered=qAns[idx].filter(a=>a!==null).length;
   const suggested=getSuggested(idx);
   const suggText=answered===0
-    ?'Answer the questions above to get a suggested score.'
+    ?'Answer the questions above — hints show where to look in client documents.'
     :`Based on ${answered}/5 answers — suggested maturity: <strong style="color:${matColors[suggested]}">${suggested} — ${matLabels[suggested]}</strong>`;
   const applyBtn=answered>0?`<button class="gq-apply ready" onclick="applySuggested(${idx})">Apply ${suggested}</button>`:'';
   // Evidence fields
@@ -1077,7 +1207,10 @@ function renderCalc(){
 
     // Evidence badge
     const evCount=a?[cEv[idx].nessus,cEv[idx].policy,cEv[idx].interview,cEv[idx].audit].filter(v=>v.trim()).length:0;
-    const evBadge=evCount>0?`<span class="ev-count-badge">${evCount} source${evCount>1?'s':''}</span>`:'';
+    const scored_no_ev=a&&cS[idx]>=0&&evCount===0;
+    const evBadge=evCount>0
+      ?`<span class="ev-count-badge">${evCount} source${evCount>1?'s':''}</span>`
+      :(scored_no_ev?`<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(226,75,74,.12);color:#fca5a5;font-family:var(--mono);border:1px solid rgba(226,75,74,.3)" title="Score entered but no evidence recorded">⚠ no evidence</span>`:'');
     const chevron=a?`<svg class="ctrl-chevron-sm" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:'';
 
     tr.innerHTML=`
@@ -1181,6 +1314,7 @@ function copyResults(){
     if(ev.policy)lines.push(`  Evidence (Policy/Docs): ${ev.policy}`);
     if(ev.interview)lines.push(`  Evidence (Interview): ${ev.interview}`);
     if(ev.audit)lines.push(`  Evidence (Third-party Audit): ${ev.audit}`);
+    if(s>=0&&!ev.nessus&&!ev.policy&&!ev.interview&&!ev.audit)lines.push(`  ⚠ WARNING: Score entered but no evidence recorded for this control.`);
     lines.push('');
   });
   let wS=0;a.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0)wS+=(cS[i]/4)*(sgCalc(c,cIG)/tSG)*100;});

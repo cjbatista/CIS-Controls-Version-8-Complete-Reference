@@ -86,6 +86,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,14,20,0.95);backdrop
 .map-wrap{max-width:1080px;margin:0 auto;padding:0 32px 80px}
 .map-intro{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:var(--text2);line-height:1.7}
 .map-intro b{color:var(--text)}
+.map-intro .ev-note{display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 12px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.2);border-radius:7px;font-size:12px;color:#fde047;line-height:1.5}
 .map-search-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
 .map-search{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:8px 14px;font-size:13px;color:var(--text);width:300px;font-family:var(--sans)}
 .map-search:focus{outline:none;border-color:var(--accent)}
@@ -119,7 +120,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,14,20,0.95);backdrop
 .ev-label{font-size:11px;color:var(--text3);margin-bottom:4px;font-family:var(--mono)}
 
 /* CALCULATOR */
-.calc-wrap{max-width:960px;margin:0 auto;padding:0 32px 80px}
+.calc-wrap{max-width:1080px;margin:0 auto;padding:0 32px 80px}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:14px}
 .top-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
 .field-label{font-size:11px;color:var(--text2);margin-bottom:7px;font-family:var(--mono);letter-spacing:.05em;text-transform:uppercase}
@@ -148,8 +149,9 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,14,20,0.95);backdrop
 .math-box b{color:var(--text2)}
 .ct{width:100%;border-collapse:collapse}
 .ct th{font-size:11px;color:var(--text3);font-weight:400;text-align:left;padding:8px 10px;border-bottom:1px solid var(--border);font-family:var(--mono)}
-.ct td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top}
-.ct tr:last-child td{border-bottom:none}
+.ct td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.ctrl-main-row:hover td{background:rgba(255,255,255,0.01)}
+.ctrl-main-row.open td{background:rgba(96,165,250,.03)}
 .t-num{font-size:11px;color:var(--text3);font-family:var(--mono);width:30px}
 .t-name{font-size:13px;color:var(--text)}
 .mat-btns{display:flex;gap:3px;margin-bottom:4px}
@@ -164,16 +166,42 @@ header{position:sticky;top:0;z-index:100;background:rgba(10,14,20,0.95);backdrop
 .na-row td{opacity:.3;pointer-events:none}
 .mbar-bg{height:3px;background:var(--border);border-radius:2px;margin-top:3px;overflow:hidden}
 .mbar-fill{height:100%;border-radius:2px}
-.ev-input{width:100%;padding:5px 8px;border:1px solid var(--border);border-radius:5px;background:var(--bg);color:var(--text2);font-size:11px;font-family:var(--mono);margin-top:5px;resize:none;min-height:30px}
-.ev-input:focus{outline:none;border-color:rgba(96,165,250,.4);color:var(--text)}
-.ev-input::placeholder{color:var(--text3)}
-.ev-hint{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:2px}
 .btn-row{margin-top:18px;display:flex;gap:10px}
 .btn-primary{flex:1;padding:11px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);font-size:13px;cursor:pointer;font-family:var(--sans);transition:all .15s}
 .btn-primary:hover{background:var(--bg3);color:var(--text);border-color:var(--border)}
 .btn-reset{padding:11px 18px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text3);font-size:13px;cursor:pointer;font-family:var(--sans);transition:all .15s}
 .btn-reset:hover{color:var(--text2)}
-footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono)}
+
+/* ── SCORE GUIDE PANEL ── */
+.ctrl-panel{background:var(--bg3);border-top:1px solid var(--border);padding:20px}
+.panel-inner{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.panel-section{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px}
+.panel-section-title{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.rubric-row{display:flex;gap:10px;align-items:flex-start;padding:6px 8px;border-radius:6px;margin-bottom:3px;transition:background .1s}
+.rubric-row.current{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.18)}
+.rubric-level{font-family:var(--mono);font-size:12px;font-weight:500;min-width:14px;padding-top:1px}
+.rubric-desc{font-size:12px;color:var(--text2);line-height:1.55}
+.gq-item{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.gq-text{font-size:12px;color:var(--text2);flex:1;line-height:1.4;padding-top:3px}
+.gq-btns{display:flex;gap:4px;flex-shrink:0}
+.gq-btn{padding:4px 10px;border-radius:5px;border:1px solid var(--border2);background:transparent;color:var(--text3);font-size:11px;cursor:pointer;font-family:var(--mono);transition:all .15s}
+.gq-btn:hover{background:var(--bg3);color:var(--text)}
+.gq-btn.yes.active{background:rgba(74,222,128,.15);color:#86efac;border-color:rgba(74,222,128,.4)}
+.gq-btn.no.active{background:rgba(226,75,74,.15);color:#fca5a5;border-color:rgba(226,75,74,.4)}
+.gq-suggestion{display:flex;align-items:center;gap:10px;margin-top:10px;padding:9px 12px;background:var(--bg3);border-radius:7px;font-size:12px;color:var(--text2);flex-wrap:wrap}
+.gq-apply{padding:5px 13px;border:1px solid var(--border2);border-radius:5px;background:transparent;color:var(--text2);font-size:11px;cursor:pointer;font-family:var(--sans);transition:all .15s;white-space:nowrap}
+.gq-apply:hover{background:var(--bg2);color:var(--text)}
+.gq-apply.ready{background:rgba(96,165,250,.12);color:#93c5fd;border-color:rgba(96,165,250,.4)}
+.ev-multi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ev-source-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px}
+.ev-source-label{font-size:10px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.ev-source-icon{font-size:13px}
+.ev-source-ta{width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:6px;background:var(--bg3);color:var(--text2);font-size:11px;font-family:var(--mono);resize:vertical;min-height:54px;line-height:1.55}
+.ev-source-ta:focus{outline:none;border-color:rgba(96,165,250,.35);color:var(--text)}
+.ev-source-ta::placeholder{color:var(--text3)}
+.ev-count-badge{font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(96,165,250,.12);color:#93c5fd;font-family:var(--mono);border:1px solid rgba(96,165,250,.2)}
+.ctrl-chevron-sm{color:var(--text3);transition:transform .2s;flex-shrink:0;margin-left:4px}
+.ctrl-main-row.open .ctrl-chevron-sm{transform:rotate(180deg)}
 
 /* INTAKE */
 .intake-wrap{max-width:720px;margin:0 auto;padding:0 32px 80px}
@@ -212,7 +240,6 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
 .p-high{background:rgba(234,88,12,.15);color:#fdba74;border:1px solid rgba(234,88,12,.3)}
 .p-medium{background:rgba(202,138,4,.15);color:#fde047;border:1px solid rgba(202,138,4,.3)}
 .step-indicator{font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:8px}
-@media(max-width:600px){.intake-grid{grid-template-columns:1fr}.intake-wrap{padding-left:16px;padding-right:16px}}
 
 /* VISUALS */
 .vis-wrap{max-width:1080px;margin:0 auto;padding:0 32px 80px}
@@ -232,8 +259,10 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
 .vis-ig-badge{font-size:12px;padding:4px 12px;border-radius:6px;font-family:var(--mono)}
 .go-calc-btn{padding:8px 16px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text2);font-size:12px;font-family:var(--sans);cursor:pointer;transition:all .15s}
 .go-calc-btn:hover{background:var(--bg3);color:var(--text)}
-@media(max-width:700px){.vis-grid{grid-template-columns:1fr}.vis-stat-row{grid-template-columns:1fr 1fr}.vis-wrap{padding-left:16px;padding-right:16px}}
+footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono)}
+
 @media(max-width:720px){
+  .panel-inner,.ev-multi-grid{grid-template-columns:1fr}
   .ref-main{grid-template-columns:1fr}.sidebar{position:static}
   .detail-grid,.mc-grid{grid-template-columns:1fr}
   header{padding:0 14px}
@@ -312,12 +341,16 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
 <!-- NESSUS MAPPING -->
 <div class="page" id="page-nessus">
   <section class="hero" style="padding-bottom:32px">
-    <div class="eyebrow">Nessus to CIS Controls</div>
-    <h1><strong>Finding</strong> Mapping Guide</h1>
-    <p>Translate Nessus scan findings into CIS Control maturity scores. Each entry shows which control is affected, how to score it, and a ready-made evidence statement to paste into the calculator.</p>
+    <div class="eyebrow">One evidence source among several</div>
+    <h1><strong>Nessus</strong> Finding Mapping</h1>
+    <p>Translate Nessus scan findings into CIS Control maturity indicators. Use these alongside policy review, staff interviews, and third-party audit findings — not as a standalone score.</p>
   </section>
   <div class="map-wrap">
-    <div class="map-intro"><b>How to use:</b> Search for a Nessus finding type or plugin category. Each card maps it to the right CIS control(s), explains the maturity implication, and gives you a pre-written evidence statement — click it to copy, then paste into the calculator's evidence field.</div>
+    <div class="map-intro">
+      <b>How to use:</b> Search for a Nessus finding type or plugin category. Each card shows which CIS control is affected, the maturity implication, and a ready-made evidence statement to paste into the calculator's Nessus field.
+      <br>
+      <span class="ev-note">⚠ Nessus is one evidence source. The Calculator also captures policy reviews, staff interviews, and third-party audit findings — all four sources together make a score defensible.</span>
+    </div>
     <div class="map-search-row"><input class="map-search" id="map-search" type="text" placeholder="Search findings, plugin types, CIS controls…" oninput="renderMap()"></div>
     <div class="map-filters" id="map-filters">
       <button class="mf-btn active" data-mf="all" onclick="setMF('all',this)">All findings</button>
@@ -338,10 +371,9 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
   <section class="hero" style="padding-bottom:32px">
     <div class="eyebrow">Before the assessment</div>
     <h1><strong>Client</strong> Intake</h1>
-    <p>Answer 4 quick questions about your client. The tool will recommend the right Implementation Group and flag the highest-risk controls for their profile — so your interns know exactly where to focus.</p>
+    <p>Answer 4 quick questions about your client. The tool recommends the right Implementation Group and flags the highest-risk controls for their profile.</p>
   </section>
   <div class="intake-wrap">
-
     <div class="intake-progress" id="intake-progress">
       <div class="intake-dot active" id="idot-0"></div>
       <div class="intake-dot" id="idot-1"></div>
@@ -349,133 +381,60 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
       <div class="intake-dot" id="idot-3"></div>
       <div class="intake-dot" id="idot-4"></div>
     </div>
-
-    <!-- Step 0: Client name -->
     <div class="intake-step active" id="istep-0">
       <div class="step-indicator">Step 1 of 4</div>
       <div class="intake-q">What is the client's name and industry?</div>
       <div class="intake-hint">This pre-fills the calculator and helps flag industry-specific risk areas.</div>
       <input class="client-input" id="intake-name" type="text" placeholder="Client name" style="margin-bottom:12px;display:block">
       <div class="intake-grid">
-        <div class="intake-option" data-group="industry" data-val="healthcare" onclick="selectOption(this)">
-          <div class="intake-option-title">Healthcare / Medical</div>
-          <div class="intake-option-desc">Clinics, hospitals, dental, pharma</div>
-        </div>
-        <div class="intake-option" data-group="industry" data-val="finance" onclick="selectOption(this)">
-          <div class="intake-option-title">Financial services</div>
-          <div class="intake-option-desc">Banks, credit unions, insurance, accounting</div>
-        </div>
-        <div class="intake-option" data-group="industry" data-val="legal" onclick="selectOption(this)">
-          <div class="intake-option-title">Legal / Professional services</div>
-          <div class="intake-option-desc">Law firms, consultancies, HR</div>
-        </div>
-        <div class="intake-option" data-group="industry" data-val="retail" onclick="selectOption(this)">
-          <div class="intake-option-title">Retail / E-commerce</div>
-          <div class="intake-option-desc">Stores, POS systems, online sales</div>
-        </div>
-        <div class="intake-option" data-group="industry" data-val="manufacturing" onclick="selectOption(this)">
-          <div class="intake-option-title">Manufacturing / Industrial</div>
-          <div class="intake-option-desc">OT/ICS environments, supply chain</div>
-        </div>
-        <div class="intake-option" data-group="industry" data-val="nonprofit" onclick="selectOption(this)">
-          <div class="intake-option-title">Non-profit / Education</div>
-          <div class="intake-option-desc">Schools, charities, government adjacent</div>
-        </div>
-        <div class="intake-option" data-group="industry" data-val="tech" onclick="selectOption(this)">
-          <div class="intake-option-title">Technology / SaaS</div>
-          <div class="intake-option-desc">Software companies, MSPs, cloud services</div>
-        </div>
-        <div class="intake-option" data-group="industry" data-val="other" onclick="selectOption(this)">
-          <div class="intake-option-title">Other</div>
-          <div class="intake-option-desc">General business, mixed, or unlisted</div>
-        </div>
+        <div class="intake-option" data-group="industry" data-val="healthcare" onclick="selectOption(this)"><div class="intake-option-title">Healthcare / Medical</div><div class="intake-option-desc">Clinics, hospitals, dental, pharma</div></div>
+        <div class="intake-option" data-group="industry" data-val="finance" onclick="selectOption(this)"><div class="intake-option-title">Financial services</div><div class="intake-option-desc">Banks, credit unions, insurance, accounting</div></div>
+        <div class="intake-option" data-group="industry" data-val="legal" onclick="selectOption(this)"><div class="intake-option-title">Legal / Professional services</div><div class="intake-option-desc">Law firms, consultancies, HR</div></div>
+        <div class="intake-option" data-group="industry" data-val="retail" onclick="selectOption(this)"><div class="intake-option-title">Retail / E-commerce</div><div class="intake-option-desc">Stores, POS systems, online sales</div></div>
+        <div class="intake-option" data-group="industry" data-val="manufacturing" onclick="selectOption(this)"><div class="intake-option-title">Manufacturing / Industrial</div><div class="intake-option-desc">OT/ICS environments, supply chain</div></div>
+        <div class="intake-option" data-group="industry" data-val="nonprofit" onclick="selectOption(this)"><div class="intake-option-title">Non-profit / Education</div><div class="intake-option-desc">Schools, charities, government adjacent</div></div>
+        <div class="intake-option" data-group="industry" data-val="tech" onclick="selectOption(this)"><div class="intake-option-title">Technology / SaaS</div><div class="intake-option-desc">Software companies, MSPs, cloud services</div></div>
+        <div class="intake-option" data-group="industry" data-val="other" onclick="selectOption(this)"><div class="intake-option-title">Other</div><div class="intake-option-desc">General business, mixed, or unlisted</div></div>
       </div>
       <div style="display:flex;justify-content:flex-end"><button class="intake-btn primary" onclick="nextStep(1)">Next</button></div>
     </div>
-
-    <!-- Step 1: Org size -->
     <div class="intake-step" id="istep-1">
       <div class="step-indicator">Step 2 of 4</div>
       <div class="intake-q">How large is the organization?</div>
       <div class="intake-hint">Headcount helps determine the realistic scope of a security program and which IG is appropriate.</div>
       <div class="intake-grid">
-        <div class="intake-option" data-group="size" data-val="micro" onclick="selectOption(this)">
-          <div class="intake-option-title">Micro — under 10 employees</div>
-          <div class="intake-option-desc">Solo operators, very small teams</div>
-        </div>
-        <div class="intake-option" data-group="size" data-val="small" onclick="selectOption(this)">
-          <div class="intake-option-title">Small — 10 to 100 employees</div>
-          <div class="intake-option-desc">Small businesses, single-location</div>
-        </div>
-        <div class="intake-option" data-group="size" data-val="mid" onclick="selectOption(this)">
-          <div class="intake-option-title">Mid-size — 100 to 1,000</div>
-          <div class="intake-option-desc">Regional companies, multi-location</div>
-        </div>
-        <div class="intake-option" data-group="size" data-val="large" onclick="selectOption(this)">
-          <div class="intake-option-title">Large — over 1,000 employees</div>
-          <div class="intake-option-desc">Enterprise, multi-site, complex IT</div>
-        </div>
+        <div class="intake-option" data-group="size" data-val="micro" onclick="selectOption(this)"><div class="intake-option-title">Micro — under 10 employees</div><div class="intake-option-desc">Solo operators, very small teams</div></div>
+        <div class="intake-option" data-group="size" data-val="small" onclick="selectOption(this)"><div class="intake-option-title">Small — 10 to 100 employees</div><div class="intake-option-desc">Small businesses, single-location</div></div>
+        <div class="intake-option" data-group="size" data-val="mid" onclick="selectOption(this)"><div class="intake-option-title">Mid-size — 100 to 1,000</div><div class="intake-option-desc">Regional companies, multi-location</div></div>
+        <div class="intake-option" data-group="size" data-val="large" onclick="selectOption(this)"><div class="intake-option-title">Large — over 1,000 employees</div><div class="intake-option-desc">Enterprise, multi-site, complex IT</div></div>
       </div>
       <div style="display:flex;justify-content:space-between"><button class="intake-btn" onclick="nextStep(0)">Back</button><button class="intake-btn primary" onclick="nextStep(2)">Next</button></div>
     </div>
-
-    <!-- Step 2: IT staff -->
     <div class="intake-step" id="istep-2">
       <div class="step-indicator">Step 3 of 4</div>
       <div class="intake-q">Does the client have dedicated IT staff?</div>
       <div class="intake-hint">This is the primary IG differentiator. IG1 assumes no dedicated IT resources. IG2 requires at least one person responsible for IT security.</div>
       <div class="intake-grid" style="grid-template-columns:1fr 1fr 1fr">
-        <div class="intake-option" data-group="it" data-val="none" onclick="selectOption(this)">
-          <div class="intake-option-title">No dedicated IT</div>
-          <div class="intake-option-desc">IT handled by owner or general staff</div>
-        </div>
-        <div class="intake-option" data-group="it" data-val="partial" onclick="selectOption(this)">
-          <div class="intake-option-title">Part-time / outsourced</div>
-          <div class="intake-option-desc">MSP or occasional contractor</div>
-        </div>
-        <div class="intake-option" data-group="it" data-val="dedicated" onclick="selectOption(this)">
-          <div class="intake-option-title">Dedicated IT staff</div>
-          <div class="intake-option-desc">At least one full-time IT person</div>
-        </div>
+        <div class="intake-option" data-group="it" data-val="none" onclick="selectOption(this)"><div class="intake-option-title">No dedicated IT</div><div class="intake-option-desc">IT handled by owner or general staff</div></div>
+        <div class="intake-option" data-group="it" data-val="partial" onclick="selectOption(this)"><div class="intake-option-title">Part-time / outsourced</div><div class="intake-option-desc">MSP or occasional contractor</div></div>
+        <div class="intake-option" data-group="it" data-val="dedicated" onclick="selectOption(this)"><div class="intake-option-title">Dedicated IT staff</div><div class="intake-option-desc">At least one full-time IT person</div></div>
       </div>
       <div style="display:flex;justify-content:space-between"><button class="intake-btn" onclick="nextStep(1)">Back</button><button class="intake-btn primary" onclick="nextStep(3)">Next</button></div>
     </div>
-
-    <!-- Step 3: Sensitive data -->
     <div class="intake-step" id="istep-3">
       <div class="step-indicator">Step 4 of 4</div>
       <div class="intake-q">What sensitive data does the client handle?</div>
       <div class="intake-hint">Select all that apply. This flags the highest-priority controls and any regulatory frameworks that may apply.</div>
       <div class="intake-grid">
-        <div class="intake-option multi" data-group="data" data-val="phi" onclick="toggleMulti(this)">
-          <div class="intake-option-title">PHI — patient health records</div>
-          <div class="intake-option-desc">HIPAA applies</div>
-        </div>
-        <div class="intake-option multi" data-group="data" data-val="pci" onclick="toggleMulti(this)">
-          <div class="intake-option-title">Payment card data</div>
-          <div class="intake-option-desc">PCI-DSS applies</div>
-        </div>
-        <div class="intake-option multi" data-group="data" data-val="pii" onclick="toggleMulti(this)">
-          <div class="intake-option-title">PII — customer personal data</div>
-          <div class="intake-option-desc">State privacy laws, GDPR may apply</div>
-        </div>
-        <div class="intake-option multi" data-group="data" data-val="financial" onclick="toggleMulti(this)">
-          <div class="intake-option-title">Financial records</div>
-          <div class="intake-option-desc">SOX, GLBA may apply</div>
-        </div>
-        <div class="intake-option multi" data-group="data" data-val="ip" onclick="toggleMulti(this)">
-          <div class="intake-option-title">Intellectual property / trade secrets</div>
-          <div class="intake-option-desc">Proprietary data, source code</div>
-        </div>
-        <div class="intake-option multi" data-group="data" data-val="none" onclick="toggleMulti(this)">
-          <div class="intake-option-title">No particularly sensitive data</div>
-          <div class="intake-option-desc">General business operations only</div>
-        </div>
+        <div class="intake-option multi" data-group="data" data-val="phi" onclick="toggleMulti(this)"><div class="intake-option-title">PHI — patient health records</div><div class="intake-option-desc">HIPAA applies</div></div>
+        <div class="intake-option multi" data-group="data" data-val="pci" onclick="toggleMulti(this)"><div class="intake-option-title">Payment card data</div><div class="intake-option-desc">PCI-DSS applies</div></div>
+        <div class="intake-option multi" data-group="data" data-val="pii" onclick="toggleMulti(this)"><div class="intake-option-title">PII — customer personal data</div><div class="intake-option-desc">State privacy laws, GDPR may apply</div></div>
+        <div class="intake-option multi" data-group="data" data-val="financial" onclick="toggleMulti(this)"><div class="intake-option-title">Financial records</div><div class="intake-option-desc">SOX, GLBA may apply</div></div>
+        <div class="intake-option multi" data-group="data" data-val="ip" onclick="toggleMulti(this)"><div class="intake-option-title">Intellectual property / trade secrets</div><div class="intake-option-desc">Proprietary data, source code</div></div>
+        <div class="intake-option multi" data-group="data" data-val="none" onclick="toggleMulti(this)"><div class="intake-option-title">No particularly sensitive data</div><div class="intake-option-desc">General business operations only</div></div>
       </div>
       <div style="display:flex;justify-content:space-between"><button class="intake-btn" onclick="nextStep(2)">Back</button><button class="intake-btn primary" onclick="runIntake()">Generate profile</button></div>
     </div>
-
-    <!-- Step 4: Results -->
     <div class="intake-step" id="istep-4">
       <div class="result-card" id="intake-result"></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -483,7 +442,6 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
         <button class="intake-btn" onclick="nextStep(0);resetIntake()">Start over</button>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -492,7 +450,7 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
   <section class="hero" style="padding-bottom:32px">
     <div class="eyebrow">CIS Controls v8</div>
     <h1><strong>Compliance</strong> Calculator</h1>
-    <p>Score a client against IG1, IG2, or IG3. Rate each control 0–4 and log the Nessus evidence behind each score — every rating is now defensible.</p>
+    <p>Score a client against IG1, IG2, or IG3. Click any control row to open its maturity rubric, guided scoring questions, and multi-source evidence fields — so every score is consistent and defensible.</p>
   </section>
   <div class="calc-wrap" style="padding-top:0">
     <div class="card">
@@ -520,7 +478,9 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
     <div class="card" style="padding:0;overflow:hidden">
       <table class="ct">
         <thead><tr>
-          <th style="padding-left:14px">#</th><th>Control</th><th>Cat</th><th>SGs</th><th>Maturity 0–4</th><th>Evidence / Nessus findings</th><th style="padding-right:14px">Score</th>
+          <th style="padding-left:14px">#</th>
+          <th>Control <span style="color:var(--text3);font-weight:400">— click to expand rubric &amp; evidence</span></th>
+          <th>Cat</th><th>SGs</th><th>Maturity 0–4</th><th style="padding-right:14px">Score</th>
         </tr></thead>
         <tbody id="calc-tbody"></tbody>
       </table>
@@ -538,12 +498,12 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
   <section class="hero" style="padding-bottom:32px">
     <div class="eyebrow">Assessment visualized</div>
     <h1><strong>Client</strong> Score Report</h1>
-    <p>Visual breakdown of the compliance calculator results — radar by category, maturity by control, and gap to target. Score the client in the Calculator tab first, then come back here.</p>
+    <p>Visual breakdown of the compliance calculator results — radar by category, maturity by control, and gap to target. Score the client in the Calculator tab first.</p>
   </section>
   <div class="vis-wrap">
     <div id="vis-empty" class="vis-empty">
       <b>No scores yet</b>
-      Go to the Calculator tab, score at least one control, then return here to see the visuals.
+      Go to the Calculator tab, score at least one control, then return here.
       <br><br>
       <button class="go-calc-btn" onclick="showPage('calculator',document.querySelectorAll('.nav-tab')[3])">Open calculator</button>
     </div>
@@ -558,34 +518,18 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
           <button class="go-calc-btn" onclick="showPage('calculator',document.querySelectorAll('.nav-tab')[3])">Edit scores</button>
         </div>
       </div>
-
       <div class="vis-stat-row">
         <div class="vis-stat"><div class="vis-stat-label">Overall score</div><div class="vis-stat-val" id="vs-score">—</div></div>
         <div class="vis-stat"><div class="vis-stat-label">Gap to 80%</div><div class="vis-stat-val" id="vs-gap">—</div></div>
         <div class="vis-stat"><div class="vis-stat-label">Controls scored</div><div class="vis-stat-val" id="vs-scored">—</div></div>
         <div class="vis-stat"><div class="vis-stat-label">Avg maturity</div><div class="vis-stat-val" id="vs-avg">—</div></div>
       </div>
-
       <div class="vis-grid">
-        <div class="vis-card">
-          <div class="vis-card-title">Score by category — radar</div>
-          <div style="position:relative;height:280px"><canvas id="radar-chart"></canvas></div>
-        </div>
-        <div class="vis-card">
-          <div class="vis-card-title">Category breakdown</div>
-          <div style="position:relative;height:280px"><canvas id="cat-bar-chart"></canvas></div>
-        </div>
+        <div class="vis-card"><div class="vis-card-title">Score by category — radar</div><div style="position:relative;height:280px"><canvas id="radar-chart"></canvas></div></div>
+        <div class="vis-card"><div class="vis-card-title">Category breakdown</div><div style="position:relative;height:280px"><canvas id="cat-bar-chart"></canvas></div></div>
       </div>
-
-      <div class="vis-card-full">
-        <div class="vis-card-title">Maturity per control — current vs target (4)</div>
-        <div style="position:relative" id="ctrl-bar-wrap"><canvas id="ctrl-bar-chart"></canvas></div>
-      </div>
-
-      <div class="vis-card-full">
-        <div class="vis-card-title">Gap analysis — points needed to reach maturity 3</div>
-        <div style="position:relative" id="gap-bar-wrap"><canvas id="gap-bar-chart"></canvas></div>
-      </div>
+      <div class="vis-card-full"><div class="vis-card-title">Maturity per control — current vs target (4)</div><div style="position:relative" id="ctrl-bar-wrap"><canvas id="ctrl-bar-chart"></canvas></div></div>
+      <div class="vis-card-full"><div class="vis-card-title">Gap analysis — points needed to reach maturity 3</div><div style="position:relative" id="gap-bar-wrap"><canvas id="gap-bar-chart"></canvas></div></div>
     </div>
   </div>
 </div>
@@ -593,6 +537,7 @@ footer{border-top:1px solid var(--border);padding:20px 32px;text-align:center;fo
 <footer>CIS Controls v8 — Center for Internet Security &nbsp;·&nbsp; cisecurity.org</footer>
 
 <script>
+/* ══ DATA ══ */
 const controls=[
   {n:1,title:'Inventory & control of enterprise assets',cat:'Identify',ig:1,sg:[7,4,1],desc:'Actively manage all enterprise assets — endpoints, servers, network devices, cloud instances.',why:'You cannot defend what you don\'t know exists. Unknown assets are common entry points.'},
   {n:2,title:'Inventory & control of software assets',cat:'Identify',ig:1,sg:[6,4,0],desc:'Actively manage all software so only authorized applications can be installed and executed.',why:'Unauthorized software introduces unpatched vulnerabilities and is a primary malware vector.'},
@@ -614,27 +559,322 @@ const controls=[
   {n:18,title:'Penetration testing',cat:'Identify',ig:2,sg:[0,2,3],desc:'Test the effectiveness of controls through structured attack simulations.',why:'Pen testing finds exploitable gaps before real adversaries do.'},
 ];
 
+/* ── Per-control maturity rubrics and guided scoring questions ── */
+const rubrics={
+  1:{
+    levels:[
+      'No asset inventory exists. Devices are unknown or tracked from memory only.',
+      'Informal list (spreadsheet/notes) exists, rarely updated, likely incomplete.',
+      'Inventory documented but incomplete — some asset types or locations missing.',
+      'Complete inventory covering all types (endpoints, servers, cloud, network), reviewed regularly.',
+      'Automated real-time discovery, integrated with change management, unknown devices auto-flagged.'
+    ],
+    questions:[
+      'Does a documented asset inventory exist in any form?',
+      'Is it reviewed or updated at least quarterly?',
+      'Does it cover all asset types — endpoints, servers, network devices, and cloud?',
+      'Is there an automated discovery process in use (scan, DHCP, CMDB)?',
+      'Are unauthorized or unknown devices automatically flagged?'
+    ]
+  },
+  2:{
+    levels:[
+      'No software inventory exists. Installed applications are unknown.',
+      'Some apps known informally — no formal documented authorized list.',
+      'Partial authorized software list exists, not enforced or fully maintained.',
+      'Complete authorized software list, regularly reviewed, unapproved software removed.',
+      'Automated allowlisting or application control enforced across all endpoints.'
+    ],
+    questions:[
+      'Does an authorized software list exist in any form?',
+      'Is the list reviewed or updated at least quarterly?',
+      'Does it cover all device types and operating systems in scope?',
+      'Is there a process to identify and remove unauthorized software?',
+      'Is software allowlisting or automated enforcement in use?'
+    ]
+  },
+  3:{
+    levels:[
+      'No data classification or encryption controls exist.',
+      'Some sensitive data identified informally — no policy or consistent enforcement.',
+      'Data classified but protection inconsistently applied across systems.',
+      'Classification policy documented, encryption enforced for sensitive data, DLP controls in place.',
+      'Automated DLP, encryption enforced everywhere, regular data audits and access reviews.'
+    ],
+    questions:[
+      'Has sensitive data been formally identified and classified?',
+      'Is encryption used for sensitive data at rest?',
+      'Is encryption enforced for data in transit (TLS/SFTP)?',
+      'Is there a documented data handling and retention policy?',
+      'Are DLP tools used to prevent unauthorized data transfer?'
+    ]
+  },
+  4:{
+    levels:[
+      'No hardening standards or secure baseline configurations exist.',
+      'Some devices hardened ad-hoc — no documentation or consistency.',
+      'Hardening standard exists but is inconsistently applied across asset types.',
+      'Documented baseline configs applied to all new assets, deviation approval process exists.',
+      'Config management tools enforce baselines, automated drift detection and remediation.'
+    ],
+    questions:[
+      'Does a documented secure configuration baseline or hardening guide exist?',
+      'Is the baseline applied to all new assets before deployment?',
+      'Are existing assets periodically checked against the baseline?',
+      'Is there a process to approve and document deviations from the baseline?',
+      'Are configuration management tools used to detect or enforce compliance?'
+    ]
+  },
+  5:{
+    levels:[
+      'No account lifecycle process — accounts created and removed informally.',
+      'Accounts managed reactively; orphaned or stale accounts observed.',
+      'Some process exists but gaps remain — orphaned accounts or shared credentials found.',
+      'Formal onboarding/offboarding process documented and followed, access reviews quarterly.',
+      'Automated provisioning and deprovisioning, real-time access certification enforced.'
+    ],
+    questions:[
+      'Is there a documented process for creating and removing accounts?',
+      'Are accounts reviewed for orphans or stale access at least quarterly?',
+      'Are default credentials changed on all systems before deployment?',
+      'Are shared or generic accounts prohibited or documented with justification?',
+      'Is MFA enforced for privileged or remote access accounts?'
+    ]
+  },
+  6:{
+    levels:[
+      'No least-privilege enforcement — users often hold admin rights by default.',
+      'Some restrictions applied informally — no policy or consistent standard.',
+      'Least-privilege partially enforced; admin accounts not fully separated.',
+      'Documented policy, least-privilege enforced, admin accounts separated, access reviewed regularly.',
+      'Just-in-time privilege elevation, automated PAM, continuous monitoring of privileged sessions.'
+    ],
+    questions:[
+      'Is a least-privilege access policy documented and communicated to staff?',
+      'Are privileged/admin accounts separated from standard user accounts?',
+      'Is access reviewed and recertified on a defined schedule?',
+      'Is a privileged access management (PAM) solution in use?',
+      'Is just-in-time or time-limited privilege elevation enforced?'
+    ]
+  },
+  7:{
+    levels:[
+      'No vulnerability scanning performed.',
+      'Occasional scans run — no tracking, prioritization, or remediation follow-up.',
+      'Regular scans conducted; some remediation but no documented SLA.',
+      'Continuous scanning, documented SLA (e.g. critical patches <30d), findings tracked to closure.',
+      'Risk-based prioritization using threat intel, automated patching, metrics reported to leadership.'
+    ],
+    questions:[
+      'Are vulnerability scans performed at least monthly?',
+      'Is there a documented remediation SLA (e.g. critical patches within 30 days)?',
+      'Are scan findings tracked in a ticketing or remediation tracking system?',
+      'Are critical/high findings verified as remediated before closing?',
+      'Are scans continuous or risk-prioritized using threat intelligence data?'
+    ]
+  },
+  8:{
+    levels:[
+      'No audit logging enabled on systems.',
+      'Some logs exist but are never reviewed or centralized.',
+      'Logs collected, reviewed occasionally or only reactively after an incident.',
+      'Centralized logging, defined retention policy, alerts configured for key security events.',
+      'SIEM with tuned correlation rules, automated alerting, log integrity controls enforced.'
+    ],
+    questions:[
+      'Are audit logs enabled on critical systems (servers, firewalls, AD/IAM)?',
+      'Are logs forwarded to a central location or SIEM?',
+      'Is there a documented log retention policy (e.g. 90+ days)?',
+      'Are alerts configured for key security events (failed logins, privilege changes)?',
+      'Are logs reviewed or correlated regularly by security staff?'
+    ]
+  },
+  9:{
+    levels:[
+      'No email filtering or web controls in place.',
+      'Basic spam filter only — no anti-phishing or web protection.',
+      'Anti-phishing controls and some web filtering deployed.',
+      'DMARC/DKIM/SPF configured, URL filtering, attachment sandboxing, DNS filtering in use.',
+      'Advanced threat protection platform, phishing simulation program with measured outcomes.'
+    ],
+    questions:[
+      'Is an email filtering or anti-spam solution in place?',
+      'Are DMARC, DKIM, and SPF configured for all company domains?',
+      'Is URL/web filtering used to block known malicious sites?',
+      'Are suspicious attachments sandboxed or blocked before delivery?',
+      'Are phishing simulations conducted to test and train staff?'
+    ]
+  },
+  10:{
+    levels:[
+      'No antivirus or EDR software deployed.',
+      'AV installed on some endpoints but unmanaged — definitions may be stale.',
+      'Centrally managed AV deployed, but some endpoints not covered.',
+      'EDR on all in-scope endpoints, centrally managed, alerts reviewed and actioned.',
+      'Behavioral/AI-based detection, automated response, active threat hunting program.'
+    ],
+    questions:[
+      'Is antivirus or EDR software installed on all in-scope endpoints?',
+      'Is the AV/EDR centrally managed via a management console?',
+      'Are signatures or behavioral models updated automatically?',
+      'Are AV/EDR alerts reviewed and actioned on a regular basis?',
+      'Is behavioral or AI-based detection in use (beyond signature-only AV)?'
+    ]
+  },
+  11:{
+    levels:[
+      'No backups exist for critical systems.',
+      'Backups configured but never tested — recovery success is untested.',
+      'Backups running, tested occasionally, no documented policy or schedule.',
+      'Documented backup policy, tested quarterly, offsite or offline copy maintained.',
+      'Automated restore testing, RTO/RPO defined and measured, immutable or air-gapped backups.'
+    ],
+    questions:[
+      'Are backups configured for all critical systems and data?',
+      'Are backups stored offsite or in a separate environment?',
+      'Is backup integrity tested through restore exercises at least quarterly?',
+      'Are backup restore procedures documented and staff trained on them?',
+      'Are backups immutable or isolated to protect against ransomware encryption?'
+    ]
+  },
+  12:{
+    levels:[
+      'No formal network management — no documentation or change control.',
+      'Basic firewall in place — rules not documented, no change process.',
+      'Firewall rules documented, basic segmentation in place.',
+      'Network diagrams current, formal change control, segmentation enforced between trust zones.',
+      'Automated config management, continuous compliance checking, zero-trust architecture principles.'
+    ],
+    questions:[
+      'Is a firewall in place between internal networks and the internet?',
+      'Are firewall rules documented with business justification?',
+      'Is there a formal change control process for firewall modifications?',
+      'Is the network segmented (e.g. servers, users, guests, OT separated)?',
+      'Are network device configs backed up and managed centrally?'
+    ]
+  },
+  13:{
+    levels:[
+      'No network security monitoring.',
+      'Basic uptime monitoring only — no security alerting.',
+      'IDS/IPS deployed, alerts generated but reviewed only occasionally.',
+      'IDS/IPS alerts reviewed daily, escalation process defined, traffic baseline established.',
+      'NDR/NTA platform, ML-based anomaly detection, 24/7 SOC or MDR coverage.'
+    ],
+    questions:[
+      'Is network traffic monitored for anomalies or intrusions?',
+      'Is an IDS/IPS solution deployed at key network points?',
+      'Are network security alerts reviewed at least daily?',
+      'Is there a defined escalation process for network security events?',
+      'Is a network detection and response (NDR) or SIEM platform in use?'
+    ]
+  },
+  14:{
+    levels:[
+      'No security awareness training conducted.',
+      'One-time or ad-hoc training only — no tracking or follow-up.',
+      'Annual training conducted, completion tracked, generic content.',
+      'Regular training and phishing simulations, role-based content, completion rates documented.',
+      'Continuous learning platform, behavior metrics tracked, program adjusted based on outcomes.'
+    ],
+    questions:[
+      'Do all employees receive security awareness training?',
+      'Is training completion tracked and enforced?',
+      'Is training conducted at least annually?',
+      'Are phishing simulation exercises conducted to test staff?',
+      'Is training role-specific (different content for IT, finance, executives)?'
+    ]
+  },
+  15:{
+    levels:[
+      'No vendor management process — third-party risk is unmanaged.',
+      'Vendors tracked informally — no risk assessment or contract review for security.',
+      'Vendor list maintained, some contracts reviewed for security requirements.',
+      'Formal risk assessments before onboarding, security clauses in contracts, periodic reviews.',
+      'Continuous vendor monitoring, automated risk scoring, tested offboarding procedures.'
+    ],
+    questions:[
+      'Is a list of vendors with system or data access maintained?',
+      'Are vendors assessed for security risk before being onboarded?',
+      'Do vendor contracts include security and data handling requirements?',
+      'Are vendor access permissions reviewed at least annually?',
+      'Is there a defined process for offboarding vendors and revoking their access?'
+    ]
+  },
+  16:{
+    levels:[
+      'No application security practices in place.',
+      'Ad-hoc code review only — no formal process or tooling.',
+      'Some SAST/DAST performed, not covering all in-scope applications.',
+      'Secure SDLC documented, security testing integrated into CI/CD pipeline.',
+      'Automated security gates, threat modeling, dependency scanning, bug bounty program.'
+    ],
+    questions:[
+      'Are security requirements defined before development or changes begin?',
+      'Is SAST or DAST applied to in-scope applications?',
+      'Are third-party libraries scanned for known vulnerabilities?',
+      'Is security testing integrated into the CI/CD or release pipeline?',
+      'Are code reviews required before deployment to production?'
+    ]
+  },
+  17:{
+    levels:[
+      'No incident response plan exists.',
+      'Informal response process — no documented plan or assigned roles.',
+      'IR plan documented but never tested or exercised.',
+      'IR plan tested annually, roles defined, internal and external communication plan documented.',
+      'Automated IR playbooks, tabletop exercises quarterly, post-incident reviews conducted.'
+    ],
+    questions:[
+      'Is a formal incident response (IR) plan documented?',
+      'Are roles and responsibilities clearly defined in the plan?',
+      'Has the IR plan been tested (tabletop or simulation) within the past 12 months?',
+      'Is there a communication plan covering internal teams and external notification?',
+      'Is there a post-incident review process to capture and act on lessons learned?'
+    ]
+  },
+  18:{
+    levels:[
+      'No penetration testing performed.',
+      'Vulnerability scans only — no actual exploitation or adversary simulation.',
+      'Pen tests conducted occasionally — findings not fully tracked or remediated.',
+      'Annual pen test by qualified third party, findings tracked to verified remediation.',
+      'Continuous red/purple team exercises, both internal and external assets in scope.'
+    ],
+    questions:[
+      'Has a penetration test been conducted within the past 12 months?',
+      'Was the test performed by a qualified third party?',
+      'Are findings tracked in a formal remediation plan?',
+      'Is remediation verified and re-tested after fixes are applied?',
+      'Are both internal and external assets included in the test scope?'
+    ]
+  }
+};
+
 const mappings=[
-  {id:1,finding:'Unauthenticated/unknown hosts discovered',plugin:'Host Discovery',cis:[1],sev:'high',what:'Nessus found devices on the network not in the authorized asset inventory.',mat:'Scores CIS 1 at maturity 1 (ad-hoc). A complete verified inventory would prevent unknown devices. Move to maturity 2 by documenting all found assets and reconciling weekly.',ev:'Nessus discovery scan identified [N] unmanaged/unknown hosts on network segments [X]. No formal asset inventory process in place to reconcile against an authorized list.'},
-  {id:2,finding:'Missing OS patches / critical CVEs on endpoints',plugin:'Patch Management',cis:[7],sev:'critical',what:'Nessus found systems missing critical or high-severity OS patches, often weeks or months overdue.',mat:'Maturity 1 if patches are months old with no tracking. Maturity 2 if scanning happens but remediation is inconsistent. Maturity 3 requires patches applied within 30 days of release.',ev:'Nessus identified [N] endpoints with critical CVEs unpatched for >[X] days (e.g. CVE-XXXX on [asset]). No documented patch SLA or remediation tracking process observed.'},
-  {id:3,finding:'Default or weak credentials on services',plugin:'Default Accounts / Brute Force',cis:[4,5],sev:'critical',what:'Nessus authenticated or detected default/weak credentials on network services, devices, or applications.',mat:'Informs CIS 4 (config hardening) AND CIS 5 (account management), both at maturity 0–1. Default credentials mean no hardening baseline exists.',ev:'Nessus detected default credentials on [N] devices/services (e.g. admin/admin on [asset]). No evidence of a credential change policy or hardening checklist at device provisioning.'},
+  {id:1,finding:'Unauthenticated/unknown hosts discovered',plugin:'Host Discovery',cis:[1],sev:'high',what:'Nessus found devices on the network not in the authorized asset inventory.',mat:'Scores CIS 1 at maturity 1 (ad-hoc). Move to maturity 2 by documenting all found assets and reconciling weekly.',ev:'Nessus discovery scan identified [N] unmanaged/unknown hosts on network segments [X]. No formal asset inventory process in place to reconcile against an authorized list.'},
+  {id:2,finding:'Missing OS patches / critical CVEs on endpoints',plugin:'Patch Management',cis:[7],sev:'critical',what:'Nessus found systems missing critical or high-severity OS patches, often weeks or months overdue.',mat:'Maturity 1 if patches months old with no tracking. Maturity 2 if scanning happens but remediation inconsistent. Maturity 3 requires patches applied within 30 days.',ev:'Nessus identified [N] endpoints with critical CVEs unpatched for >[X] days (e.g. CVE-XXXX on [asset]). No documented patch SLA or remediation tracking process observed.'},
+  {id:3,finding:'Default or weak credentials on services',plugin:'Default Accounts / Brute Force',cis:[4,5],sev:'critical',what:'Nessus authenticated or detected default/weak credentials on network services, devices, or applications.',mat:'Informs CIS 4 (config hardening) AND CIS 5 (account management), both at maturity 0–1.',ev:'Nessus detected default credentials on [N] devices/services (e.g. admin/admin on [asset]). No evidence of a credential change policy or hardening checklist at device provisioning.'},
   {id:4,finding:'Unsupported / end-of-life operating systems',plugin:'Unsupported OS Detection',cis:[2,4,7],sev:'critical',what:'Nessus identified systems running OS versions no longer receiving security patches.',mat:'Informs CIS 2 (EOL not tracked), CIS 4 (no upgrade baseline), CIS 7 (unresolvable vulns). All at maturity 1.',ev:'Nessus identified [N] assets running EOL OS ([version]) receiving no further security patches. No documented upgrade roadmap or compensating controls in place.'},
-  {id:5,finding:'SMBv1 / legacy protocols enabled',plugin:'SMB Signing / EternalBlue checks',cis:[4],sev:'high',what:'Nessus found insecure legacy protocols enabled — SMBv1, TLS 1.0, SSLv3, Telnet, FTP.',mat:'Scores CIS 4 at maturity 1. A maturity 3 environment has a hardening standard that explicitly disables legacy protocols on all assets.',ev:'Nessus flagged SMBv1 enabled on [N] hosts / TLS 1.0 active on [service]. No hardening baseline documenting legacy protocol disablement exists.'},
-  {id:6,finding:'Accounts with no password expiry / blank passwords',plugin:'Local Users / Password Policy',cis:[5,6],sev:'high',what:'Nessus enumerated local accounts with passwords set to never expire or blank passwords.',mat:'Informs CIS 5 and CIS 6, both at maturity 1–2. Maturity 2 if policy exists but is not technically enforced.',ev:'Nessus identified [N] local accounts with no password expiry / blank passwords on [assets]. No password policy or technical Group Policy enforcement observed.'},
-  {id:7,finding:'Unnecessary services / open ports',plugin:'Port Scanners / Service Detection',cis:[4],sev:'medium',what:'Nessus found services running and ports open with no documented business justification.',mat:'Scores CIS 4 at maturity 1–2. Maturity 3 requires a documented approved-services list and a process to disable unauthorized services.',ev:'Nessus found [N] unnecessary open ports/services (e.g. Telnet 23, FTP 21) on [assets] with no documented business justification. No service hardening standard in place.'},
-  {id:8,finding:'No antivirus / AV definitions out of date',plugin:'Antivirus Not Installed / AV Update',cis:[10],sev:'critical',what:'Nessus found endpoints with no AV/EDR or signature definitions more than 7 days out of date.',mat:'Scores CIS 10 at maturity 0 (none) or maturity 1 (installed but unmanaged). Maturity 3 requires centrally managed AV with an enforced update SLA.',ev:'Nessus detected [N] endpoints with no AV installed / AV definitions >[X] days old. No central management console or update policy enforced across the endpoint fleet.'},
-  {id:9,finding:'SSL/TLS certificate issues (expired, self-signed)',plugin:'SSL Certificate Trust / Expiry',cis:[4],sev:'medium',what:'Nessus found expired, self-signed, or misconfigured SSL/TLS certificates on services.',mat:'Scores CIS 4 at maturity 1–2. Indicates no certificate lifecycle management. Maturity 3 requires a cert inventory and renewal process with alerting.',ev:'Nessus flagged [N] expired or self-signed certificates on [services]. No certificate inventory or automated renewal process documented.'},
-  {id:10,finding:'Audit logging not enabled / insufficient logging',plugin:'Audit Trail / Event Log Checks',cis:[8],sev:'high',what:'Nessus or manual checks found Windows Event Logging disabled, syslog not configured, or critical event types not captured.',mat:'Scores CIS 8 at maturity 0–1. Maturity 3 requires centralized logging (SIEM) with defined retention and alerting on key events.',ev:'Nessus audit checks found Event Log disabled on [N] hosts / no syslog forwarding configured. No centralized log collection or retention policy in place.'},
-  {id:11,finding:'Unauthorized software / unlicensed applications',plugin:'Software Enumeration',cis:[2],sev:'medium',what:'Nessus software enumeration found applications not in the authorized software list.',mat:'Scores CIS 2 at maturity 1–2. Maturity 2 if an inventory exists but is not enforced. Maturity 3+ requires allowlisting or automated enforcement.',ev:'Nessus software scan identified [N] unauthorized applications on [assets] (e.g. [app names]). No software allowlist or enforcement mechanism documented.'},
-  {id:12,finding:'Privilege escalation vulnerabilities',plugin:'Local Privilege Escalation',cis:[5,6,7],sev:'critical',what:'Nessus found vulnerabilities enabling local privilege escalation — unquoted service paths, DLL hijacking, sudo misconfigs.',mat:'Informs CIS 5, 6, and 7 — all at maturity 1. Indicates no privilege hardening or vuln remediation process.',ev:'Nessus identified [N] local privilege escalation vulnerabilities on [assets] (e.g. unquoted service paths). No least-privilege enforcement or escalation control documented.'},
-  {id:13,finding:'Remote code execution / critical web vulnerabilities',plugin:'Web Application / RCE Checks',cis:[7,16],sev:'critical',what:'Nessus found exploitable RCE vulnerabilities — unpatched Apache/IIS, SQL injection, deserialization flaws.',mat:'Informs CIS 7 at maturity 0–1 and CIS 16 at maturity 0–1 for internally developed apps.',ev:'Nessus identified critical RCE vulnerability [CVE/description] on [asset]. No patch applied. No application security testing process documented for this application.'},
-  {id:14,finding:'Firewall misconfiguration / overly permissive rules',plugin:'Firewall Rule Analysis',cis:[4,12],sev:'high',what:'Nessus or config review found overly permissive inbound/outbound rules or management interfaces exposed to the internet.',mat:'Informs CIS 4 (config) and CIS 12 (network mgmt), both at maturity 1. Maturity 3 requires a firewall rule review process and documented change control.',ev:'Nessus/config review found [N] overly permissive firewall rules (e.g. any-to-any on port 445 / management interface exposed on WAN). No firewall change control or review process documented.'},
-  {id:15,finding:'No backup or backup failures detected',plugin:'Backup Software / Storage Checks',cis:[11],sev:'high',what:'No backup agent detected on critical systems, backup jobs failing, or last successful backup is weeks old.',mat:'Scores CIS 11 at maturity 0–1. Maturity 3 requires tested, automated backups with defined RTO/RPO and documented restore tests.',ev:'No backup agent detected on [N] critical systems / last successful backup on [asset] was [X] days ago. No documented backup policy, schedule, or restore test results available.'},
-  {id:16,finding:'Cleartext protocols — Telnet, FTP, HTTP management',plugin:'Cleartext Protocol Detection',cis:[4,12],sev:'high',what:'Nessus detected management or data transfer using cleartext protocols transmitting credentials in the open.',mat:'Informs CIS 4 and CIS 12 at maturity 1. Maturity 3 requires all management traffic to use encrypted protocols (SSH, SFTP, HTTPS).',ev:'Nessus detected cleartext protocols in use: [Telnet/FTP/HTTP] on [assets/services]. No documented requirement to use encrypted alternatives for management or data transfer.'},
+  {id:5,finding:'SMBv1 / legacy protocols enabled',plugin:'SMB Signing / EternalBlue checks',cis:[4],sev:'high',what:'Nessus found insecure legacy protocols enabled — SMBv1, TLS 1.0, SSLv3, Telnet, FTP.',mat:'Scores CIS 4 at maturity 1. A maturity 3 environment has a hardening standard explicitly disabling legacy protocols.',ev:'Nessus flagged SMBv1 enabled on [N] hosts / TLS 1.0 active on [service]. No hardening baseline documenting legacy protocol disablement exists.'},
+  {id:6,finding:'Accounts with no password expiry / blank passwords',plugin:'Local Users / Password Policy',cis:[5,6],sev:'high',what:'Nessus enumerated local accounts with passwords set to never expire or blank passwords.',mat:'Informs CIS 5 and CIS 6, both at maturity 1–2. Maturity 2 if policy exists but is not technically enforced.',ev:'Nessus identified [N] local accounts with no password expiry / blank passwords on [assets]. No password policy or technical enforcement observed.'},
+  {id:7,finding:'Unnecessary services / open ports',plugin:'Port Scanners / Service Detection',cis:[4],sev:'medium',what:'Nessus found services running and ports open with no documented business justification.',mat:'Scores CIS 4 at maturity 1–2. Maturity 3 requires a documented approved-services list and a disable process.',ev:'Nessus found [N] unnecessary open ports/services (e.g. Telnet 23, FTP 21) on [assets] with no documented business justification. No service hardening standard in place.'},
+  {id:8,finding:'No antivirus / AV definitions out of date',plugin:'Antivirus Not Installed / AV Update',cis:[10],sev:'critical',what:'Nessus found endpoints with no AV/EDR or signature definitions more than 7 days out of date.',mat:'Scores CIS 10 at maturity 0 (none) or maturity 1 (installed but unmanaged).',ev:'Nessus detected [N] endpoints with no AV installed / AV definitions >[X] days old. No central management console or update policy enforced across the endpoint fleet.'},
+  {id:9,finding:'SSL/TLS certificate issues (expired, self-signed)',plugin:'SSL Certificate Trust / Expiry',cis:[4],sev:'medium',what:'Nessus found expired, self-signed, or misconfigured SSL/TLS certificates on services.',mat:'Scores CIS 4 at maturity 1–2. Indicates no certificate lifecycle management.',ev:'Nessus flagged [N] expired or self-signed certificates on [services]. No certificate inventory or automated renewal process documented.'},
+  {id:10,finding:'Audit logging not enabled / insufficient logging',plugin:'Audit Trail / Event Log Checks',cis:[8],sev:'high',what:'Nessus or manual checks found Windows Event Logging disabled, syslog not configured, or critical event types not captured.',mat:'Scores CIS 8 at maturity 0–1. Maturity 3 requires centralized logging (SIEM) with defined retention and alerting.',ev:'Nessus audit checks found Event Log disabled on [N] hosts / no syslog forwarding configured. No centralized log collection or retention policy in place.'},
+  {id:11,finding:'Unauthorized software / unlicensed applications',plugin:'Software Enumeration',cis:[2],sev:'medium',what:'Nessus software enumeration found applications not in the authorized software list.',mat:'Scores CIS 2 at maturity 1–2. Maturity 2 if inventory exists but not enforced. Maturity 3+ requires allowlisting.',ev:'Nessus software scan identified [N] unauthorized applications on [assets] (e.g. [app names]). No software allowlist or enforcement mechanism documented.'},
+  {id:12,finding:'Privilege escalation vulnerabilities',plugin:'Local Privilege Escalation',cis:[5,6,7],sev:'critical',what:'Nessus found vulnerabilities enabling local privilege escalation — unquoted service paths, DLL hijacking, sudo misconfigs.',mat:'Informs CIS 5, 6, and 7 — all at maturity 1.',ev:'Nessus identified [N] local privilege escalation vulnerabilities on [assets] (e.g. unquoted service paths). No least-privilege enforcement or escalation control documented.'},
+  {id:13,finding:'Remote code execution / critical web vulnerabilities',plugin:'Web Application / RCE Checks',cis:[7,16],sev:'critical',what:'Nessus found exploitable RCE vulnerabilities — unpatched Apache/IIS, SQL injection, deserialization flaws.',mat:'Informs CIS 7 at maturity 0–1 and CIS 16 at maturity 0–1 for internally developed apps.',ev:'Nessus identified critical RCE vulnerability [CVE/description] on [asset]. No patch applied. No application security testing process documented.'},
+  {id:14,finding:'Firewall misconfiguration / overly permissive rules',plugin:'Firewall Rule Analysis',cis:[4,12],sev:'high',what:'Nessus or config review found overly permissive inbound/outbound rules or management interfaces exposed to the internet.',mat:'Informs CIS 4 (config) and CIS 12 (network mgmt), both at maturity 1.',ev:'Nessus/config review found [N] overly permissive firewall rules (e.g. any-to-any on port 445). No firewall change control or review process documented.'},
+  {id:15,finding:'No backup or backup failures detected',plugin:'Backup Software / Storage Checks',cis:[11],sev:'high',what:'No backup agent detected on critical systems, backup jobs failing, or last successful backup weeks old.',mat:'Scores CIS 11 at maturity 0–1. Maturity 3 requires tested, automated backups with defined RTO/RPO.',ev:'No backup agent detected on [N] critical systems / last successful backup on [asset] was [X] days ago. No documented backup policy, schedule, or restore test results available.'},
+  {id:16,finding:'Cleartext protocols — Telnet, FTP, HTTP management',plugin:'Cleartext Protocol Detection',cis:[4,12],sev:'high',what:'Nessus detected management or data transfer using cleartext protocols transmitting credentials in the open.',mat:'Informs CIS 4 and CIS 12 at maturity 1. Maturity 3 requires all management traffic to use encrypted protocols.',ev:'Nessus detected cleartext protocols in use: [Telnet/FTP/HTTP] on [assets/services]. No documented requirement for encrypted alternatives.'},
 ];
 
+/* ══ SHARED STATE ══ */
 const catCC={Identify:'cat-identify',Protect:'cat-protect',Detect:'cat-detect',Respond:'cat-respond',Recover:'cat-recover'};
 const igC=['','ig-ig1','ig-ig2','ig-ig3'];
+const matColors=['#E24B4A','#f97316','#eab308','#378ADD','#639922'];
+const matLabels=['Not implemented','Ad-hoc','Developing','Defined','Managed'];
 
 function showPage(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -644,7 +884,7 @@ function showPage(id,btn){
   document.getElementById('sw').style.display=id==='reference'?'block':'none';
 }
 
-/* REFERENCE */
+/* ══ REFERENCE ══ */
 let aIG='all',aCat=null,sTerm='';
 function setIG(ig,btn){aIG=ig;aCat=null;document.querySelectorAll('[data-ig]').forEach(b=>b.classList.remove('active'));document.querySelectorAll('[data-cat]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderRef();}
 function setCat(cat,btn){aCat=aCat===cat?null:cat;document.querySelectorAll('[data-cat]').forEach(b=>b.classList.remove('active'));if(aCat)btn.classList.add('active');renderRef();}
@@ -691,7 +931,7 @@ function renderRef(){
 }
 renderRef();
 
-/* NESSUS MAPPING */
+/* ══ NESSUS MAPPING ══ */
 let aMF='all';
 function setMF(f,btn){aMF=f;document.querySelectorAll('[data-mf]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderMap();}
 document.getElementById('map-search').addEventListener('input',renderMap);
@@ -723,7 +963,7 @@ function renderMap(){
           <button onclick="goCalc()" style="font-size:11px;padding:5px 10px;border:1px solid var(--border2);border-radius:5px;background:transparent;color:var(--text2);cursor:pointer;font-family:var(--sans)">Open calculator</button>
         </div>
       </div>
-      <div class="ev-label">Ready-to-paste evidence statement — click to copy</div>
+      <div class="ev-label">Ready-to-paste Nessus evidence — click to copy</div>
       <div class="ev-stmt" onclick="cpEv(this,'${m.id}')">${m.ev}</div>
     </div>`;
     grid.appendChild(card);
@@ -736,47 +976,170 @@ function cpEv(el,id){
 function goCalc(){showPage('calculator',document.querySelectorAll('.nav-tab')[3]);}
 renderMap();
 
-/* CALCULATOR */
-const cS=new Array(18).fill(-1),cEv=new Array(18).fill('');
+/* ══ CALCULATOR ══ */
+const cS=new Array(18).fill(-1);
+const cEv=controls.map(()=>({nessus:'',policy:'',interview:'',audit:''}));
+const qAns=controls.map(()=>new Array(5).fill(null));
+const expandedRows=new Set();
 let cIG=1;
-function sg(c,ig){let t=0;for(let i=0;i<ig;i++)t+=c.sg[i];return t;}
-function app(c){return sg(c,cIG)>0;}
+
+function sgCalc(c,ig){let t=0;for(let i=0;i<ig;i++)t+=c.sg[i];return t;}
+function appCalc(c){return sgCalc(c,cIG)>0;}
+
 function setIG2(ig){
   cIG=ig;
   [1,2,3].forEach(i=>{const p=document.getElementById('cp'+i);p.className='ig-pill'+(i===ig?` ai${ig}`:'');});
   renderCalc();recalc();
 }
+
+function getSuggested(idx){
+  const yesCount=qAns[idx].filter(a=>a===true).length;
+  return Math.min(yesCount,4);
+}
+
+function buildDetailPanel(c,idx){
+  const r=rubrics[c.n];
+  // Rubric
+  const rubricRows=r.levels.map((lvl,i)=>{
+    const isCurrent=cS[idx]===i;
+    return `<div class="rubric-row${isCurrent?' current':''}">
+      <span class="rubric-level" style="color:${matColors[i]}">${i}</span>
+      <span class="rubric-desc">${lvl}</span>
+    </div>`;
+  }).join('');
+  // Questions
+  const qRows=r.questions.map((q,qi)=>{
+    const ans=qAns[idx][qi];
+    return `<div class="gq-item">
+      <span class="gq-text">${q}</span>
+      <div class="gq-btns">
+        <button class="gq-btn yes${ans===true?' active':''}" onclick="setAns(${idx},${qi},true)">Yes</button>
+        <button class="gq-btn no${ans===false?' active':''}" onclick="setAns(${idx},${qi},false)">No</button>
+      </div>
+    </div>`;
+  }).join('');
+  const answered=qAns[idx].filter(a=>a!==null).length;
+  const suggested=getSuggested(idx);
+  const suggText=answered===0
+    ?'Answer the questions above to get a suggested score.'
+    :`Based on ${answered}/5 answers — suggested maturity: <strong style="color:${matColors[suggested]}">${suggested} — ${matLabels[suggested]}</strong>`;
+  const applyBtn=answered>0?`<button class="gq-apply ready" onclick="applySuggested(${idx})">Apply ${suggested}</button>`:'';
+  // Evidence fields
+  const evSources=[
+    {key:'nessus',icon:'🔍',label:'Nessus / scan findings',ph:'e.g. Plugin 21745 — 12 hosts, patches missing >30d'},
+    {key:'policy',icon:'📄',label:'Policy & document review',ph:'e.g. Asset policy reviewed — last updated Jan 2023, cloud assets not covered'},
+    {key:'interview',icon:'💬',label:'Interview / staff observation',ph:'e.g. IT admin confirmed no formal process — assets tracked in personal spreadsheet'},
+    {key:'audit',icon:'🔎',label:'Third-party audit finding',ph:'e.g. External auditor noted absence of asset tracking (finding F-03, 2024 report)'},
+  ];
+  const evFields=evSources.map(ev=>`<div class="ev-source-box">
+    <div class="ev-source-label"><span class="ev-source-icon">${ev.icon}</span>${ev.label}</div>
+    <textarea class="ev-source-ta" placeholder="${ev.ph}" oninput="saveEv(${idx},'${ev.key}',this.value)">${cEv[idx][ev.key]||''}</textarea>
+  </div>`).join('');
+
+  return `<div class="ctrl-panel">
+    <div class="panel-inner">
+      <div class="panel-section">
+        <div class="panel-section-title">Maturity rubric — what each score means for CIS ${c.n}</div>
+        ${rubricRows}
+      </div>
+      <div class="panel-section">
+        <div class="panel-section-title">Guided scoring — answer to get a suggested score</div>
+        ${qRows}
+        <div class="gq-suggestion"><span>${suggText}</span>${applyBtn}</div>
+      </div>
+    </div>
+    <div class="panel-section-title" style="padding:0 0 10px 2px">Evidence — enter what you have from each source</div>
+    <div class="ev-multi-grid">${evFields}</div>
+  </div>`;
+}
+
 function renderCalc(){
-  const tb=document.getElementById('calc-tbody');tb.innerHTML='';
-  const tSG=controls.reduce((s,c)=>s+sg(c,cIG),0);
+  const tb=document.getElementById('calc-tbody');
+  tb.innerHTML='';
+  const tSG=controls.reduce((s,c)=>s+sgCalc(c,cIG),0);
   controls.forEach((c,idx)=>{
-    const a=app(c);const s=sg(c,cIG);
-    const tr=document.createElement('tr');if(!a)tr.className='na-row';
-    const mats=a?[0,1,2,3,4].map(m=>{const sel=cS[idx]===m?` s${m}`:'';return`<button class="mb${sel}" onclick="setScore(${idx},${m})" title="${['Not implemented','Ad-hoc','Developing','Defined','Managed'][m]}">${m}</button>`;}).join(''):'<span style="font-size:11px;color:var(--text3)">N/A</span>';
+    const a=appCalc(c);
+    const s=sgCalc(c,cIG);
+    const isExp=expandedRows.has(idx);
+    const tr=document.createElement('tr');
+    tr.className='ctrl-main-row'+(isExp?' open':'')+(a?'':' na-row');
+    if(a)tr.onclick=()=>toggleCtrl(idx);
+    if(a)tr.style.cursor='pointer';
+
+    const mats=a?[0,1,2,3,4].map(m=>{
+      const sel=cS[idx]===m?` s${m}`:'';
+      return`<button class="mb${sel}" onclick="event.stopPropagation();setScore(${idx},${m})" title="${matLabels[m]}">${m}</button>`;
+    }).join(''):'<span style="font-size:11px;color:var(--text3)">N/A</span>';
+
     const ws=a&&cS[idx]>=0?((cS[idx]/4)*(s/tSG)*100).toFixed(1)+'%':'—';
     const bw=a&&cS[idx]>=0?(cS[idx]/4*100)+'%':'0%';
-    const bc=['#E24B4A','#f97316','#eab308','#378ADD','#639922'][cS[idx]]||'transparent';
+    const bc=matColors[cS[idx]]||'transparent';
+
+    // Evidence badge
+    const evCount=a?[cEv[idx].nessus,cEv[idx].policy,cEv[idx].interview,cEv[idx].audit].filter(v=>v.trim()).length:0;
+    const evBadge=evCount>0?`<span class="ev-count-badge">${evCount} source${evCount>1?'s':''}</span>`:'';
+    const chevron=a?`<svg class="ctrl-chevron-sm" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:'';
+
     tr.innerHTML=`
       <td class="t-num" style="padding-left:14px">${String(c.n).padStart(2,'0')}</td>
-      <td class="t-name">${c.title}</td>
+      <td class="t-name">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span>${c.title}</span>
+          <div style="display:flex;align-items:center;gap:5px">${evBadge}${chevron}</div>
+        </div>
+      </td>
       <td><span class="tag ${catCC[c.cat]}" style="font-size:10px">${c.cat}</span></td>
       <td style="font-size:11px;color:var(--text3);font-family:var(--mono);text-align:center">${a?s:'—'}</td>
-      <td style="min-width:155px"><div class="mat-btns">${mats}</div>${a&&cS[idx]>=0?`<div class="mbar-bg"><div class="mbar-fill" style="width:${bw};background:${bc}"></div></div>`:''}</td>
-      <td style="min-width:190px">${a?`<textarea class="ev-input" rows="1" placeholder="Paste Nessus evidence here…" oninput="saveEv(${idx},this.value)">${cEv[idx]||''}</textarea><div class="ev-hint">e.g. Plugin 21745 — 12 hosts, patches missing &gt;30d</div>`:'<span style="font-size:11px;color:var(--text3)">N/A</span>'}</td>
+      <td style="min-width:155px">
+        <div class="mat-btns">${mats}</div>
+        ${a&&cS[idx]>=0?`<div class="mbar-bg"><div class="mbar-fill" style="width:${bw};background:${bc}"></div></div>`:''}
+      </td>
       <td class="t-ws" style="padding-right:14px">${ws}</td>`;
     tb.appendChild(tr);
+
+    if(a){
+      const dr=document.createElement('tr');
+      dr.id='cdr-'+idx;
+      dr.style.display=isExp?'table-row':'none';
+      dr.innerHTML=`<td colspan="6" style="padding:0;border-bottom:${isExp?'1px solid var(--border)':'none'}">${buildDetailPanel(c,idx)}</td>`;
+      tb.appendChild(dr);
+    }
   });
-  document.getElementById('c-total').textContent=controls.filter(c=>app(c)).length;
-  document.getElementById('calc-math').innerHTML=`<b>Formula:</b> Score = Σ (maturity ÷ 4) × (safeguard_weight) × 100 &nbsp;|&nbsp; <b>IG${cIG}:</b> ${controls.reduce((s,c)=>s+sg(c,cIG),0)} safeguards &nbsp;|&nbsp; <b>Threshold: ≥ 80%</b>`;
+  document.getElementById('c-total').textContent=controls.filter(c=>appCalc(c)).length;
+  document.getElementById('calc-math').innerHTML=`<b>Formula:</b> Score = Σ (maturity ÷ 4) × (safeguard_weight) × 100 &nbsp;|&nbsp; <b>IG${cIG}:</b> ${controls.reduce((s,c)=>s+sgCalc(c,cIG),0)} safeguards &nbsp;|&nbsp; <b>Threshold: ≥ 80%</b>`;
 }
-function saveEv(idx,v){cEv[idx]=v;}
-function setScore(idx,v){cS[idx]=cS[idx]===v?-1:v;renderCalc();recalc();}
+
+function toggleCtrl(idx){
+  if(expandedRows.has(idx))expandedRows.delete(idx);
+  else expandedRows.add(idx);
+  renderCalc();
+}
+
+function setAns(ctrlIdx,qIdx,val){
+  qAns[ctrlIdx][qIdx]=qAns[ctrlIdx][qIdx]===val?null:val;
+  // Refresh just the detail panel without collapsing
+  const dr=document.getElementById('cdr-'+ctrlIdx);
+  if(dr){dr.querySelector('td').innerHTML=buildDetailPanel(controls[ctrlIdx],ctrlIdx);}
+}
+
+function applySuggested(idx){
+  cS[idx]=getSuggested(idx);
+  renderCalc();recalc();
+}
+
+function saveEv(idx,type,val){cEv[idx][type]=val;}
+
+function setScore(idx,v){
+  cS[idx]=cS[idx]===v?-1:v;
+  renderCalc();recalc();
+}
+
 function recalc(){
-  const tSG=controls.reduce((s,c)=>s+sg(c,cIG),0);
-  const a=controls.filter(c=>app(c));
+  const tSG=controls.reduce((s,c)=>s+sgCalc(c,cIG),0);
+  const a=controls.filter(c=>appCalc(c));
   const sc=a.filter(c=>cS[controls.indexOf(c)]>=0);
   let wS=0,mS=0;
-  a.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0){wS+=(cS[i]/4)*(sg(c,cIG)/tSG)*100;mS+=cS[i];}});
+  a.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0){wS+=(cS[i]/4)*(sgCalc(c,cIG)/tSG)*100;mS+=cS[i];}});
   document.getElementById('c-scored').innerHTML=`${sc.length}/<span id="c-total">${a.length}</span>`;
   document.getElementById('c-avg').textContent=sc.length>0?(mS/sc.length).toFixed(1)+'/4':'—';
   if(!sc.length){document.getElementById('c-score').textContent='—';document.getElementById('c-bar').style.width='0%';document.getElementById('c-verdict').style.display='none';return;}
@@ -793,21 +1156,34 @@ function recalc(){
   else{cls='vn';txt=`✗ ${name} is NON-COMPLIANT at ${pct}%. Critical gaps require immediate remediation.${inc}`;}
   const v=document.getElementById('c-verdict');v.className='verdict-box '+cls;v.textContent=txt;v.style.display='block';
 }
-function resetCalc(){cS.fill(-1);cEv.fill('');document.getElementById('client-name').value='';renderCalc();recalc();}
+
+function resetCalc(){
+  cS.fill(-1);
+  controls.forEach((_,i)=>{
+    cEv[i]={nessus:'',policy:'',interview:'',audit:''};
+    qAns[i].fill(null);
+  });
+  expandedRows.clear();
+  document.getElementById('client-name').value='';
+  renderCalc();recalc();
+}
+
 function copyResults(){
-  const tSG=controls.reduce((s,c)=>s+sg(c,cIG),0);
-  const a=controls.filter(c=>app(c));
+  const tSG=controls.reduce((s,c)=>s+sgCalc(c,cIG),0);
+  const a=controls.filter(c=>appCalc(c));
   const name=document.getElementById('client-name').value.trim()||'Client';
-  const mL=['Not implemented','Ad-hoc','Developing','Defined','Managed'];
   let lines=[`CIS Controls v8 — IG${cIG} Compliance Assessment: ${name}\n${'='.repeat(60)}\n`];
   a.forEach(c=>{
-    const i=controls.indexOf(c);const s=cS[i];
+    const i=controls.indexOf(c);const s=cS[i];const ev=cEv[i];
     lines.push(`CIS ${c.n}: ${c.title}`);
-    lines.push(`  Maturity: ${s>=0?s:'—'}/4 (${s>=0?Math.round(s/4*100)+'%':'—'}) — ${s>=0?mL[s]:'Not scored'}`);
-    if(cEv[i])lines.push(`  Evidence: ${cEv[i]}`);
+    lines.push(`  Maturity: ${s>=0?s:'—'}/4 (${s>=0?Math.round(s/4*100)+'%':'—'}) — ${s>=0?matLabels[s]:'Not scored'}`);
+    if(ev.nessus)lines.push(`  Evidence (Nessus/Scan): ${ev.nessus}`);
+    if(ev.policy)lines.push(`  Evidence (Policy/Docs): ${ev.policy}`);
+    if(ev.interview)lines.push(`  Evidence (Interview): ${ev.interview}`);
+    if(ev.audit)lines.push(`  Evidence (Third-party Audit): ${ev.audit}`);
     lines.push('');
   });
-  let wS=0;a.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0)wS+=(cS[i]/4)*(sg(c,cIG)/tSG)*100;});
+  let wS=0;a.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0)wS+=(cS[i]/4)*(sgCalc(c,cIG)/tSG)*100;});
   const sc=a.filter(c=>cS[controls.indexOf(c)]>=0);
   const proj=sc.length>0?(wS*a.length/sc.length).toFixed(1):'—';
   lines.push(`${'='.repeat(60)}\nOverall: ${proj}% | Scored: ${sc.length}/${a.length} | Threshold: 80%`);
@@ -815,66 +1191,55 @@ function copyResults(){
     const c=document.getElementById('copy-confirm');c.style.display='block';setTimeout(()=>c.style.display='none',2500);
   });
 }
-/* INTAKE */
+
+renderCalc();
+
+/* ══ INTAKE ══ */
 const intakeState={industry:null,size:null,it:null,data:[]};
 let intakeCurStep=0;
-
 function selectOption(el){
   const group=el.dataset.group;
   document.querySelectorAll(`[data-group="${group}"]`).forEach(o=>o.classList.remove('selected'));
-  el.classList.add('selected');
-  intakeState[group]=el.dataset.val;
+  el.classList.add('selected');intakeState[group]=el.dataset.val;
 }
 function toggleMulti(el){
-  const val=el.dataset.val;
-  el.classList.toggle('selected');
+  const val=el.dataset.val;el.classList.toggle('selected');
   if(val==='none'){
-    if(el.classList.contains('selected')){
-      document.querySelectorAll('[data-group="data"]').forEach(o=>{if(o!==el)o.classList.remove('selected');});
-      intakeState.data=['none'];
-    } else {intakeState.data=[];}
-    return;
+    if(el.classList.contains('selected')){document.querySelectorAll('[data-group="data"]').forEach(o=>{if(o!==el)o.classList.remove('selected');});intakeState.data=['none'];}
+    else{intakeState.data=[];}return;
   }
   if(el.classList.contains('selected')){
     document.querySelectorAll('[data-group="data"][data-val="none"]').forEach(o=>o.classList.remove('selected'));
     intakeState.data=intakeState.data.filter(v=>v!=='none');
     if(!intakeState.data.includes(val))intakeState.data.push(val);
-  } else {intakeState.data=intakeState.data.filter(v=>v!==val);}
+  }else{intakeState.data=intakeState.data.filter(v=>v!==val);}
 }
 function nextStep(n){
   document.getElementById('istep-'+intakeCurStep).classList.remove('active');
-  intakeCurStep=n;
-  document.getElementById('istep-'+n).classList.add('active');
-  [0,1,2,3,4].forEach(i=>{
-    const d=document.getElementById('idot-'+i);
-    d.className='intake-dot'+(i<n?' done':i===n?' active':'');
-  });
+  intakeCurStep=n;document.getElementById('istep-'+n).classList.add('active');
+  [0,1,2,3,4].forEach(i=>{const d=document.getElementById('idot-'+i);d.className='intake-dot'+(i<n?' done':i===n?' active':'');});
 }
 function resetIntake(){
   intakeState.industry=null;intakeState.size=null;intakeState.it=null;intakeState.data=[];
   document.querySelectorAll('.intake-option').forEach(o=>o.classList.remove('selected'));
-  document.getElementById('intake-name').value='';
-  intakeCurStep=0;
+  document.getElementById('intake-name').value='';intakeCurStep=0;
 }
-
 const industryRisks={
   healthcare:{label:'Healthcare',controls:[{n:3,why:'PHI/HIPAA — data classification and handling is your primary obligation'},{n:5,why:'Credential misuse is the leading cause of healthcare breaches'},{n:8,why:'HIPAA requires audit logging of all PHI access'},{n:11,why:'Ransomware targets healthcare — backup integrity is critical'}],regs:['HIPAA']},
-  finance:{label:'Financial services',controls:[{n:5,why:'Account takeover is the #1 attack vector in financial services'},{n:6,why:'Least-privilege is a core SOX and GLBA requirement'},{n:8,why:'Financial regulators require detailed audit trails'},{n:13,why:'Network monitoring is required under most financial frameworks'}],regs:['SOX','GLBA','PCI-DSS']},
+  finance:{label:'Financial services',controls:[{n:5,why:'Account takeover is the #1 attack vector in financial services'},{n:6,why:'Least-privilege is a core SOX and GLBA requirement'},{n:8,why:'Financial regulators require detailed audit trails'},{n:13,why:'Network monitoring required under most financial frameworks'}],regs:['SOX','GLBA','PCI-DSS']},
   legal:{label:'Legal / Professional services',controls:[{n:3,why:'Client confidentiality makes data protection the top priority'},{n:5,why:'Compromised attorney credentials are high-value targets'},{n:9,why:'Spear-phishing targeting legal staff is extremely common'},{n:11,why:'Client files must be recoverable — tested backups are essential'}],regs:['State bar requirements','Client confidentiality obligations']},
-  retail:{label:'Retail / E-commerce',controls:[{n:4,why:'POS and e-commerce systems require hardened configurations'},{n:6,why:'PCI-DSS mandates least-privilege access to cardholder data'},{n:7,why:'Retail systems are frequently targeted via known CVEs'},{n:9,why:'Phishing targeting retail staff for credential theft is widespread'}],regs:['PCI-DSS']},
-  manufacturing:{label:'Manufacturing / Industrial',controls:[{n:1,why:'OT/ICS assets are often undocumented and unmanaged'},{n:4,why:'ICS/SCADA default configs are notoriously insecure'},{n:7,why:'OT patches are often delayed — active vuln tracking is critical'},{n:12,why:'IT/OT network segmentation is the primary attack barrier'}],regs:['NIST SP 800-82','IEC 62443']},
+  retail:{label:'Retail / E-commerce',controls:[{n:4,why:'POS and e-commerce systems require hardened configurations'},{n:6,why:'PCI-DSS mandates least-privilege access to cardholder data'},{n:7,why:'Retail systems frequently targeted via known CVEs'},{n:9,why:'Phishing targeting retail staff for credential theft is widespread'}],regs:['PCI-DSS']},
+  manufacturing:{label:'Manufacturing / Industrial',controls:[{n:1,why:'OT/ICS assets are often undocumented and unmanaged'},{n:4,why:'ICS/SCADA default configs are notoriously insecure'},{n:7,why:'OT patches often delayed — active vuln tracking is critical'},{n:12,why:'IT/OT network segmentation is the primary attack barrier'}],regs:['NIST SP 800-82','IEC 62443']},
   nonprofit:{label:'Non-profit / Education',controls:[{n:5,why:'Volunteer and student accounts create high orphaned-account risk'},{n:9,why:'Phishing success rates are high in under-trained organizations'},{n:10,why:'Limited IT resources mean malware often goes undetected'},{n:14,why:'Security awareness has the highest ROI for limited-resource orgs'}],regs:['FERPA (if education)','State data breach laws']},
-  tech:{label:'Technology / SaaS',controls:[{n:2,why:'Software supply chain attacks target tech companies specifically'},{n:6,why:'Developer over-privilege is a common and exploited gap'},{n:16,why:'Application security is the primary attack surface for tech orgs'},{n:8,why:'Detailed logging is essential for detecting supply chain compromise'}],regs:['SOC 2','ISO 27001 (common customer requirement)']},
+  tech:{label:'Technology / SaaS',controls:[{n:2,why:'Software supply chain attacks target tech companies specifically'},{n:6,why:'Developer over-privilege is a common and exploited gap'},{n:16,why:'Application security is the primary attack surface for tech orgs'},{n:8,why:'Detailed logging essential for detecting supply chain compromise'}],regs:['SOC 2','ISO 27001 (common customer requirement)']},
   other:{label:'General business',controls:[{n:5,why:'Account management is the most commonly failing IG1 control'},{n:7,why:'Unpatched systems are the most exploited vulnerability class'},{n:9,why:'Email is the primary initial access vector across all industries'},{n:10,why:'Malware defenses are foundational for any organization'}],regs:['State data breach notification laws']},
 };
-
 function recommendIG(){
   const{size,it}=intakeState;
   if(it==='dedicated'||(size==='large')||(size==='mid'&&it!=='none'))return 2;
   if(size==='large')return 3;
   return 1;
 }
-
 function runIntake(){
   const name=document.getElementById('intake-name').value.trim()||'Client';
   const ig=recommendIG();
@@ -884,26 +1249,18 @@ function runIntake(){
   const itMap={none:'no dedicated IT staff',partial:'outsourced/part-time IT',dedicated:'dedicated IT staff'};
   const dataLabels={phi:'PHI',pci:'payment card data',pii:'PII',financial:'financial records',ip:'intellectual property',none:'no sensitive data'};
   const dataStr=intakeState.data.map(d=>dataLabels[d]||d).join(', ')||'not specified';
-
   const igColors2={1:'rig1',2:'rig2',3:'rig3'};
   const igDesc={
-    1:'IG1 — Basic. This org has limited IT resources and needs foundational cyber hygiene. Focus entirely on the 14 IG1 controls before considering anything beyond.',
-    2:'IG2 — Foundational. This org has dedicated IT resources and handles sensitive data. All 14 IG1 controls plus the 4 IG2 additions should be in scope.',
+    1:'IG1 — Basic. This org has limited IT resources and needs foundational cyber hygiene. Focus entirely on the 14 IG1 controls before anything beyond.',
+    2:'IG2 — Foundational. Dedicated IT resources and sensitive data in scope. All 14 IG1 controls plus the 4 IG2 additions should be assessed.',
     3:'IG3 — Advanced. Large or high-risk organization. All 18 controls apply with full maturity expectations.',
   };
-
-  let priorityHTML=industry.controls.map(p=>{
+  const priorityHTML=industry.controls.map(p=>{
     const c=controls.find(x=>x.n===p.n);
     const risk=p.n<=5?'critical':'high';
-    return`<div class="priority-item">
-      <span class="p-cis">CIS ${p.n}</span>
-      <div><div class="p-title">${c.title}</div><div class="p-why">${p.why}</div></div>
-      <span class="p-badge p-${risk}">${risk}</span>
-    </div>`;
+    return`<div class="priority-item"><span class="p-cis">CIS ${p.n}</span><div><div class="p-title">${c.title}</div><div class="p-why">${p.why}</div></div><span class="p-badge p-${risk}">${risk}</span></div>`;
   }).join('');
-
-  let regsHTML=industry.regs.length?`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase">Potentially applicable frameworks</div><div style="display:flex;gap:6px;flex-wrap:wrap">${industry.regs.map(r=>`<span style="font-size:12px;padding:3px 10px;border-radius:4px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2)">${r}</span>`).join('')}</div></div>`:'';
-
+  const regsHTML=industry.regs.length?`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)"><div style="font-size:11px;color:var(--text3);font-family:var(--mono);margin-bottom:8px;letter-spacing:.08em;text-transform:uppercase">Potentially applicable frameworks</div><div style="display:flex;gap:6px;flex-wrap:wrap">${industry.regs.map(r=>`<span style="font-size:12px;padding:3px 10px;border-radius:4px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2)">${r}</span>`).join('')}</div></div>`:'';
   document.getElementById('intake-result').innerHTML=`
     <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
       <div>
@@ -914,13 +1271,10 @@ function runIntake(){
     </div>
     <div class="result-reason">${igDesc[ig]}</div>
     <div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:10px">Priority controls for ${industry.label}</div>
-    <div class="priority-list">${priorityHTML}</div>
-    ${regsHTML}`;
-
+    <div class="priority-list">${priorityHTML}</div>${regsHTML}`;
   nextStep(4);
   window._intakeResult={name,ig};
 }
-
 function sendToCalc(){
   if(!window._intakeResult)return;
   const{name,ig}=window._intakeResult;
@@ -929,237 +1283,81 @@ function sendToCalc(){
   showPage('calculator',document.querySelectorAll('.nav-tab')[3]);
 }
 
-renderCalc();
+/* ══ VISUALS page ══ */
+const _origShowPage=showPage;
+showPage=function(id,btn){_origShowPage(id,btn);if(id==='visuals')buildVisuals();};
+function app2(c){return sgCalc(c,cIG)>0;}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-/* ══ VISUALS ══ */
 let radarInst=null,catBarInst=null,ctrlBarInst=null,gapBarInst=null;
-
 const catColors={
   Identify:{border:'#818cf8',bg:'rgba(129,140,248,0.15)'},
-  Protect: {border:'#34d399',bg:'rgba(52,211,153,0.15)'},
-  Detect:  {border:'#fbbf24',bg:'rgba(251,191,36,0.15)'},
-  Respond: {border:'#f87171',bg:'rgba(248,113,113,0.15)'},
-  Recover: {border:'#e879f9',bg:'rgba(232,121,249,0.15)'},
+  Protect:{border:'#34d399',bg:'rgba(52,211,153,0.15)'},
+  Detect:{border:'#fbbf24',bg:'rgba(251,191,36,0.15)'},
+  Respond:{border:'#f87171',bg:'rgba(248,113,113,0.15)'},
+  Recover:{border:'#e879f9',bg:'rgba(232,121,249,0.15)'},
 };
-
-const matColors=['#E24B4A','#f97316','#eab308','#378ADD','#639922'];
-
-function scoreColor(pct){
-  if(pct>=80)return'#639922';
-  if(pct>=70)return'#378ADD';
-  if(pct>=50)return'#BA7517';
-  return'#E24B4A';
-}
-
-function destroyCharts(){
-  [radarInst,catBarInst,ctrlBarInst,gapBarInst].forEach(c=>{if(c)c.destroy();});
-  radarInst=catBarInst=ctrlBarInst=gapBarInst=null;
-}
-
+function scoreColor(pct){return pct>=80?'#639922':pct>=70?'#378ADD':pct>=50?'#BA7517':'#E24B4A';}
+function destroyCharts(){[radarInst,catBarInst,ctrlBarInst,gapBarInst].forEach(c=>{if(c)c.destroy();});radarInst=catBarInst=ctrlBarInst=gapBarInst=null;}
 function buildVisuals(){
   destroyCharts();
-
-  const tSG=controls.reduce((s,c)=>s+sg(c,cIG),0);
-  const app=controls.filter(c=>app2(c));
-  const scored=app.filter(c=>cS[controls.indexOf(c)]>=0);
-
-  if(!scored.length){
-    document.getElementById('vis-empty').style.display='block';
-    document.getElementById('vis-content').style.display='none';
-    return;
-  }
-  document.getElementById('vis-empty').style.display='none';
-  document.getElementById('vis-content').style.display='block';
-
-  // header
+  const tSG=controls.reduce((s,c)=>s+sgCalc(c,cIG),0);
+  const appd=controls.filter(c=>app2(c));
+  const scored=appd.filter(c=>cS[controls.indexOf(c)]>=0);
+  if(!scored.length){document.getElementById('vis-empty').style.display='block';document.getElementById('vis-content').style.display='none';return;}
+  document.getElementById('vis-empty').style.display='none';document.getElementById('vis-content').style.display='block';
   const name=document.getElementById('client-name').value.trim()||'Client';
   document.getElementById('vis-client-name').textContent=name;
-  document.getElementById('vis-client-meta').textContent=`IG${cIG} Assessment  ·  ${scored.length}/${app.length} controls scored`;
+  document.getElementById('vis-client-meta').textContent=`IG${cIG} Assessment  ·  ${scored.length}/${appd.length} controls scored`;
   const igBC={1:'rgba(96,165,250,.15)',2:'rgba(74,222,128,.15)',3:'rgba(251,146,60,.15)'};
   const igTC={1:'#93c5fd',2:'#86efac',3:'#fdba74'};
   const igBd={1:'rgba(96,165,250,.4)',2:'rgba(74,222,128,.4)',3:'rgba(251,146,60,.4)'};
   const igBadge=document.getElementById('vis-ig-badge');
   igBadge.textContent=`IG${cIG}`;
   igBadge.style.cssText=`background:${igBC[cIG]};color:${igTC[cIG]};border:1px solid ${igBd[cIG]};font-size:12px;padding:4px 12px;border-radius:6px;font-family:var(--mono)`;
-
-  // overall score
   let wSum=0,mSum=0;
-  app.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0){wSum+=(cS[i]/4)*(sg(c,cIG)/tSG)*100;mSum+=cS[i];}});
-  const pct=parseFloat((scored.length===app.length?wSum:wSum*app.length/scored.length).toFixed(1));
+  appd.forEach(c=>{const i=controls.indexOf(c);if(cS[i]>=0){wSum+=(cS[i]/4)*(sgCalc(c,cIG)/tSG)*100;mSum+=cS[i];}});
+  const pct=parseFloat((scored.length===appd.length?wSum:wSum*appd.length/scored.length).toFixed(1));
   const gap=Math.max(0,(80-pct)).toFixed(1);
   const avgMat=(mSum/scored.length).toFixed(1);
   document.getElementById('vs-score').textContent=pct+'%';
   document.getElementById('vs-score').style.color=scoreColor(pct);
   document.getElementById('vs-gap').textContent=pct>=80?'0% ✓':'-'+gap+'%';
   document.getElementById('vs-gap').style.color=pct>=80?'#639922':'#E24B4A';
-  document.getElementById('vs-scored').textContent=scored.length+'/'+app.length;
+  document.getElementById('vs-scored').textContent=scored.length+'/'+appd.length;
   document.getElementById('vs-avg').textContent=avgMat+'/4';
-
-  // category scores
   const cats=['Identify','Protect','Detect','Respond','Recover'];
   const catScores={};
   cats.forEach(cat=>{
-    const catControls=app.filter(c=>c.cat===cat);
-    const catScored=catControls.filter(c=>cS[controls.indexOf(c)]>=0);
-    if(!catScored.length){catScores[cat]=null;return;}
-    let sum=0;
-    catScored.forEach(c=>{sum+=cS[controls.indexOf(c)]/4*100;});
-    catScores[cat]=parseFloat((sum/catControls.length).toFixed(1));
+    const cc=appd.filter(c=>c.cat===cat);const cs=cc.filter(c=>cS[controls.indexOf(c)]>=0);
+    if(!cs.length){catScores[cat]=null;return;}
+    let sum=0;cs.forEach(c=>{sum+=cS[controls.indexOf(c)]/4*100;});
+    catScores[cat]=parseFloat((sum/cc.length).toFixed(1));
   });
-
-  // ── RADAR CHART ──
   const radarCtx=document.getElementById('radar-chart').getContext('2d');
-  const radarData=cats.map(c=>catScores[c]??0);
-  radarInst=new Chart(radarCtx,{
-    type:'radar',
-    data:{
-      labels:cats,
-      datasets:[{
-        label:'Score %',
-        data:radarData,
-        backgroundColor:'rgba(96,165,250,0.12)',
-        borderColor:'#60a5fa',
-        borderWidth:2,
-        pointBackgroundColor:cats.map(c=>catColors[c].border),
-        pointRadius:4,
-        pointHoverRadius:6,
-      },{
-        label:'Target (80%)',
-        data:cats.map(()=>80),
-        backgroundColor:'rgba(255,255,255,0)',
-        borderColor:'rgba(255,255,255,0.12)',
-        borderWidth:1,
-        borderDash:[4,4],
-        pointRadius:0,
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{r:{
-        min:0,max:100,
-        ticks:{stepSize:25,color:'#4a5568',font:{size:10},backdropColor:'transparent'},
-        grid:{color:'rgba(255,255,255,0.06)'},
-        angleLines:{color:'rgba(255,255,255,0.06)'},
-        pointLabels:{color:cats.map(c=>catColors[c].border),font:{size:12}},
-      }}
-    }
-  });
-
-  // ── CATEGORY BAR ──
+  radarInst=new Chart(radarCtx,{type:'radar',data:{labels:cats,datasets:[{label:'Score %',data:cats.map(c=>catScores[c]??0),backgroundColor:'rgba(96,165,250,0.12)',borderColor:'#60a5fa',borderWidth:2,pointBackgroundColor:cats.map(c=>catColors[c].border),pointRadius:4,pointHoverRadius:6},{label:'Target (80%)',data:cats.map(()=>80),backgroundColor:'transparent',borderColor:'rgba(255,255,255,0.12)',borderWidth:1,borderDash:[4,4],pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:100,ticks:{stepSize:25,color:'#4a5568',font:{size:10},backdropColor:'transparent'},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'},pointLabels:{color:cats.map(c=>catColors[c].border),font:{size:12}}}}}});
   const catCtx=document.getElementById('cat-bar-chart').getContext('2d');
-  const catVals=cats.map(c=>catScores[c]??0);
-  catBarInst=new Chart(catCtx,{
-    type:'bar',
-    data:{
-      labels:cats,
-      datasets:[{
-        label:'Score %',
-        data:catVals,
-        backgroundColor:cats.map(c=>catColors[c].bg),
-        borderColor:cats.map(c=>catColors[c].border),
-        borderWidth:1.5,
-        borderRadius:5,
-      },{
-        label:'Target',
-        data:cats.map(()=>80),
-        backgroundColor:'transparent',
-        borderColor:'rgba(255,255,255,0.2)',
-        borderWidth:1,
-        borderDash:[4,4],
-        type:'line',
-        pointRadius:0,
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y.toFixed(1)}%`}}},
-      scales:{
-        x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8a95a8',font:{size:11}}},
-        y:{min:0,max:100,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8a95a8',font:{size:11},callback:v=>v+'%'}},
-      }
-    }
-  });
-
-  // ── CONTROL MATURITY BAR ──
-  const ctrlLabels=app.map(c=>'CIS '+c.n);
-  const ctrlVals=app.map(c=>cS[controls.indexOf(c)]>=0?cS[controls.indexOf(c)]:0);
-  const ctrlColors=app.map(c=>{const s=cS[controls.indexOf(c)];return s>=0?matColors[s]:'rgba(255,255,255,0.06)';});
-  const ctrlH=Math.max(280,app.length*36+60);
+  catBarInst=new Chart(catCtx,{type:'bar',data:{labels:cats,datasets:[{label:'Score %',data:cats.map(c=>catScores[c]??0),backgroundColor:cats.map(c=>catColors[c].bg),borderColor:cats.map(c=>catColors[c].border),borderWidth:1.5,borderRadius:5},{label:'Target',data:cats.map(()=>80),backgroundColor:'transparent',borderColor:'rgba(255,255,255,0.2)',borderWidth:1,borderDash:[4,4],type:'line',pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.y.toFixed(1)}%`}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8a95a8',font:{size:11}}},y:{min:0,max:100,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#8a95a8',font:{size:11},callback:v=>v+'%'}}}}});
+  const ctrlH=Math.max(280,appd.length*36+60);
   document.getElementById('ctrl-bar-wrap').style.height=ctrlH+'px';
+  const ctrlVals=appd.map(c=>cS[controls.indexOf(c)]>=0?cS[controls.indexOf(c)]:0);
+  const ctrlColors=appd.map(c=>{const s=cS[controls.indexOf(c)];return s>=0?['#E24B4A','#f97316','#eab308','#378ADD','#639922'][s]:'rgba(255,255,255,0.06)';});
   const ctrlCtx=document.getElementById('ctrl-bar-chart').getContext('2d');
-  ctrlBarInst=new Chart(ctrlCtx,{
-    type:'bar',
-    data:{
-      labels:app.map(c=>`CIS ${c.n} — ${c.title.length>30?c.title.slice(0,30)+'…':c.title}`),
-      datasets:[{
-        label:'Maturity',
-        data:ctrlVals,
-        backgroundColor:ctrlColors,
-        borderColor:ctrlColors.map(c=>c.replace('0.06','0.3')),
-        borderWidth:1,
-        borderRadius:4,
-      },{
-        label:'Target (3)',
-        data:app.map(()=>3),
-        backgroundColor:'transparent',
-        borderColor:'rgba(255,255,255,0.15)',
-        borderWidth:1,
-        borderDash:[4,4],
-        type:'line',
-        pointRadius:0,
-      }]
-    },
-    options:{
-      indexAxis:'y',responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const s=cS[controls.indexOf(app[ctx.dataIndex])];return s>=0?` Maturity ${s}/4 — ${['Not implemented','Ad-hoc','Developing','Defined','Managed'][s]}`:' Not scored';},}}},
-      scales:{
-        x:{min:0,max:4,ticks:{stepSize:1,color:'#8a95a8',font:{size:11},callback:v=>['0','1','2','3','4'][v]||v},grid:{color:'rgba(255,255,255,0.04)'}},
-        y:{grid:{display:false},ticks:{color:'#8a95a8',font:{size:11},autoSkip:false}},
-      }
-    }
-  });
-
-  // ── GAP BAR ──
+  ctrlBarInst=new Chart(ctrlCtx,{type:'bar',data:{labels:appd.map(c=>`CIS ${c.n} — ${c.title.length>30?c.title.slice(0,30)+'…':c.title}`),datasets:[{label:'Maturity',data:ctrlVals,backgroundColor:ctrlColors,borderColor:ctrlColors.map(c=>c.replace('0.06','0.3')),borderWidth:1,borderRadius:4},{label:'Target (3)',data:appd.map(()=>3),backgroundColor:'transparent',borderColor:'rgba(255,255,255,0.15)',borderWidth:1,borderDash:[4,4],type:'line',pointRadius:0}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const s=cS[controls.indexOf(appd[ctx.dataIndex])];return s>=0?` Maturity ${s}/4 — ${['Not implemented','Ad-hoc','Developing','Defined','Managed'][s]}`:' Not scored';}}}},scales:{x:{min:0,max:4,ticks:{stepSize:1,color:'#8a95a8',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},y:{grid:{display:false},ticks:{color:'#8a95a8',font:{size:11},autoSkip:false}}}}});
   const gapTarget=3;
-  const gapControls=app.filter(c=>cS[controls.indexOf(c)]>=0&&cS[controls.indexOf(c)]<gapTarget);
+  const gapControls=appd.filter(c=>cS[controls.indexOf(c)]>=0&&cS[controls.indexOf(c)]<gapTarget);
   if(gapControls.length){
     const gapH=Math.max(200,gapControls.length*38+60);
     document.getElementById('gap-bar-wrap').style.height=gapH+'px';
     document.getElementById('gap-bar-chart').closest('.vis-card-full').style.display='block';
-    const gapCtx=document.getElementById('gap-bar-chart').getContext('2d');
     const gapVals=gapControls.map(c=>gapTarget-cS[controls.indexOf(c)]);
     const gapBg=gapControls.map(c=>{const g=gapTarget-cS[controls.indexOf(c)];return g>=3?'rgba(226,75,74,0.3)':g===2?'rgba(234,88,12,0.3)':'rgba(202,138,4,0.3)';});
     const gapBd=gapControls.map(c=>{const g=gapTarget-cS[controls.indexOf(c)];return g>=3?'#E24B4A':g===2?'#f97316':'#eab308';});
-    gapBarInst=new Chart(gapCtx,{
-      type:'bar',
-      data:{
-        labels:gapControls.map(c=>`CIS ${c.n} — ${c.title.length>30?c.title.slice(0,30)+'…':c.title}`),
-        datasets:[{label:'Gap to maturity 3',data:gapVals,backgroundColor:gapBg,borderColor:gapBd,borderWidth:1.5,borderRadius:4}]
-      },
-      options:{
-        indexAxis:'y',responsive:true,maintainAspectRatio:false,
-        plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x} maturity level${ctx.parsed.x>1?'s':''} to reach target`}}},
-        scales:{
-          x:{min:0,max:3,ticks:{stepSize:1,color:'#8a95a8',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},
-          y:{grid:{display:false},ticks:{color:'#8a95a8',font:{size:11},autoSkip:false}},
-        }
-      }
-    });
-  } else {
-    document.getElementById('gap-bar-chart').closest('.vis-card-full').style.display='none';
-  }
+    const gapCtx=document.getElementById('gap-bar-chart').getContext('2d');
+    gapBarInst=new Chart(gapCtx,{type:'bar',data:{labels:gapControls.map(c=>`CIS ${c.n} — ${c.title.length>30?c.title.slice(0,30)+'…':c.title}`),datasets:[{label:'Gap to maturity 3',data:gapVals,backgroundColor:gapBg,borderColor:gapBd,borderWidth:1.5,borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>` ${ctx.parsed.x} maturity level${ctx.parsed.x>1?'s':''} to reach target`}}},scales:{x:{min:0,max:3,ticks:{stepSize:1,color:'#8a95a8',font:{size:11}},grid:{color:'rgba(255,255,255,0.04)'}},y:{grid:{display:false},ticks:{color:'#8a95a8',font:{size:11},autoSkip:false}}}}});
+  }else{document.getElementById('gap-bar-chart').closest('.vis-card-full').style.display='none';}
 }
-
-// Patch showPage to rebuild visuals when switching to visuals tab
-const _origShowPage=showPage;
-showPage=function(id,btn){
-  _origShowPage(id,btn);
-  if(id==='visuals')buildVisuals();
-};
-function app2(c){return sg(c,cIG)>0;}
 </script>
 </body>
 </html>
